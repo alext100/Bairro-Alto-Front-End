@@ -1,6 +1,9 @@
 module.exports = {
-  preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel',
+  preset: "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
   transform: {
-    '^.+\\.vue$': 'vue-jest',
+    "^.+\\.vue$": "vue-jest",
   },
+  collectCoverage: true,
+  collectCoverageFrom: ["src/**/*.{js,vue,ts}", "!src/main.js"],
+  modulePathIgnorePatterns: ["src/main.ts", "src/store/index.ts", "protectedRoute.ts", "shims-vue.d.ts"],
 };
