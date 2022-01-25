@@ -26,6 +26,9 @@ interface UserLoggedIn {
     homeworkToCheck: Array<string>;
   };
   token: string;
+  adminAccess: boolean;
+  teacherAccess: boolean;
+  studentAccess: boolean;
 }
 
 interface UserLoginData {
@@ -84,7 +87,7 @@ interface State {
   currentUser: UserLoggedIn;
   isUserAuthenticated: boolean;
   isAdmin: boolean;
-  isProfessor: boolean;
+  isTeacher: boolean;
   isStudent: boolean;
   teachers: Array<UserModel>;
   groups: Array<Group>;
@@ -96,6 +99,7 @@ interface State {
   allUsers: Array<UserModel>;
   isRegistered: boolean;
   isWrongEmailOnRegister: boolean;
+  isLoading: boolean;
 }
 
 export { UserModel, UserRegisterData, UserLoggedIn, UserLoginData, State, StudentError, Lesson, HomeworkToCheck };

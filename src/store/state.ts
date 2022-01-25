@@ -25,11 +25,9 @@ const state = {
   loadedUsersFromGroup: [],
   currentStudentErrors: [],
   allUsers: [],
-  isAdmin: false,
-  isProfessor: false,
-  isStudent: false,
   isRegistered: false,
   isWrongEmailOnRegister: false,
+  isLoading: false,
 };
 
 export default state as unknown as State;
