@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 import state from "@/store/state";
 import actions from "@/store/actions";
 import getters from "@/store/getters";
@@ -10,4 +11,9 @@ export default createStore({
   actions,
   getters,
   modules: {},
+  plugins: [
+    createPersistedState({
+      storage: window.sessionStorage,
+    }),
+  ],
 });

@@ -45,7 +45,11 @@
         success-message="Запомните его!"
       />
 
-      <button class="submit-btn" type="submit">Подтвердить</button>
+      <button v-if="!isLoading" class="submit-btn" type="submit">Подтвердить</button>
+      <button v-if="isLoading" class="btn btn-primary submit-btn" type="submit" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Загружается...
+      </button>
     </Form>
   </div>
 </template>
@@ -140,6 +144,10 @@ export default defineComponent({
         }
       }
     },
+  },
+
+  computed: {
+    ...mapState(["isLoading"]),
   },
 });
 </script>

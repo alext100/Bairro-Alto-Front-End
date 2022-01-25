@@ -13,6 +13,7 @@ const actions = {
   },
 
   async userLogedFromApi({ commit }: ActionContext<State, State>, { user, token }: UserLoggedIn): Promise<void> {
+    commit("startLoading");
     const { data } = await axios({
       method: "GET",
       url: `${process.env.VUE_APP_URL}/user/get-one-by-id/${user.id}`,
@@ -22,26 +23,20 @@ const actions = {
     localStorage.setItem(
       "userData",
       JSON.stringify({
-        username: data.username,
         password: data.password,
         token: data.token,
-        firstname: data.firstname,
+        firstName: data.firstName,
         adminAccess: data.adminAccess,
-        professorAccess: data.professorAccess,
+        teacherAccess: data.teacherAccess,
         studentAccess: data.studentAccess,
         groups: data.groups,
         studentErrors: data.studentErrors,
+        homeworkToCheck: data.homeworkToCheck,
       })
     );
     commit("loginUser", data);
     commit("loadUser", data);
-    if (data.adminAccess === true) {
-      commit("userIsAdmin");
-    } else if (data.teacherAccess) {
-      commit("userIsTeacher");
-    } else if (data.studentAccess) {
-      commit("userIsStudent");
-    }
+    commit("stopLoading");
   },
 
   async registerUser({ commit }: ActionContext<State, State>, userData: UserLoginData): Promise<void> {

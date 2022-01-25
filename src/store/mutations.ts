@@ -10,18 +10,6 @@ const mutations = {
     state.currentUser = payload;
   },
 
-  userIsAdmin(state: State) {
-    state.isAdmin = true;
-  },
-
-  userIsTeacher(state: State) {
-    state.isProfessor = true;
-  },
-
-  userIsStudent(state: State) {
-    state.isStudent = true;
-  },
-
   isRegistered(state: State, payload: UserRegisterData) {
     state.isRegistered = true;
     state.user.email = payload.email;
@@ -29,6 +17,14 @@ const mutations = {
 
   notRegistered(state: State) {
     state.isWrongEmailOnRegister = true;
+  },
+
+  startLoading(state: State) {
+    state.isLoading = true;
+  },
+
+  stopLoading(state: State) {
+    state.isLoading = false;
   },
 };
 

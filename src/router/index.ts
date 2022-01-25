@@ -1,7 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Register from "../views/Register.vue";
-import Login from "../views/Login.vue";
-import Home from "../views/Home.vue";
+import Register from "@/views/Register.vue";
+import Login from "@/views/Login.vue";
+import Home from "@/views/Home.vue";
+import StudentBoard from "@/views/StudentBoard.vue";
+import AdminBoard from "@/views/AdminBoard.vue";
+import TeacherBoard from "@/views/TeacherBoard.vue";
+import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,6 +22,24 @@ const routes: Array<RouteRecordRaw> = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/admin",
+    name: "AdminBoard",
+    component: AdminBoard,
+    beforeEnter: adminProtectedRoute,
+  },
+  {
+    path: "/teacher",
+    name: "TeacherBoard",
+    component: TeacherBoard,
+    beforeEnter: teacherProtectedRoute,
+  },
+  {
+    path: "/student/:id",
+    name: "StudentBoard",
+    component: StudentBoard,
+    beforeEnter: studentProtectedRoute,
   },
   // {
   //   path: '/about',
