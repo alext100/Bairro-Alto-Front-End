@@ -1,5 +1,8 @@
+import { string } from "yup";
+
 interface UserModel {
   id: string;
+  email: string;
   password: string;
   firstName: string;
   lastName: string;
@@ -28,7 +31,7 @@ interface UserLoggedIn {
 }
 
 interface UserLoginData {
-  username: string;
+  email: string;
   password: string;
 }
 interface UserRegisterData {
@@ -93,6 +96,8 @@ interface State {
   currentStudentErrors: Array<StudentError>;
   loadedOneUserById: UserModel;
   allUsers: Array<UserModel>;
+  isRegistered: boolean;
+  isWrongEmailOnRegister: boolean;
 }
 
 export { UserModel, UserRegisterData, UserLoggedIn, UserLoginData, State, StudentError, Lesson, HomeworkToCheck };
