@@ -17,11 +17,16 @@
         placeholder="Введите пароль"
         success-message="Сложный и безопасный!"
       />
+
       <span v-if="isWrong" class="login__wrong">Не правильное имя пользователя или пароль! Попробуйте ещё раз!</span>
-      <button class="submit-btn" type="submit">Подтвердить</button>
+      <button v-if="!isLoading" class="submit-btn" type="submit">Подтвердить</button>
+      <button v-if="isLoading" class="btn btn-primary submit-btn" type="submit" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Загружается...
+      </button>
 
       <router-link :to="{ name: 'Register' }">
-        <button class="register-btn" type="button">Зарегистрироваться</button>
+        <button v-if="!isLoading" class="register-btn" type="button">Зарегистрироваться</button>
       </router-link>
     </Form>
   </div>
@@ -32,7 +37,6 @@ import { Form } from "vee-validate";
 import * as Yup from "yup";
 import TextInput from "@/components/TextInput.vue";
 import { defineComponent } from "vue";
-/* import state from "@/store/state"; */
 import { mapActions, mapState } from "vuex";
 import { UserLoginData } from "@/types/interfaces";
 import state from "@/store/state";
@@ -88,18 +92,21 @@ export default defineComponent({
         try {
           await this.login(userData);
           this.isWrong = false;
-          /*           if (state.isStudent === true) {
-            this.$router.push({ path: `/student/${state.currentUser.id}` });
-          } else if (state.isProfessor === true) {
+          if (state.currentUser.studentAccess === true) {
+            this.$router.push({ path: `/student/${state.currentUser.user.id}` });
+          } else if (state.currentUser.teacherAccess === true) {
             this.$router.push("/teacher");
-          } else if (state.isAdmin === true) {
+          } else if (state.currentUser.adminAccess === true) {
             this.$router.push("/admin");
-          } */
+          }
         } catch (error) {
           this.isWrong = true;
         }
       }
     },
+  },
+  computed: {
+    ...mapState(["isLoading"]),
   },
 });
 </script>
