@@ -1,5 +1,3 @@
-import { string } from "yup";
-
 interface UserModel {
   id: string;
   email: string;
