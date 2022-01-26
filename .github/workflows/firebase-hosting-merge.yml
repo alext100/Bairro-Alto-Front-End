@@ -2,7 +2,7 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on merge
-"on":
+'on':
   push:
     branches:
       - master
@@ -13,12 +13,12 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm ci && npm run build
       - env:
-          VUE_APP_LOGIN_URL: "${{ secrets.VUE_APP_LOGIN_URL }}"
-          VUE_APP_URL: "${{ secrets.VUE_APP_URL }}"
-          VUE_APP_BASE_URL: "${{ secrets.VUE_APP_BASE_URL }}"
+          VUE_APP_LOGIN_URL: '${{ secrets.VUE_APP_LOGIN_URL }}'
+          VUE_APP_URL: '${{ secrets.VUE_APP_URL }}'
+          VUE_APP_BASE_URL: '${{ secrets.VUE_APP_BASE_URL }}'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_BAIRRO_ALTO }}"
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BAIRRO_ALTO }}'
           channelId: live
           projectId: bairro-alto
