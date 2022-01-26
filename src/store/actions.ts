@@ -12,7 +12,10 @@ const actions = {
     localStorage.setItem("userData", JSON.stringify({ token }));
   },
 
-  async userLogedFromApi({ commit }: ActionContext<State, State>, { user, token }: UserLoggedIn): Promise<void> {
+  async userLogedFromApi(
+    { commit }: ActionContext<State, State>,
+    { user, token, refreshToken }: UserLoggedIn
+  ): Promise<void> {
     commit("startLoading");
     const { data } = await axios({
       method: "GET",
@@ -20,9 +23,11 @@ const actions = {
       headers: { Authorization: `Bearer ${token}` },
     });
     data.token = token;
+    data.refreshToken = refreshToken;
     localStorage.setItem(
       "userData",
       JSON.stringify({
+        id: data.id,
         password: data.password,
         token: data.token,
         firstName: data.firstName,
@@ -51,6 +56,13 @@ const actions = {
         commit("notRegistered");
         throw error;
       });
+  },
+
+  async deleteDataFromLocalStorage({ commit }: ActionContext<State, State>): Promise<void> {
+    localStorage.removeItem("userData");
+    sessionStorage.clear();
+    const logedOutUser = { token: "", refreshToken: "" };
+    commit("logoutUser", logedOutUser);
   },
 };
 
