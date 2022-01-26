@@ -35,5 +35,6 @@ export default defineComponent({
   --error-bg-color: #fddfe2;
   --success-color: #21a67a;
   --success-bg-color: #e0eee4;
+  --bairro-alto-logo-color: #fcb73c;
 }
 </style>
