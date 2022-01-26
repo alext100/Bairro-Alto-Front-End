@@ -79,6 +79,30 @@ const actions = {
     });
     commit("loadUserGroups", data.groups);
   },
+
+  async addGroupToUser({ dispatch }: ActionContext<State, State>, groupId: string): Promise<void> {
+    const idOfGroup = (group: Group) => group.id === groupId;
+    if (state.userGroups.find(idOfGroup) === undefined) {
+      await axios({
+        method: "PATCH",
+        url: `${process.env.VUE_APP_URL}/user/add-group-to-user/${groupId}`,
+        headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      });
+      dispatch("getUserGroupsFromApi");
+    }
+  },
+
+  async deleteUserGroup({ dispatch }: ActionContext<State, State>, groupId: string): Promise<void> {
+    const idOfGroup = (group: Group) => group.id === groupId;
+    if (state.userGroups.find(idOfGroup) !== undefined) {
+      await axios({
+        method: "PATCH",
+        url: `${process.env.VUE_APP_URL}/user/delete-group-from-user/${groupId}`,
+        headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      });
+      dispatch("getUserGroupsFromApi");
+    }
+  },
 };
 
 export default actions;
