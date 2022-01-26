@@ -106,4 +106,14 @@ interface State {
   isLoading: boolean;
 }
 
-export { UserModel, UserRegisterData, UserLoggedIn, UserLoginData, State, StudentError, Lesson, HomeworkToCheck };
+export {
+  UserModel,
+  UserRegisterData,
+  UserLoggedIn,
+  UserLoginData,
+  State,
+  StudentError,
+  Lesson,
+  HomeworkToCheck,
+  Group,
+};

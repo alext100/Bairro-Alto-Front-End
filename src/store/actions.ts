@@ -1,7 +1,8 @@
-import { State, UserLoggedIn, UserLoginData } from "@/types/interfaces";
+import { Group, State, UserLoggedIn, UserLoginData } from "@/types/interfaces";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { ActionContext } from "vuex";
+import state from "./state";
 
 const actions = {
   async login({ dispatch }: ActionContext<State, State>, userData: UserLoginData): Promise<void> {
@@ -63,6 +64,20 @@ const actions = {
     sessionStorage.clear();
     const logedOutUser = { token: "", refreshToken: "" };
     commit("logoutUser", logedOutUser);
+  },
+
+  async getGroupsFromApi({ commit }: ActionContext<State, State>): Promise<void> {
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/group/get-all`);
+    commit("loadGroups", data);
+  },
+
+  async getUserGroupsFromApi({ commit }: ActionContext<State, State>): Promise<void> {
+    const { data } = await axios({
+      method: "GET",
+      url: `${process.env.VUE_APP_URL}/user/get-all-user-groups`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+    });
+    commit("loadUserGroups", data.groups);
   },
 };
 
