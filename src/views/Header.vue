@@ -1,7 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light header-navbar">
     <div class="container-fluid">
-      <img class="logo-image" src="../../public/BA_VK_Template_1_1_logo_h50_1.webp" alt="logo" />
+      <router-link to="/">
+        <img class="logo-image" src="../../public/BA_VK_Template_1_1_logo_h50_1.webp" alt="logo" />
+      </router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -43,8 +45,26 @@
             <a class="nav-link" href="#">Материалы</a>
           </li>
 
-          <li class="nav-item">
-            <router-link class="nav-link" to="/login">Login</router-link>
+          <li v-if="!isUserAuthenticated" class="nav-item">
+            <router-link class="nav-link" to="/login">{{ "Войти" }}</router-link>
+          </li>
+
+          <li v-if="currentUser.adminAccess" class="nav-item">
+            <router-link class="nav-link" to="/admin">{{ "Администраторская" }}</router-link>
+          </li>
+          <li v-if="currentUser.teacherAccess" class="nav-item">
+            <router-link class="nav-link" to="/teacher">{{ "Учительская" }}</router-link>
+          </li>
+          <li v-if="currentUser.studentAccess" class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'StudentBoard', params: { id: currentUser.id } }">{{
+              "Мойкабинет"
+            }}</router-link>
+          </li>
+
+          <li v-if="isUserAuthenticated" class="nav-item">
+            <router-link class="nav-link" to="/"
+              ><button class="logout-button" @click="handleLogout()" data-test="logout">Выйти</button></router-link
+            >
           </li>
         </ul>
       </div>
@@ -54,15 +74,25 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapActions, mapState } from "vuex";
 
 export default defineComponent({
   name: "Header",
+  computed: { ...mapState(["isUserAuthenticated", "currentUser"]) },
+  methods: {
+    ...mapActions(["deleteDataFromLocalStorage"]),
+    handleLogout() {
+      this.deleteDataFromLocalStorage();
+      this.$router.push("/");
+    },
+  },
 });
 </script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
-.header-navbar {
+.header-navbar,
+.logout-button {
   background: url("../../public/BA_VK_Template_1_1_header_no_logo_h50_2.webp") no-repeat top left;
   margin: 0;
   padding-bottom: 0;
@@ -72,7 +102,14 @@ export default defineComponent({
   line-height: 1.1875;
   letter-spacing: 0.4em;
 }
-a {
+.logout-button {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  background-color: transparent;
+  border: transparent;
+}
+a,
+.logout-button {
   color: #d59758 !important;
   font-family: Noto Sans, Arial, sans-serif;
 }

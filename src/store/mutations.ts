@@ -26,6 +26,33 @@ const mutations = {
   stopLoading(state: State) {
     state.isLoading = false;
   },
+
+  logoutUser(state: State, payload: UserLoggedIn) {
+    state.currentUser.token = payload.token;
+    state.currentUser.refreshToken = payload.refreshToken;
+    state.isUserAuthenticated = false;
+    state.currentUser = {
+      user: {
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        adminAccess: false,
+        teacherAccess: false,
+        studentAccess: false,
+        groups: [],
+        image: "",
+        homeworkToCheck: [],
+      },
+      token: "",
+      refreshToken: "",
+      adminAccess: false,
+      teacherAccess: false,
+      studentAccess: false,
+      id: "",
+    };
+  },
 };
 
 export default mutations;

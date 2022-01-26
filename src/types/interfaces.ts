@@ -15,6 +15,7 @@ interface UserModel {
 interface UserLoggedIn {
   user: {
     id: string;
+    email: string;
     password: string;
     firstName: string;
     lastName: string;
@@ -26,9 +27,11 @@ interface UserLoggedIn {
     homeworkToCheck: Array<string>;
   };
   token: string;
+  refreshToken: string;
   adminAccess: boolean;
   teacherAccess: boolean;
   studentAccess: boolean;
+  id: string;
 }
 
 interface UserLoginData {
@@ -84,6 +87,7 @@ interface State {
   user: UserModel;
   userId: string;
   token: string;
+  refreshToken: string;
   currentUser: UserLoggedIn;
   isUserAuthenticated: boolean;
   isAdmin: boolean;

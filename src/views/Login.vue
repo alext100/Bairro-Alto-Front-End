@@ -80,7 +80,6 @@ export default defineComponent({
   },
   methods: {
     ...mapActions(["login"]),
-    ...mapState(["isProfessor", "isAdmin", "isStudent", "user", "isRegistered"]),
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async handleLogin(values: Record<string, any>) {
@@ -92,21 +91,32 @@ export default defineComponent({
         try {
           await this.login(userData);
           this.isWrong = false;
-          if (state.currentUser.studentAccess === true) {
-            this.$router.push({ path: `/student/${state.currentUser.user.id}` });
-          } else if (state.currentUser.teacherAccess === true) {
-            this.$router.push("/teacher");
-          } else if (state.currentUser.adminAccess === true) {
-            this.$router.push("/admin");
-          }
+          setTimeout(() => {
+            this.redirectToUserPage();
+          }, 500);
         } catch (error) {
           this.isWrong = true;
         }
       }
     },
+
+    redirectToUserPage() {
+      if (state.currentUser.studentAccess === true) {
+        this.$router.push({ path: `/student/${state.currentUser.id}` });
+      }
+      if (state.currentUser.teacherAccess === true) {
+        this.$router.push("/teacher");
+      }
+      if (state.currentUser.adminAccess === true) {
+        this.$router.push("/admin");
+      }
+    },
   },
   computed: {
-    ...mapState(["isLoading"]),
+    ...mapState(["isLoading", "isRegistered", "currentUser"]),
+  },
+  mounted() {
+    this.redirectToUserPage();
   },
 });
 </script>
