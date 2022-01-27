@@ -113,6 +113,27 @@ const actions = {
     const { data } = await axios.get(`${process.env.VUE_APP_URL}/user/get-one-by-id/${userId}`);
     commit("loadedUsersFromGroup", { ...data });
   },
+
+  async deleteLoadedUsers({ commit }: ActionContext<State, State>): Promise<void> {
+    commit("deleteLoadedUsersFromGroup");
+  },
+
+  async updateGroup({ dispatch }: ActionContext<State, State>, groupToUpdate: Group): Promise<void> {
+    await axios.put(`${process.env.VUE_APP_URL}/group/update-group-by-id/${groupToUpdate.id}`, groupToUpdate);
+    dispatch("getGroupById", groupToUpdate.id);
+  },
+
+  async addGroupToAnyUser(
+    { dispatch }: ActionContext<State, State>,
+    { userId, groupId }: { userId: string; groupId: string }
+  ): Promise<void> {
+    const idOfUser = (user: UserModel) => user.id === userId;
+    if (state.loadedUsersFromGroup.find(idOfUser) === undefined) {
+      await axios.patch(`${process.env.VUE_APP_URL}/group/add-group-to-any-user/${userId}`, { id: groupId });
+      dispatch("getUserById", userId);
+      dispatch("getGroupById", groupId);
+    }
+  },
 };
 
 export default actions;
