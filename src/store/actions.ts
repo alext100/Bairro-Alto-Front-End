@@ -1,4 +1,4 @@
-import { Group, State, UserLoggedIn, UserLoginData } from "@/types/interfaces";
+import { Group, State, UserLoggedIn, UserLoginData, UserModel } from "@/types/interfaces";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { ActionContext } from "vuex";
@@ -101,6 +101,53 @@ const actions = {
         headers: { Authorization: `Bearer ${state.currentUser.token}` },
       });
       dispatch("getUserGroupsFromApi");
+    }
+  },
+
+  async getGroupById({ commit }: ActionContext<State, State>, groupId: string): Promise<void> {
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/group/get-one-by-id/${groupId}`);
+    commit("loadOneGroup", data);
+  },
+
+  async getUserById({ commit }: ActionContext<State, State>, userId: string): Promise<void> {
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/user/get-one-by-id/${userId}`);
+    commit("loadedUsersFromGroup", { ...data });
+  },
+
+  async deleteLoadedUsers({ commit }: ActionContext<State, State>): Promise<void> {
+    commit("deleteLoadedUsersFromGroup");
+  },
+
+  async updateGroup({ dispatch }: ActionContext<State, State>, groupToUpdate: Group): Promise<void> {
+    await axios.put(`${process.env.VUE_APP_URL}/group/update-group-by-id/${groupToUpdate.id}`, groupToUpdate);
+    dispatch("getGroupById", groupToUpdate.id);
+  },
+
+  async addGroupToAnyUser(
+    { dispatch }: ActionContext<State, State>,
+    { userId, groupId }: { userId: string; groupId: string }
+  ): Promise<void> {
+    const idOfUser = (user: UserModel) => user.id === userId;
+    if (state.loadedUsersFromGroup.find(idOfUser) === undefined) {
+      await axios.patch(`${process.env.VUE_APP_URL}/group/add-group-to-any-user/${userId}`, { id: groupId });
+      dispatch("getUserById", userId);
+      dispatch("getGroupById", groupId);
+    }
+  },
+
+  async getAllUsersFromApi({ commit }: ActionContext<State, State>): Promise<void> {
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/user/get-all`);
+    commit("loadAllUsers", data);
+  },
+
+  async deleteMemberFromGroup(
+    { dispatch }: ActionContext<State, State>,
+    { userId, groupId }: { userId: string; groupId: string }
+  ): Promise<void> {
+    const idOfUser = (user: UserModel) => user.id === userId;
+    if (state.loadedUsersFromGroup.find(idOfUser) !== undefined) {
+      await axios.patch(`${process.env.VUE_APP_URL_LOCAL}/group/delete-group-member/${userId}`, { id: groupId });
+      dispatch("getGroupById", groupId);
     }
   },
 };

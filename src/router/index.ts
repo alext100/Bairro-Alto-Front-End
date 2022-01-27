@@ -5,6 +5,8 @@ import Home from "@/views/Home.vue";
 import StudentBoard from "@/views/StudentBoard.vue";
 import AdminBoard from "@/views/AdminBoard.vue";
 import TeacherBoard from "@/views/TeacherBoard.vue";
+import GroupPage from "../views/Group.vue";
+import OnlineLesson from "../views/OnlineLesson.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
 const routes: Array<RouteRecordRaw> = [
@@ -40,6 +42,18 @@ const routes: Array<RouteRecordRaw> = [
     name: "StudentBoard",
     component: StudentBoard,
     beforeEnter: studentProtectedRoute,
+  },
+  {
+    path: "/group/:id",
+    name: "GroupPage",
+    component: GroupPage,
+    beforeEnter: teacherProtectedRoute,
+  },
+  {
+    path: "/online-lesson/:id",
+    name: "OnlineLesson",
+    component: OnlineLesson,
+    beforeEnter: teacherProtectedRoute,
   },
   // {
   //   path: '/about',

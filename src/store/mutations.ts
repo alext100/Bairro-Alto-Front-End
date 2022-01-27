@@ -1,4 +1,4 @@
-import { State, UserLoggedIn, UserRegisterData, Group } from "@/types/interfaces";
+import { State, UserLoggedIn, UserRegisterData, Group, UserModel } from "@/types/interfaces";
 
 const mutations = {
   loginUser(state: State, payload: UserLoggedIn) {
@@ -60,6 +60,22 @@ const mutations = {
 
   loadUserGroups(state: State, payload: Array<Group>) {
     state.userGroups = payload;
+  },
+
+  loadOneGroup(state: State, payload: Group) {
+    state.currentGroup = payload;
+  },
+
+  loadedUsersFromGroup(state: State, payload: UserModel) {
+    state.loadedUsersFromGroup.push(payload);
+  },
+
+  deleteLoadedUsersFromGroup(state: State) {
+    state.loadedUsersFromGroup = [];
+  },
+
+  loadAllUsers(state: State, payload: Array<UserModel>) {
+    state.allUsers = payload;
   },
 };
 
