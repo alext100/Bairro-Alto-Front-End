@@ -69,6 +69,14 @@ const mutations = {
   loadedUsersFromGroup(state: State, payload: UserModel) {
     state.loadedUsersFromGroup.push(payload);
   },
+
+  deleteLoadedUsersFromGroup(state: State) {
+    state.loadedUsersFromGroup = [];
+  },
+
+  loadAllUsers(state: State, payload: Array<UserModel>) {
+    state.allUsers = payload;
+  },
 };
 
 export default mutations;
