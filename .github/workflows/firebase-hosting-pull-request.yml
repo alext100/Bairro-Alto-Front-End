@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm ci && npm run build
-      - env:
+        env:
           VUE_APP_LOGIN_URL: '${{ secrets.VUE_APP_LOGIN_URL }}'
           VUE_APP_URL: '${{ secrets.VUE_APP_URL }}'
           VUE_APP_BASE_URL: '${{ secrets.VUE_APP_BASE_URL }}'
