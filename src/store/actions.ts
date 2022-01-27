@@ -134,6 +134,22 @@ const actions = {
       dispatch("getGroupById", groupId);
     }
   },
+
+  async getAllUsersFromApi({ commit }: ActionContext<State, State>): Promise<void> {
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/user/get-all`);
+    commit("loadAllUsers", data);
+  },
+
+  async deleteMemberFromGroup(
+    { dispatch }: ActionContext<State, State>,
+    { userId, groupId }: { userId: string; groupId: string }
+  ): Promise<void> {
+    const idOfUser = (user: UserModel) => user.id === userId;
+    if (state.loadedUsersFromGroup.find(idOfUser) !== undefined) {
+      await axios.patch(`${process.env.VUE_APP_URL_LOCAL}/group/delete-group-member/${userId}`, { id: groupId });
+      dispatch("getGroupById", groupId);
+    }
+  },
 };
 
 export default actions;
