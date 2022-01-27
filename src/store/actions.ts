@@ -1,4 +1,4 @@
-import { Group, State, UserLoggedIn, UserLoginData } from "@/types/interfaces";
+import { Group, State, UserLoggedIn, UserLoginData, UserModel } from "@/types/interfaces";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { ActionContext } from "vuex";
@@ -102,6 +102,16 @@ const actions = {
       });
       dispatch("getUserGroupsFromApi");
     }
+  },
+
+  async getGroupById({ commit }: ActionContext<State, State>, groupId: string): Promise<void> {
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/group/get-one-by-id/${groupId}`);
+    commit("loadOneGroup", data);
+  },
+
+  async getUserById({ commit }: ActionContext<State, State>, userId: string): Promise<void> {
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/user/get-one-by-id/${userId}`);
+    commit("loadedUsersFromGroup", { ...data });
   },
 };
 
