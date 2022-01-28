@@ -25,6 +25,7 @@ const actions = {
     });
     data.token = token;
     data.refreshToken = refreshToken;
+    localStorage.setItem("token", token);
     localStorage.setItem(
       "userData",
       JSON.stringify({
@@ -105,39 +106,49 @@ const actions = {
   },
 
   async getGroupById({ commit }: ActionContext<State, State>, groupId: string): Promise<void> {
+    commit("startLoading");
     const { data } = await axios.get(`${process.env.VUE_APP_URL}/group/get-one-by-id/${groupId}`);
     commit("loadOneGroup", data);
+    commit("stopLoading");
   },
 
   async getUserById({ commit }: ActionContext<State, State>, userId: string): Promise<void> {
+    commit("startLoading");
     const { data } = await axios.get(`${process.env.VUE_APP_URL}/user/get-one-by-id/${userId}`);
     commit("loadedUsersFromGroup", { ...data });
+    commit("stopLoading");
   },
 
   async deleteLoadedUsers({ commit }: ActionContext<State, State>): Promise<void> {
     commit("deleteLoadedUsersFromGroup");
   },
 
-  async updateGroup({ dispatch }: ActionContext<State, State>, groupToUpdate: Group): Promise<void> {
+  async updateGroup({ dispatch, commit }: ActionContext<State, State>, groupToUpdate: Group): Promise<void> {
+    commit("startLoading");
     await axios.put(`${process.env.VUE_APP_URL}/group/update-group-by-id/${groupToUpdate.id}`, groupToUpdate);
     dispatch("getGroupById", groupToUpdate.id);
+    commit("stopLoading");
   },
 
   async addGroupToAnyUser(
-    { dispatch }: ActionContext<State, State>,
+    { dispatch, commit }: ActionContext<State, State>,
     { userId, groupId }: { userId: string; groupId: string }
   ): Promise<void> {
+    commit("startLoading");
     const idOfUser = (user: UserModel) => user.id === userId;
     if (state.loadedUsersFromGroup.find(idOfUser) === undefined) {
       await axios.patch(`${process.env.VUE_APP_URL}/group/add-group-to-any-user/${userId}`, { id: groupId });
       dispatch("getUserById", userId);
       dispatch("getGroupById", groupId);
     }
+    commit("stopLoading");
   },
 
   async getAllUsersFromApi({ commit }: ActionContext<State, State>): Promise<void> {
+    commit("startLoading");
     const { data } = await axios.get(`${process.env.VUE_APP_URL}/user/get-all`);
     commit("loadAllUsers", data);
+    commit("stopLoading");
   },
 
   async deleteMemberFromGroup(
@@ -146,7 +157,7 @@ const actions = {
   ): Promise<void> {
     const idOfUser = (user: UserModel) => user.id === userId;
     if (state.loadedUsersFromGroup.find(idOfUser) !== undefined) {
-      await axios.patch(`${process.env.VUE_APP_URL_LOCAL}/group/delete-group-member/${userId}`, { id: groupId });
+      await axios.patch(`${process.env.VUE_APP_URL}/group/delete-group-member/${userId}`, { id: groupId });
       dispatch("getGroupById", groupId);
     }
   },
