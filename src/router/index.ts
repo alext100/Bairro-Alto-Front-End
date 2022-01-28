@@ -4,10 +4,11 @@ import Login from "@/views/Login.vue";
 import Home from "@/views/Home.vue";
 import StudentBoard from "@/views/StudentBoard.vue";
 import AdminBoard from "@/views/AdminBoard.vue";
-import TeacherBoard from "@/views/TeacherBoard.vue";
-import GroupPage from "../views/Group.vue";
-import OnlineLesson from "../views/OnlineLesson.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
+
+const TeacherBoard = () => import(/* webpackChunkName: "teacher-board-chank" */ "@/views/TeacherBoard.vue");
+const GroupPage = () => import(/* webpackChunkName: "teacher-board-chank" */ "../views/Group.vue");
+const OnlineLesson = () => import(/* webpackChunkName: "teacher-board-chank" */ "../views/OnlineLesson.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
