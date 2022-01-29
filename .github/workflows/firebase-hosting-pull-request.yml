@@ -14,6 +14,7 @@ jobs:
           VUE_APP_LOGIN_URL: '${{ secrets.VUE_APP_LOGIN_URL }}'
           VUE_APP_URL: '${{ secrets.VUE_APP_URL }}'
           VUE_APP_BASE_URL: '${{ secrets.VUE_APP_BASE_URL }}'
+          VUE_APP_IMAGE_UPLOAD_URL: '${{ secrets.VUE_APP_IMAGE_UPLOAD_URL }}'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
