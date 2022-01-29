@@ -5,32 +5,25 @@ import axios from "axios";
 
 export default class UploadAdapter {
   constructor(loader) {
-    // The file loader instance to use during the upload.
     this.loader = loader;
     this.url = process.env.VUE_APP_IMAGE_UPLOAD_URL;
   }
 
-  // Starts the upload process.
   upload() {
     return this.loader.file.then(
       (file) =>
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         new Promise((resolve, reject) => {
-          const formData = new FormData();
-          const config = {
-            headers: {
-              "content-type": "application/x-www-form-urlencoded",
-              accept: "multipart/form-data",
-            },
-          };
+          this._initRequest();
+          this._initListeners(resolve, reject, file);
 
+          const formData = new FormData();
           formData.append("images", file, file.name);
 
           axios({
             method: "POST",
             url: this.url,
             data: formData,
-            ...config,
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           }).then((response) => {
             resolve({ 360: response.data });
           });
@@ -38,33 +31,28 @@ export default class UploadAdapter {
     );
   }
 
-  // Aborts the upload process.
   abort() {
     if (this.xhr) {
       this.xhr.abort();
     }
   }
 
-  // Initializes the XMLHttpRequest object using the URL passed to the constructor.
   _initRequest() {
     const xhr = (this.xhr = new XMLHttpRequest());
-    xhr.open("POST", this.url, true);
-    debugger;
-    xhr.setRequestHeader("Authorization", `Bearer ${localStorage.getItem("token")}`);
-    xhr.setRequestHeader("Content-Type", `multipart/form-data`);
 
+    xhr.open("POST", this.url, true);
+    xhr.setRequestHeader("Authorization", `Bearer ${localStorage.getItem("token")}`);
+    xhr.setRequestHeader("Content-Type", "multipart/form-data");
     xhr.responseType = "json";
   }
 
-  // Initializes XMLHttpRequest listeners.
   _initListeners(resolve, reject, file) {
     const { xhr } = this;
     const { loader } = this;
     const genericErrorText = `Couldn't upload file: ${file.name}.`;
 
-    //
-    // xhr.addEventListener( 'error', () => reject( genericErrorText ) );
-    // xhr.addEventListener( 'abort', () => reject() );
+    xhr.addEventListener("error", () => reject(genericErrorText));
+    xhr.addEventListener("abort", () => reject());
     xhr.addEventListener("load", () => {
       const { response } = xhr;
 
@@ -85,16 +73,5 @@ export default class UploadAdapter {
         }
       });
     }
-  }
-
-  // Prepares the data and sends the request.
-  _sendRequest(file) {
-    // Prepare the form data.
-    const data = new FormData();
-
-    data.append("media", file);
-
-    // Send the request.
-    this.xhr.send(data);
   }
 }
