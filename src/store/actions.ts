@@ -181,6 +181,15 @@ const actions = {
   async updateGroupErrorsById({ dispatch }: ActionContext<State, State>, groupError: GroupError): Promise<void> {
     await axios.put(`${process.env.VUE_APP_URL}/error/update-group-error/${groupError.id}`, groupError);
   },
+
+  async deleteGroupError(
+    { commit }: ActionContext<State, State>,
+    { groupId, errorId }: { groupId: string; errorId: string }
+  ): Promise<void> {
+    const data = await axios.patch(`${process.env.VUE_APP_URL_LOCAL}/error/delete-error-from-group/${groupId}`, {
+      id: errorId,
+    });
+  },
 };
 
 export default actions;
