@@ -132,7 +132,7 @@ const actions = {
     commit("stopLoading");
   },
 
-  async addGroupToAnyUser(
+  async addMemberToGroup(
     { dispatch, commit }: ActionContext<State, State>,
     { userId, groupId }: { userId: string; groupId: string }
   ): Promise<void> {
