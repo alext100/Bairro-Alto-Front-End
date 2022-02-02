@@ -8,7 +8,7 @@ const state = {
   userGroups: [],
   currentGroup: {},
   loadedUsersFromGroup: [],
-  currentStudentErrors: [],
+  groupErrors: [],
   allUsers: [],
   isRegistered: false,
   isWrongEmailOnRegister: false,

@@ -1,54 +1,174 @@
 <template>
-  <div class="container">
-    <h2 class="m-3">Заметки {{ loadedOneUserById.firstName }}:</h2>
-    <ul class="list-group-item-success reverseorder">
-      <li v-for="error in currentStudentErrors || []" :key="error" class="container__list items-list">
-        <b-card>
-          <div class="mt-3">
-            <b-card-group deck>
-              <b-card bg-variant="light" :header="new Date(error.date).toLocaleString()" class="text-center">
-                <b-card-sub-title><strong>Tipo:</strong> {{ error.errorType }}</b-card-sub-title>
-                <b-card-text><strong>Entrada: </strong>{{ error.errorMessage }}</b-card-text>
-                <b-card-text><strong>Comentario:</strong> {{ error.errorComment }}</b-card-text>
-                <b-button @click="handleDeleteError(error.id)"><em class="far fa-trash-alt"></em></b-button>
-              </b-card>
-            </b-card-group>
-          </div>
-        </b-card>
-      </li>
-    </ul>
+  <div style="height: 100%">
+    <div class="button-container">
+      <button v-if="rowIsSelected" v-on:click="onBtDelete()" class="btn btn-danger m-1">Удалить</button>
+    </div>
+    <div style="height: 100%; box-sizing: border-box">
+      <ag-grid-vue
+        class="ag-theme-alpine"
+        :columnDefs="columnDefs"
+        :defaultColDef="defaultColDef"
+        :rowData="rowData"
+        :pagination="true"
+        paginationAutoPageSize="true"
+        @cell-value-changed="onCellValueChanged"
+        @grid-ready="onGridReady"
+        :animateRows="true"
+        :editType="editType"
+        :getRowNodeId="getRowNodeId"
+        :rowSelection="rowSelection"
+        @row-selected="onRowSelected"
+      >
+        <!--
+          :enableCellChangeFlash="true"
+          :suppressAggAtRootLevel="true"
+        :suppressRowClickSelection="true" -->
+        ></ag-grid-vue
+      >
+    </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { mapActions, mapState } from "vuex";
+<script>
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import { AgGridVue } from "ag-grid-vue3";
+import { computed, defineComponent } from "vue";
+import { mapActions, mapState, useStore } from "vuex";
+
+function dateFormatter(params) {
+  return new Date(params.value).toLocaleString();
+}
 
 export default defineComponent({
   name: "StudentErrors",
-  computed: {
-    ...mapState(["currentStudentErrors", "loadedOneUserById"]),
+  components: {
+    AgGridVue,
   },
-  methods: {
-    ...mapActions(["getUserErrorsById", "getOneUserById", "deleteErrorFromUser"]),
-    async handleDeleteError(userErrorId: string) {
-      await this.deleteErrorFromUser({ userId: this.$route.params.id, userErrorId });
-    },
+
+  setup() {
+    const store = useStore();
+
+    return {
+      editType: "",
+      rowSelection: null,
+      gridApi: null,
+      columnApi: null,
+      columnDefs: [
+        {
+          field: "errorType",
+          cellEditor: "agSelectCellEditor",
+          cellEditorParams: {
+            values: ["Новое слово", "Ошибка", "Произношение", "Другое"],
+          },
+          filter: false,
+          editable: true,
+          maxWidth: 200,
+          resizable: false,
+          icons: {
+            sortAscending: '<i class="fa fa-sort-alpha-up"/>',
+            sortDescending: '<i class="fa fa-sort-alpha-down"/>',
+          },
+        },
+        { field: "errorMessage", editable: true, autoHeight: true, wrapText: true },
+        { field: "errorComment", editable: true, autoHeight: true, wrapText: true },
+        {
+          field: "date",
+          editable: false,
+          filter: false,
+          width: 40,
+          valueFormatter: dateFormatter,
+          sort: "desc",
+        },
+        {
+          field: "",
+          checkboxSelection: true,
+          headerCheckboxSelection: true,
+          width: 30,
+          minWidth: 20,
+          maxWidth: 60,
+          sortable: false,
+          filter: false,
+          editable: false,
+        },
+      ],
+      rowData: computed(() => store.state.groupErrors),
+      defaultColDef: {
+        width: 400,
+        minWidth: 200,
+        maxWidth: 600,
+        floatingFilter: true,
+        sortable: true,
+        resizable: true,
+        flex: 1,
+        filter: true,
+        suppressSizeToFit: true,
+        enableCellChangeFlash: true,
+      },
+    };
+  },
+
+  data() {
+    return { rowIsSelected: false };
+  },
+  computed: {
+    ...mapState(["groupErrors"]),
   },
   mounted() {
-    this.getUserErrorsById(this.$route.params.id);
-    this.getOneUserById(this.$route.params.id);
+    this.getGroupErrorsById(this.$route.params.id);
+  },
+  created() {
+    this.editType = "fullRow";
+    this.rowSelection = "multiple";
+  },
+
+  methods: {
+    ...mapActions(["getGroupErrorsById", "updateGroupErrorsById", "deleteGroupError"]),
+    async onCellValueChanged(event) {
+      await this.updateGroupErrorsById(event.data);
+      await this.getGroupErrorsById(this.$route.params.id);
+    },
+
+    async onBtDelete() {
+      const api = this.gridApi;
+      const selectedRows = api.getSelectedRows();
+
+      if (!selectedRows || selectedRows.length === 0) {
+        console.error("No rows selected!");
+        return;
+      }
+      await selectedRows.forEach((row) => {
+        const errorId = row.id;
+        const groupId = this.$route.params.id;
+        this.deleteGroupError({ groupId, errorId });
+      });
+      api.applyTransaction({ remove: selectedRows });
+    },
+
+    onGridReady(params) {
+      this.gridApi = params.api;
+      this.gridColumnApi = params.columnApi;
+    },
+
+    getRowNodeId(data) {
+      return data.id;
+    },
+    onRowSelected(event) {
+      this.rowIsSelected = event.node.isSelected();
+    },
   },
 });
 </script>
 
-<style scoped>
-.reverseorder {
-  display: flex;
-  flex-direction: column-reverse;
+<style lang="scss">
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-alpine.css";
+.ag-theme-alpine {
+  width: 100%;
+  height: 800px;
+  justify-content: center;
 }
-
-.items-list {
-  list-style: none;
+.button-container {
+  min-height: 60px;
 }
 </style>
