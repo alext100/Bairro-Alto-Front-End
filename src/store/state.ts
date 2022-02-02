@@ -28,6 +28,9 @@ const state = {
     groups: [],
     image: "",
     homeworkToCheck: [],
+    teacherGroups: [],
+    studentGroups: [],
+    info: [],
   },
 };
 
