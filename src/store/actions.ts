@@ -177,6 +177,10 @@ const actions = {
     const { data } = await axios.get(`${process.env.VUE_APP_URL}/error/get-all-group-errors/${groupId}`);
     commit("addGroupError", data.groupErrors);
   },
+
+  async updateGroupErrorsById({ dispatch }: ActionContext<State, State>, groupError: GroupError): Promise<void> {
+    await axios.put(`${process.env.VUE_APP_URL}/error/update-group-error/${groupError.id}`, groupError);
+  },
 };
 
 export default actions;
