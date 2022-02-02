@@ -1,16 +1,19 @@
-import { Group, State, UserLoggedIn, UserLoginData, UserModel } from "@/types/interfaces";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Group, GroupError, State, UserLoggedIn, UserLoginData, UserModel } from "@/types/interfaces";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { ActionContext } from "vuex";
 import state from "./state";
 
 const actions = {
-  async login({ dispatch }: ActionContext<State, State>, userData: UserLoginData): Promise<void> {
+  async login({ dispatch, commit }: ActionContext<State, State>, userData: UserLoginData): Promise<void> {
+    commit("startLoading");
     const response = await axios.post(process.env.VUE_APP_LOGIN_URL, userData);
     const { token } = response.data;
     const user = jwtDecode(token);
     dispatch("userLogedFromApi", { user, token });
     localStorage.setItem("userData", JSON.stringify({ token }));
+    commit("stopLoading");
   },
 
   async userLogedFromApi(
@@ -37,7 +40,6 @@ const actions = {
         teacherAccess: data.teacherAccess,
         studentAccess: data.studentAccess,
         groups: data.groups,
-        studentErrors: data.studentErrors,
         homeworkToCheck: data.homeworkToCheck,
       })
     );
@@ -160,6 +162,15 @@ const actions = {
       await axios.patch(`${process.env.VUE_APP_URL}/group/delete-group-member/${userId}`, { id: groupId });
       dispatch("getGroupById", groupId);
     }
+  },
+
+  async addErrorToGroup(
+    { dispatch }: ActionContext<State, State>,
+    { groupId, groupError }: { groupId: string; groupError: GroupError }
+  ): Promise<void> {
+    await axios.patch(`${process.env.VUE_APP_URL}/error/add-error-to-group/${groupId}`, { ...groupError });
+    dispatch("getGroupById", groupId);
+    dispatch("getGroupErrorsById", groupId);
   },
 };
 
