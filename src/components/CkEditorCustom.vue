@@ -66,9 +66,10 @@ import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline";
 import WordCount from "@ckeditor/ckeditor5-word-count/src/wordcount";
 import state from "@/store/state";
 import { mapActions, mapState } from "vuex";
+import { defineComponent } from "vue";
 import UploadAdapter from "../utils/uploadAdapter";
 
-export default {
+export default defineComponent({
   name: "CkEditor",
 
   data() {
@@ -230,10 +231,10 @@ export default {
       this.iframelyOembedConvert();
     }, 900);
   },
-};
+});
 </script>
 
-<style scoped>
+<style>
 button.input-form--submit-button {
   width: 150px;
   background-color: #fd8904;
