@@ -2,9 +2,9 @@
   <div class="container">
     <b-card class="mb-1 card-description" border-variant="white">
       <b-card-text>
-        Durante la clase online, puedes tomar notas rápidas. Por ejemplo, una palabra o frase en la que el alumno
-        cometió un error. O vocabulario nuevo. O un error de pronunciación. Después de la lección, puedes editar las
-        notas y después de presionar el botón confirmar, el estudiante verá este informe en su cuenta personal.
+        В течении урока на этой странице можно делать быстрые заметки. Например новое слово, ошибка ученика, ошибка в
+        произношении или вне категории. После занятия заметки можно отредактировать и студенты группы смогут их увидеть
+        в своих личных кабинетах.
       </b-card-text>
     </b-card>
 
@@ -12,7 +12,7 @@
       <b-card class="mb-1">
         <b-form-group
           label-cols-lg="3"
-          label="Apunte para el alumno:"
+          label="Заметка для группы:"
           label-size="lg"
           label-class="fw-bold pt-0"
           class="mb-0"
@@ -27,34 +27,34 @@
             <div>
               <b-form-group
                 id="mensaje"
-                description="El error del alumno aquí, por favor"
-                label="El mensaje para el alumno"
+                description=""
+                label="Сообщение"
                 label-for="input-mensaje"
-                valid-feedback="¡Gracias!"
+                valid-feedback="Спасибо!"
                 floating
               >
                 <b-form-input
                   id="input-mensaje"
                   v-model="message"
                   trim
-                  placeholder="Entra el mensaje, por favor!"
+                  placeholder="Пожалуйста введите сообщение!"
                 ></b-form-input>
               </b-form-group>
             </div>
             <div>
               <b-form-group
                 id="errorComment"
-                description="Frase o palabra correcta aquí, por favor"
-                label="Correcto sería:"
+                description=""
+                label="Правильно было бы:"
                 label-for="input-errorComment"
-                valid-feedback="Thank you!"
+                valid-feedback="Спасибо!"
                 floating
               >
                 <b-form-input
                   id="input-errorComment"
                   v-model="errorComment"
                   trim
-                  placeholder="Entra la frase correcta, por favor!"
+                  placeholder="Пожалуйста, напишите правильную фразу или слово!"
                 ></b-form-input>
               </b-form-group>
             </div>
@@ -62,9 +62,9 @@
         </b-form-group>
         <b-form-group
           label-class="fw-bold pt-0"
-          class="mb-0"
+          class="mb-0 text-nowrap"
           label-size="lg"
-          label="Tipo de error:"
+          label="Тип ошибки:"
           label-cols-sm="3"
           label-align-sm="start"
           v-slot="{ ariaDescribedby }"
@@ -73,15 +73,22 @@
             buttons
             button-variant="outline-secondary"
             size="md"
-            class="pt-2"
+            class="pt-3 flex-wrap justify-content-around"
             v-model="mixedGroupedSelected"
             :options="mixedGroupedOptions"
             :aria-describedby="ariaDescribedby"
           ></b-form-radio-group>
+          <p v-if="noType" class="no-error-type-alert m-1">Выберите тип заметки</p>
         </b-form-group>
       </b-card>
-      <b-button :disabled="isDisabled" @click="handleMakeMessageWithError" type="submit" pill
-        >{{ isDisabled ? "Ingrese algo" : "Enviar" }} {{ !isDisabled ? mixedGroupedSelected : "" }}</b-button
+      <b-button
+        :disabled="isDisabled"
+        @click="handleMakeMessageWithError"
+        type="submit"
+        class="mt-3 mb-3 input-form--submit-button"
+        pill
+        >{{ isDisabled ? "Сообщение должно быть больше 4 символов" : "Отправить" }}
+        {{ !isDisabled ? mixedGroupedSelected : "" }}</b-button
       >
     </div>
   </div>
@@ -91,16 +98,17 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { mapActions, mapState } from "vuex";
-import StudentErrorsVue from "../components/StudentErrors.vue";
+
+import StudentErrorsVue from "@/components/StudentErrors.vue";
 
 export default defineComponent({
   setup() {
     const mixedGroupedSelected = ref();
     const mixedGroupedOptions = [
-      { text: "Nueva palabra", value: "Nueva palabra" },
-      { text: "Fallo", value: "Fallo" },
-      { text: "Pronunciación", value: "Pronunciación" },
-      { text: "Otro", value: "Otro" },
+      { text: "Новое слово", value: "Новое слово" },
+      { text: "Ошибка", value: "Ошибка" },
+      { text: "Произношение", value: "Произношение" },
+      { text: "Другое", value: "Другое" },
     ];
     return {
       mixedGroupedOptions,
@@ -114,17 +122,18 @@ export default defineComponent({
   data() {
     return {
       isDisabled: true,
+      noType: false,
       message: "",
       errorComment: "",
     };
   },
 
   computed: {
-    ...mapState(["currentStudentErrors"]),
+    ...mapState(["groupErrors", "currentGroup"]),
   },
 
   methods: {
-    ...mapActions(["addErrorToUser", "getUserErrorsById"]),
+    ...mapActions(["addErrorToGroup"]),
     checkForm() {
       if (this.message.length > 4) {
         this.isDisabled = false;
@@ -133,21 +142,23 @@ export default defineComponent({
       }
     },
     async handleMakeMessageWithError() {
-      if (this.message !== "") {
-        const userError = {
+      this.noType = true;
+      if (this.message !== "" && this.mixedGroupedSelected !== undefined) {
+        const groupError = {
           errorMessage: this.message,
           errorComment: this.errorComment,
           errorType: this.mixedGroupedSelected,
           date: new Date(),
         };
-        await this.addErrorToUser({ userId: this.$route.params.id, userError });
+        await this.addErrorToGroup({ groupId: this.$route.params.id, groupError });
+        this.noType = false;
         this.message = "";
         this.errorComment = "";
       }
+      if (this.mixedGroupedSelected === undefined) {
+        this.noType = true;
+      }
     },
-  },
-  mounted() {
-    this.getUserErrorsById(this.$route.params.id);
   },
 });
 </script>
@@ -157,5 +168,23 @@ export default defineComponent({
   font-size: 20px;
   font-family: "Tenor-sans", sans-serif;
   text-align: justify;
+}
+.input-form--submit-button {
+  width: 100%;
+}
+
+.no-error-type-alert {
+  color: var(--error-color);
+  font-size: larger;
+  animation: fade-in 2s;
+  position: absolute;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>
