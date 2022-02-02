@@ -31,9 +31,9 @@ export default defineComponent({
     ...mapState(["allUsers"]),
   },
   methods: {
-    ...mapActions(["addGroupToAnyUser", "getAllUsersFromApi"]),
+    ...mapActions(["addMemberToGroup", "getAllUsersFromApi"]),
     async handleAddUserToGroup(userId: string) {
-      this.addGroupToAnyUser({ groupId: this.$route.params.id, userId });
+      this.addMemberToGroup({ groupId: this.$route.params.id, userId });
     },
   },
 

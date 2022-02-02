@@ -1,3 +1,6 @@
+interface InfoModel {
+  templateInfo: Array<string>;
+}
 interface UserModel {
   id: string;
   email: string;
@@ -10,6 +13,9 @@ interface UserModel {
   groups: Array<string>;
   image: string;
   homeworkToCheck: Array<string>;
+  teacherGroups: Array<string>;
+  studentGroups: Array<string>;
+  info?: Array<InfoModel>;
 }
 
 interface UserLoggedIn {
@@ -53,6 +59,8 @@ interface Group {
   homeworkToDo: string;
   lessons: Array<string>;
   groupErrors: Array<string>;
+  teachers: Array<string>;
+  info?: Array<InfoModel>;
 }
 
 interface HomeworkToCheck {
@@ -62,6 +70,7 @@ interface HomeworkToCheck {
   video?: Array<string>;
   image?: Array<string>;
   date?: string;
+  info?: Array<string>;
 }
 
 interface Lesson {
@@ -74,6 +83,7 @@ interface Lesson {
   audios?: Array<string>;
   text: string;
   date?: string;
+  info?: Array<InfoModel>;
 }
 
 interface GroupError {
@@ -82,6 +92,7 @@ interface GroupError {
   errorComment: string;
   date?: string;
   id?: string;
+  info?: Array<InfoModel>;
 }
 
 interface State {
@@ -107,4 +118,15 @@ interface State {
   isLoading: boolean;
 }
 
-export { UserModel, UserRegisterData, UserLoggedIn, UserLoginData, State, GroupError, Lesson, HomeworkToCheck, Group };
+export {
+  UserModel,
+  UserRegisterData,
+  UserLoggedIn,
+  UserLoginData,
+  State,
+  GroupError,
+  Lesson,
+  HomeworkToCheck,
+  Group,
+  InfoModel,
+};

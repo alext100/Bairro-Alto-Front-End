@@ -80,9 +80,9 @@ export default defineComponent({
     ...mapState(["currentUser", "groups", "userGroups"]),
   },
   methods: {
-    ...mapActions(["getGroupsFromApi", "getUserGroupsFromApi", "addGroupToUser", "deleteUserGroup"]),
+    ...mapActions(["getGroupsFromApi", "getUserGroupsFromApi", "addGroupToTeacher", "deleteUserGroup"]),
     async handleAddToMyGroups(groupID: string) {
-      await this.addGroupToUser(groupID);
+      await this.addGroupToTeacher(groupID);
     },
     async handleDeleteGroupe(groupID: string) {
       await this.deleteUserGroup(groupID);
