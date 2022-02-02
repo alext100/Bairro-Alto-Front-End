@@ -68,6 +68,9 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
+  scrollBehavior(to, from, savedPosition) {
+    return savedPosition || { top: 0 };
+  },
   routes,
 });
 
