@@ -2,11 +2,12 @@
   <div class="container">
     <h1>Группа {{ currentGroup.groupName }}</h1>
 
-    <b-card>
-      <b-tabs active-nav-item-class="m-2 h-3 list-group-item-success" content-class="mt-3" justified>
-        <b-tab title="Сообщения группы" active><GroupInputMessageVue /> <MessagesVue /></b-tab>
+    <b-card no-body>
+      <b-tabs active-nav-item-class="h-3 list-group-item-success" content-class="mt-3" justified>
+        <b-tab title="Домашнее задание" active><GroupInputMessageVue /> <MessagesVue /></b-tab>
         <b-tab title="Студенты группы"><GroupMembersVue /></b-tab>
         <b-tab title="Добавить студента в группу"><AddUserVue /></b-tab>
+        <b-tab title="Онлайн-заметки"><OnlineLessonVue /></b-tab>
       </b-tabs>
     </b-card>
   </div>
@@ -19,6 +20,7 @@ import MessagesVue from "@/components/GroupMessages.vue";
 import GroupMembersVue from "@/components/GroupMembers.vue";
 import GroupInputMessageVue from "@/components/GroupInputMessage.vue";
 import AddUserVue from "@/components/GroupAddUser.vue";
+import OnlineLessonVue from "./OnlineLesson.vue";
 
 export default defineComponent({
   name: "GroupPage",
@@ -27,6 +29,7 @@ export default defineComponent({
     GroupMembersVue,
     GroupInputMessageVue,
     AddUserVue,
+    OnlineLessonVue,
   },
   computed: {
     ...mapState(["currentGroup", "loadedUsersFromGroup"]),
