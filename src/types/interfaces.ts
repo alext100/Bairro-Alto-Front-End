@@ -76,11 +76,12 @@ interface Lesson {
   date?: string;
 }
 
-interface StudentError {
+interface GroupError {
   errorType: string;
   errorMessage: string;
   errorComment: string;
   date?: string;
+  id?: string;
 }
 
 interface State {
@@ -98,7 +99,7 @@ interface State {
   userGroups: Array<Group>;
   currentGroup: Group;
   loadedUsersFromGroup: Array<UserModel>;
-  currentStudentErrors: Array<StudentError>;
+  groupErrors: Array<GroupError>;
   loadedOneUserById: UserModel;
   allUsers: Array<UserModel>;
   isRegistered: boolean;
@@ -106,14 +107,4 @@ interface State {
   isLoading: boolean;
 }
 
-export {
-  UserModel,
-  UserRegisterData,
-  UserLoggedIn,
-  UserLoginData,
-  State,
-  StudentError,
-  Lesson,
-  HomeworkToCheck,
-  Group,
-};
+export { UserModel, UserRegisterData, UserLoggedIn, UserLoginData, State, GroupError, Lesson, HomeworkToCheck, Group };
