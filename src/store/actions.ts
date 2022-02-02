@@ -39,7 +39,7 @@ const actions = {
         adminAccess: data.adminAccess,
         teacherAccess: data.teacherAccess,
         studentAccess: data.studentAccess,
-        groups: data.groups,
+        teacherGroups: data.teacherGroups,
         homeworkToCheck: data.homeworkToCheck,
       })
     );
@@ -80,10 +80,10 @@ const actions = {
       url: `${process.env.VUE_APP_URL}/user/get-all-user-groups`,
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
     });
-    commit("loadUserGroups", data.groups);
+    commit("loadUserGroups", data.teacherGroups);
   },
 
-  async addGroupToUser({ dispatch }: ActionContext<State, State>, groupId: string): Promise<void> {
+  async addGroupToTeacher({ dispatch }: ActionContext<State, State>, groupId: string): Promise<void> {
     const idOfGroup = (group: Group) => group.id === groupId;
     if (state.userGroups.find(idOfGroup) === undefined) {
       await axios({
@@ -174,8 +174,10 @@ const actions = {
   },
 
   async getGroupErrorsById({ commit }: ActionContext<State, State>, groupId: string): Promise<void> {
+    commit("startLoading");
     const { data } = await axios.get(`${process.env.VUE_APP_URL}/error/get-all-group-errors/${groupId}`);
     commit("addGroupError", data.groupErrors);
+    commit("stopLoading");
   },
 
   async updateGroupErrorsById({ dispatch }: ActionContext<State, State>, groupError: GroupError): Promise<void> {
@@ -186,7 +188,7 @@ const actions = {
     { commit }: ActionContext<State, State>,
     { groupId, errorId }: { groupId: string; errorId: string }
   ): Promise<void> {
-    const data = await axios.patch(`${process.env.VUE_APP_URL_LOCAL}/error/delete-error-from-group/${groupId}`, {
+    const data = await axios.patch(`${process.env.VUE_APP_URL}/error/delete-error-from-group/${groupId}`, {
       id: errorId,
     });
   },
