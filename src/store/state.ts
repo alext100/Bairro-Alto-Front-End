@@ -16,6 +16,8 @@ const state = {
   userId: "",
   token: "",
   refreshToken: "",
+  firstName: "",
+  lastName: "",
   user: {
     id: "",
     firstName: "",

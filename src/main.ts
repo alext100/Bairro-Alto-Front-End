@@ -8,6 +8,7 @@ import store from "./store";
 import "bootstrap/dist/css/bootstrap.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "boxicons/css/boxicons.min.css";
 
 createApp(App)
   .use(DKToast, {
