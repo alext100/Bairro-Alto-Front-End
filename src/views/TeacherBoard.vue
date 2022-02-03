@@ -1,4 +1,5 @@
 <template>
+  <SidebarMenu :menuItems="menuItems" :profileName="profileName" @click="handleLogout" :isExitButton="true" />
   <div class="container">
     <h1>Привет {{ currentUser.firstName }}!</h1>
     <b-card border-variant="light" class="m-4 teacher-card" style="min-width: 300px">
@@ -72,20 +73,35 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
+import SidebarMenu from "@/components/SidebarMenu.vue";
+import state from "@/store/state";
 
 export default defineComponent({
   name: "TeacherBoard",
+  components: { SidebarMenu },
 
   computed: {
     ...mapState(["currentUser", "groups", "userGroups"]),
   },
   methods: {
-    ...mapActions(["getGroupsFromApi", "getUserGroupsFromApi", "addGroupToTeacher", "deleteUserGroup"]),
+    ...mapActions([
+      "getGroupsFromApi",
+      "getUserGroupsFromApi",
+      "addGroupToTeacher",
+      "deleteUserGroup",
+      "deleteDataFromLocalStorage",
+    ]),
     async handleAddToMyGroups(groupID: string) {
       await this.addGroupToTeacher(groupID);
     },
     async handleDeleteGroupe(groupID: string) {
       await this.deleteUserGroup(groupID);
+    },
+    handleLogout(event: Event) {
+      if ((event.target as HTMLInputElement).classList.contains("profile__log_out")) {
+        this.deleteDataFromLocalStorage();
+        this.$router.push("/");
+      }
     },
   },
   mounted() {
@@ -95,6 +111,33 @@ export default defineComponent({
   data() {
     return {
       isHiddenFormToCreate: true,
+      profileName: state.currentUser.firstName,
+      menuItems: [
+        {
+          link: `/teacher`,
+          name: "Dashboard",
+          tooltip: "Dashboard",
+          icon: "bx-grid-alt",
+        },
+        {
+          link: `/teacher`,
+          name: "User",
+          tooltip: "User",
+          icon: "bx-user",
+        },
+        {
+          link: `/teacher`,
+          name: "Messages",
+          tooltip: "Messages",
+          icon: "bx-chat",
+        },
+        {
+          link: `/teacher`,
+          name: "Setting",
+          tooltip: "Setting",
+          icon: "bx-cog",
+        },
+      ],
     };
   },
 });
