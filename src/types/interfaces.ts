@@ -38,6 +38,8 @@ interface UserLoggedIn {
   teacherAccess: boolean;
   studentAccess: boolean;
   id: string;
+  firstName: string;
+  lastName: string;
 }
 
 interface UserLoginData {

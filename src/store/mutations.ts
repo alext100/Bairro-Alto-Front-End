@@ -45,6 +45,8 @@ const mutations = {
         image: "",
         homeworkToCheck: [],
       },
+      firstName: "",
+      lastName: "",
       token: "",
       refreshToken: "",
       adminAccess: false,
