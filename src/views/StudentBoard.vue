@@ -1,4 +1,5 @@
 <template>
+  <SidebarMenu />
   <div v-if="!isLoading" style="height: 100%">
     <div class="button-container"></div>
     <div style="height: 100%; box-sizing: border-box">
@@ -26,6 +27,7 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { AgGridVue } from "ag-grid-vue3";
 import { computed, defineComponent } from "vue";
 import { mapActions, mapState, useStore } from "vuex";
+import SidebarMenu from "@/components/SidebarMenu.vue";
 
 function dateFormatter(params) {
   return new Date(params.value).toLocaleDateString();
@@ -35,6 +37,7 @@ export default defineComponent({
   name: "StudentBoard",
   components: {
     AgGridVue,
+    SidebarMenu,
   },
 
   setup() {
