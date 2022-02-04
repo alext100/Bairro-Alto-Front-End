@@ -1,7 +1,7 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light header-navbar">
+  <nav class="navbar navbar-expand-xl navbar-light bg-light header-navbar">
     <div class="container-fluid">
-      <router-link to="/">
+      <router-link to="/" data-target=".navbar-collapse.show" data-toggle="collapse">
         <img class="logo-image" src="../../public/BA_VK_Template_1_1_logo_h50_1.webp" alt="logo" />
       </router-link>
       <button
@@ -17,10 +17,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-          <li class="nav-item">
+          <li class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
             <a class="nav-link" href="#">Мероприятия</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
             <a class="nav-link" href="#">Спецкурсы</a>
           </li>
           <li class="nav-item dropdown">
@@ -35,33 +35,56 @@
               Курсы
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="#">Хочу изучать с нуля в школе</a></li>
-              <li><a class="dropdown-item" href="#">Хочу изучать с нуля в онлайн</a></li>
-              <li><a class="dropdown-item" href="#">Хочу продолжить обучение в школе</a></li>
-              <li><a class="dropdown-item" href="#">Хочу продолжить обучение онлайн</a></li>
+              <li data-target=".navbar-collapse.show" data-toggle="collapse">
+                <a class="dropdown-item" href="#">Хочу изучать с нуля в школе</a>
+              </li>
+              <li data-target=".navbar-collapse.show" data-toggle="collapse">
+                <a class="dropdown-item" href="#">Хочу изучать с нуля в онлайн</a>
+              </li>
+              <li data-target=".navbar-collapse.show" data-toggle="collapse">
+                <a class="dropdown-item" href="#">Хочу продолжить обучение в школе</a>
+              </li>
+              <li data-target=".navbar-collapse.show" data-toggle="collapse">
+                <a class="dropdown-item" href="#">Хочу продолжить обучение онлайн</a>
+              </li>
             </ul>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
             <a class="nav-link" href="#">Материалы</a>
           </li>
 
-          <li v-if="!isUserAuthenticated" class="nav-item">
-            <router-link class="nav-link" to="/login">{{ "Войти" }}</router-link>
+          <li v-if="!isUserAuthenticated" class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
+            <router-link class="nav-link" to="/login">{{ "Войти" }} </router-link>
           </li>
 
-          <li v-if="currentUser.adminAccess" class="nav-item">
-            <router-link class="nav-link" to="/admin">{{ "Администраторская" }}</router-link>
+          <li
+            v-if="currentUser.adminAccess"
+            class="nav-item"
+            data-target=".navbar-collapse.show"
+            data-toggle="collapse"
+          >
+            <router-link class="nav-link" to="/admin">{{ "Администраторская" }} </router-link>
           </li>
-          <li v-if="currentUser.teacherAccess" class="nav-item">
+          <li
+            v-if="currentUser.teacherAccess"
+            class="nav-item"
+            data-target=".navbar-collapse.show"
+            data-toggle="collapse"
+          >
             <router-link class="nav-link" to="/teacher">{{ "Учительская" }}</router-link>
           </li>
-          <li v-if="currentUser.studentAccess" class="nav-item">
+          <li
+            v-if="currentUser.studentAccess"
+            class="nav-item"
+            data-target=".navbar-collapse.show"
+            data-toggle="collapse"
+          >
             <router-link class="nav-link" :to="{ name: 'StudentBoard', params: { id: currentUser.id } }">{{
               "Мойкабинет"
             }}</router-link>
           </li>
 
-          <li v-if="isUserAuthenticated" class="nav-item">
+          <li v-if="isUserAuthenticated" class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
             <router-link class="nav-link" to="/"
               ><button class="logout-button" @click="handleLogout()" data-test="logout">Выйти</button></router-link
             >
