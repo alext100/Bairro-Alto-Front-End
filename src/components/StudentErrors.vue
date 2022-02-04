@@ -68,6 +68,7 @@ export default defineComponent({
         },
         {
           field: "errorType",
+          headerName: "Тип ошибки",
           cellEditor: "agSelectCellEditor",
           cellEditorParams: {
             values: ["Новое слово", "Ошибка", "Произношение", "Другое"],
@@ -82,10 +83,11 @@ export default defineComponent({
             sortDescending: '<i class="fa fa-sort-alpha-down"/>',
           },
         },
-        { field: "errorMessage", editable: true, autoHeight: true, wrapText: true },
-        { field: "errorComment", editable: true, autoHeight: true, wrapText: true },
+        { field: "errorMessage", headerName: "Заметка", editable: true, autoHeight: true, wrapText: true },
+        { field: "errorComment", headerName: "Правильный вариант", editable: true, autoHeight: true, wrapText: true },
         {
           field: "date",
+          headerName: "Дата",
           editable: false,
           filter: false,
           minWidth: 50,
@@ -162,7 +164,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-alpine.css";
 .ag-theme-alpine {

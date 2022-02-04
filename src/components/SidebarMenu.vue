@@ -246,12 +246,12 @@ export default {
       this.$emit("click", event);
     },
   },
-  watch: {
+  /*   watch: {
     isOpened() {
       window.document.body.style.paddingLeft =
         this.isOpened && this.isPaddingLeft ? this.menuOpenedPaddingLeftBody : this.menuClosedPaddingLeftBody;
     },
-  },
+  }, */
 };
 </script>
 
@@ -283,7 +283,8 @@ body {
   transition: all 0.5s ease;
 }
 .sidebar.open {
-  width: 250px;
+  width: 200px;
+  opacity: 0.8;
 }
 .sidebar__logo-details {
   margin: 6px 0 0 0;
@@ -450,7 +451,7 @@ body {
   overflow: hidden;
 }
 .sidebar.open div.profile {
-  width: 250px;
+  width: 200px;
 }
 .sidebar div .profile__details {
   display: flex;
