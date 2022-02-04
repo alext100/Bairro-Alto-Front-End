@@ -1,7 +1,7 @@
 <template>
   <SidebarMenu :menuItems="menuItems" :profileName="profileName" @click="handleLogout" :isExitButton="true" />
   <div class="container">
-    <h1>Привет {{ currentUser.firstName }}!</h1>
+    <!-- <h1>Привет {{ currentUser.firstName }}!</h1> -->
     <b-card border-variant="light" class="m-4 teacher-card" style="min-width: 300px">
       <b-card-text
         >В этом разделе можно найти все группы школы и добавить группы в твой список или удалить их оттуда. Перейдя в
@@ -115,26 +115,22 @@ export default defineComponent({
       menuItems: [
         {
           link: `/teacher`,
-          name: "Dashboard",
-          tooltip: "Dashboard",
+          name: "Мои группы",
           icon: "bx-grid-alt",
         },
         {
-          link: `/teacher`,
-          name: "User",
-          tooltip: "User",
-          icon: "bx-user",
+          link: `/create-group`,
+          name: "Создать группу",
+          icon: "bx-add-to-queue",
         },
         {
           link: `/teacher`,
           name: "Messages",
-          tooltip: "Messages",
           icon: "bx-chat",
         },
         {
           link: `/teacher`,
-          name: "Setting",
-          tooltip: "Setting",
+          name: "Settings",
           icon: "bx-cog",
         },
       ],
