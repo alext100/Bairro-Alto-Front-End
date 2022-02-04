@@ -9,7 +9,7 @@
         <b-tab title="Домашнее задание" active><GroupInputMessageVue /> <MessagesVue /></b-tab>
         <b-tab title="Студенты группы"><GroupMembersVue /></b-tab>
         <b-tab title="Добавить студента в группу"><AddUserVue /></b-tab>
-        <b-tab title="Онлайн-заметки"><OnlineLessonVue /></b-tab>
+        <b-tab title="Онлайн-заметки"><OnlineLessonVue /> <StudentErrorsVue /></b-tab>
       </b-tabs>
     </b-card>
   </div>
@@ -22,6 +22,7 @@ import MessagesVue from "@/components/GroupMessages.vue";
 import GroupMembersVue from "@/components/GroupMembers.vue";
 import GroupInputMessageVue from "@/components/GroupInputMessage.vue";
 import AddUserVue from "@/components/GroupAddUser.vue";
+import StudentErrorsVue from "@/components/StudentErrors.vue";
 
 import OnlineLessonVue from "./OnlineLesson.vue";
 
@@ -33,6 +34,7 @@ export default defineComponent({
     GroupInputMessageVue,
     AddUserVue,
     OnlineLessonVue,
+    StudentErrorsVue,
   },
   computed: {
     ...mapState(["currentGroup", "loadedUsersFromGroup"]),

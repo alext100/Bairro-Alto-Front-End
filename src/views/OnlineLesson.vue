@@ -92,14 +92,11 @@
       >
     </div>
   </div>
-  <StudentErrorsVue />
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { mapActions, mapState } from "vuex";
-
-import StudentErrorsVue from "@/components/StudentErrors.vue";
 
 export default defineComponent({
   setup() {
@@ -116,9 +113,7 @@ export default defineComponent({
     };
   },
   name: "OnlineLesson",
-  components: {
-    StudentErrorsVue,
-  },
+  components: {},
   data() {
     return {
       isDisabled: true,
