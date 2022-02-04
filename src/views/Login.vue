@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Form @submit="handleLogin" :validation-schema="schema" @invalid-submit="onInvalidSubmit">
+    <Form @submit="handleLogin" :validation-schema="schema" @invalid-submit="onInvalidSubmit" @change="onChange">
       <TextInput
         :value="email"
         name="email"
@@ -37,7 +37,7 @@ import { Form } from "vee-validate";
 import * as Yup from "yup";
 import TextInput from "@/components/TextInput.vue";
 import { defineComponent } from "vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, useStore } from "vuex";
 import { UserLoginData } from "@/types/interfaces";
 import state from "@/store/state";
 
@@ -48,6 +48,7 @@ export default defineComponent({
     Form,
   },
   setup() {
+    const store = useStore();
     function onInvalidSubmit() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const submitBtn: any = document.querySelector(".submit-btn");
@@ -56,6 +57,10 @@ export default defineComponent({
         submitBtn.classList.remove("invalid");
       }, 1000);
     }
+
+    const onChange = () => {
+      store.state.isLoading = false;
+    };
 
     // Using yup to generate a validation schema
     // https://vee-validate.logaretm.com/v4/guide/validation#validation-schemas-with-yup
@@ -67,6 +72,7 @@ export default defineComponent({
     return {
       schema,
       onInvalidSubmit,
+      onChange,
     };
   },
 
