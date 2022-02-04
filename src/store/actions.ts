@@ -192,6 +192,11 @@ const actions = {
       id: errorId,
     });
   },
+
+  async createGroup({ dispatch }: ActionContext<State, State>, groupData: Group): Promise<void> {
+    const newGroup = await axios.post(`${process.env.VUE_APP_URL}/group/add`, groupData);
+    dispatch("getGroupsFromApi");
+  },
 };
 
 export default actions;
