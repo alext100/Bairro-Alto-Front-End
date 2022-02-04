@@ -10,6 +10,8 @@ const GroupPage = () => import(/* webpackChunkName: "teacher-board-chunk" */ "..
 const OnlineLesson = () => import(/* webpackChunkName: "teacher-board-chunk" */ "../views/OnlineLesson.vue");
 const StudentBoard = () => import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard.vue");
 
+const CreateGroup = () => import("@/views/CreateGroup.vue");
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -54,6 +56,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/online-lesson/:id",
     name: "OnlineLesson",
     component: OnlineLesson,
+    beforeEnter: teacherProtectedRoute,
+  },
+  {
+    path: "/create-group",
+    name: "CreateGroup",
+    component: CreateGroup,
     beforeEnter: teacherProtectedRoute,
   },
 ];
