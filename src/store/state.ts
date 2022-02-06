@@ -34,6 +34,7 @@ const state = {
     studentGroups: [],
     info: [],
   },
+  lastLoadedUser: {},
 };
 
 export default state as unknown as State;
