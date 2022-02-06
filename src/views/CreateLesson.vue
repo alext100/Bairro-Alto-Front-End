@@ -37,7 +37,7 @@
 <script>
 import UploadAdapter from "@/utils/uploadAdapter";
 import { defineComponent, ref } from "vue";
-import { mapActions, mapState } from "vuex";
+import { mapState } from "vuex";
 import CkEditor from "@/components/CkEditorCustom.vue";
 import state from "@/store/state";
 import SidebarMenu from "@/components/SidebarMenu.vue";
@@ -76,7 +76,7 @@ export default defineComponent({
     };
   },
   methods: {
-    ...mapActions(["createLesson"]),
+    /* ...mapActions(["createLesson"]), */
     ...mapState(["currentUser"]),
     onReady(editor) {
       editor.ui
