@@ -2,15 +2,17 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
 import Home from "@/views/Home.vue";
-import AdminBoard from "@/views/AdminBoard.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
+
+const AdminBoard = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard.vue");
 
 const TeacherBoard = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/TeacherBoard.vue");
 const GroupPage = () => import(/* webpackChunkName: "teacher-board-chunk" */ "../views/Group.vue");
 const OnlineLesson = () => import(/* webpackChunkName: "teacher-board-chunk" */ "../views/OnlineLesson.vue");
-const StudentBoard = () => import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard.vue");
+const CreateGroup = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/CreateGroup.vue");
+const CreateLesson = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/CreateLesson.vue");
 
-const CreateGroup = () => import("@/views/CreateGroup.vue");
+const StudentBoard = () => import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -59,9 +61,15 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: teacherProtectedRoute,
   },
   {
-    path: "/create-group",
+    path: "/teacher/create-group",
     name: "CreateGroup",
     component: CreateGroup,
+    beforeEnter: teacherProtectedRoute,
+  },
+  {
+    path: "/teacher/create-lesson",
+    name: "CreateLesson",
+    component: CreateLesson,
     beforeEnter: teacherProtectedRoute,
   },
 ];
