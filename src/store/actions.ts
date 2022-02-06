@@ -118,6 +118,7 @@ const actions = {
     commit("startLoading");
     const { data } = await axios.get(`${process.env.VUE_APP_URL}/user/get-one-by-id/${userId}`);
     commit("loadedUsersFromGroup", { ...data });
+    commit("lastLoadedUser", { ...data });
     commit("stopLoading");
   },
 
