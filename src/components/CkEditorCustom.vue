@@ -215,11 +215,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-button.input-form--submit-button {
-  width: 150px;
-  background-color: #fd8904;
-  color: white;
-}
-</style>
