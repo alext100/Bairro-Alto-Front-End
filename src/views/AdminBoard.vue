@@ -1,5 +1,5 @@
 <template>
-  <SidebarMenu :menuItems="menuItems" :profileName="profileName" @click="handleLogout" :isExitButton="true" />
+  <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
   <div class="container"></div>
 </template>
 
@@ -7,7 +7,6 @@
 import { defineComponent } from "vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import state from "@/store/state";
-import { mapActions } from "vuex";
 
 export default defineComponent({
   name: "AdminBoard",
@@ -24,16 +23,15 @@ export default defineComponent({
           icon: "bx-grid-alt",
         },
         {
+          link: `/admin/all-groups`,
+          name: "Все группы",
+          icon: "bx-group",
+        },
+        {
           link: `/admin`,
           name: "User",
           tooltip: "User",
           icon: "bx-user",
-        },
-        {
-          link: `/admin`,
-          name: "Messages",
-          tooltip: "Messages",
-          icon: "bx-chat",
         },
         {
           link: `/admin`,
@@ -45,14 +43,6 @@ export default defineComponent({
     };
   },
 
-  methods: {
-    ...mapActions(["deleteDataFromLocalStorage"]),
-    handleLogout(event: Event) {
-      if ((event.target as HTMLInputElement).classList.contains("profile__log_out")) {
-        this.deleteDataFromLocalStorage();
-        this.$router.push("/");
-      }
-    },
-  },
+  methods: {},
 });
 </script>
