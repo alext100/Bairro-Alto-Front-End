@@ -118,6 +118,7 @@ interface State {
   isRegistered: boolean;
   isWrongEmailOnRegister: boolean;
   isLoading: boolean;
+  lastLoadedUser: UserModel;
 }
 
 export {
