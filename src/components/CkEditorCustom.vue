@@ -1,13 +1,12 @@
 <template>
   <div id="app">
-    <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
-    <b-button v-if="!isLoading" class="input-form--submit-button mb-3 mt-1" @click="handleCKeditor" type="submit" pill
-      >Отправить</b-button
-    >
-    <button v-if="isLoading" class="btn input-form--submit-button submit-btn" type="submit" disabled>
-      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      Загружается...
-    </button>
+    <ckeditor
+      :editor="editor"
+      v-model="editorData"
+      :config="editorConfig"
+      @ready="onReady"
+      @focus="isFocused = true"
+    ></ckeditor>
   </div>
 </template>
 
@@ -64,172 +63,155 @@ import TextTransformation from "@ckeditor/ckeditor5-typing/src/texttransformatio
 import Title from "@ckeditor/ckeditor5-heading/src/title";
 import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline";
 import WordCount from "@ckeditor/ckeditor5-word-count/src/wordcount";
-import state from "@/store/state";
-import { mapActions, mapState } from "vuex";
-import { defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import UploadAdapter from "../utils/uploadAdapter";
 
 export default defineComponent({
   name: "CkEditor",
+  props: {
+    modelValue: { type: String, default: "" },
+  },
+  setup(props, { emit }) {
+    const editorData = computed({
+      get: () => props.modelValue,
+      set: (val) => {
+        emit("update:modelValue", val);
+      },
+    });
+    const isFocused = ref(false);
+
+    const onReady = (editor) => {
+      editor.ui
+        .getEditableElement()
+        .parentElement.insertBefore(editor.ui.view.toolbar.element, editor.ui.getEditableElement());
+    };
+
+    const uploader = (editor) => {
+      // eslint-disable-next-line no-param-reassign
+      editor.plugins.get("FileRepository").createUploadAdapter = (loader) => new UploadAdapter(loader);
+    };
+
+    const editorConfig = {
+      extraPlugins: [uploader],
+      removePlugins: ["MediaEmbedToolbar"],
+
+      mediaEmbed: {
+        previewsInData: true,
+      },
+
+      plugins: [
+        EssentialsPlugin,
+        BoldPlugin,
+        ItalicPlugin,
+        LinkPlugin,
+        ParagraphPlugin,
+        Alignment,
+        AutoImage,
+        AutoLink,
+        DataFilter,
+        DataSchema,
+        FindAndReplace,
+        FontBackgroundColor,
+        FontColor,
+        FontFamily,
+        FontSize,
+        GeneralHtmlSupport,
+        Heading,
+        Highlight,
+        HorizontalLine,
+        HtmlEmbed,
+        Image,
+        ImageCaption,
+        ImageResize,
+        ImageStyle,
+        ImageToolbar,
+        ImageUpload,
+        Indent,
+        List,
+        ListStyle,
+        MediaEmbed,
+        MediaEmbedToolbar,
+        PasteFromOffice,
+        RemoveFormat,
+        SourceEditing,
+        SpecialCharacters,
+        SpecialCharactersArrows,
+        SpecialCharactersCurrency,
+        SpecialCharactersLatin,
+        SpecialCharactersText,
+        StandardEditingMode,
+        Strikethrough,
+        Subscript,
+        Superscript,
+        Table,
+        TableCellProperties,
+        TableProperties,
+        TableToolbar,
+        TextTransformation,
+        Title,
+        Underline,
+        WordCount,
+      ],
+
+      toolbar: {
+        items: [
+          "heading",
+          "|",
+          "bold",
+          "italic",
+          "link",
+          "bulletedList",
+          "numberedList",
+          "|",
+          "imageUpload",
+          "mediaEmbed",
+          "|",
+          "outdent",
+          "indent",
+          "|",
+          "alignment",
+          "findAndReplace",
+          "|",
+          "fontBackgroundColor",
+          "fontColor",
+          "fontFamily",
+          "fontSize",
+          "highlight",
+          "|",
+          "underline",
+          "horizontalLine",
+          "htmlEmbed",
+          "removeFormat",
+          "sourceEditing",
+          "specialCharacters",
+          "|",
+          "insertTable",
+          "undo",
+          "redo",
+          "|",
+          "restrictedEditingException",
+          "subscript",
+          "superscript",
+          "strikethrough",
+        ],
+        shouldNotGroupWhenFull: true,
+      },
+      language: "pt",
+      image: {
+        toolbar: ["imageTextAlternative", "imageStyle:inline", "imageStyle:block", "imageStyle:side"],
+      },
+      table: {
+        contentToolbar: ["tableColumn", "tableRow", "mergeTableCells", "tableCellProperties", "tableProperties"],
+      },
+    };
+
+    return { editorData, editorConfig, isFocused, onReady };
+  },
 
   data() {
     return {
       editor: ClassicEditor,
-      editorData: "",
-      editorConfig: {
-        extraPlugins: [this.uploader],
-        removePlugins: ["MediaEmbedToolbar"],
-
-        mediaEmbed: {
-          previewsInData: true,
-        },
-
-        plugins: [
-          EssentialsPlugin,
-          BoldPlugin,
-          ItalicPlugin,
-          LinkPlugin,
-          ParagraphPlugin,
-          Alignment,
-          AutoImage,
-          AutoLink,
-          DataFilter,
-          DataSchema,
-          FindAndReplace,
-          FontBackgroundColor,
-          FontColor,
-          FontFamily,
-          FontSize,
-          GeneralHtmlSupport,
-          Heading,
-          Highlight,
-          HorizontalLine,
-          HtmlEmbed,
-          Image,
-          ImageCaption,
-          ImageResize,
-          ImageStyle,
-          ImageToolbar,
-          ImageUpload,
-          Indent,
-          List,
-          ListStyle,
-          MediaEmbed,
-          MediaEmbedToolbar,
-          PasteFromOffice,
-          RemoveFormat,
-          SourceEditing,
-          SpecialCharacters,
-          SpecialCharactersArrows,
-          SpecialCharactersCurrency,
-          SpecialCharactersLatin,
-          SpecialCharactersText,
-          StandardEditingMode,
-          Strikethrough,
-          Subscript,
-          Superscript,
-          Table,
-          TableCellProperties,
-          TableProperties,
-          TableToolbar,
-          TextTransformation,
-          Title,
-          Underline,
-          WordCount,
-        ],
-
-        toolbar: {
-          items: [
-            "heading",
-            "|",
-            "bold",
-            "italic",
-            "link",
-            "bulletedList",
-            "numberedList",
-            "|",
-            "imageUpload",
-            "mediaEmbed",
-            "|",
-            "outdent",
-            "indent",
-            "|",
-            "alignment",
-            "findAndReplace",
-            "|",
-            "fontBackgroundColor",
-            "fontColor",
-            "fontFamily",
-            "fontSize",
-            "highlight",
-            "|",
-            "underline",
-            "horizontalLine",
-            "htmlEmbed",
-            "removeFormat",
-            "sourceEditing",
-            "specialCharacters",
-            "|",
-            "insertTable",
-            "undo",
-            "redo",
-            "|",
-            "restrictedEditingException",
-            "subscript",
-            "superscript",
-            "strikethrough",
-          ],
-          shouldNotGroupWhenFull: true,
-        },
-        language: "pt",
-        image: {
-          toolbar: ["imageTextAlternative", "imageStyle:inline", "imageStyle:block", "imageStyle:side"],
-        },
-        table: {
-          contentToolbar: ["tableColumn", "tableRow", "mergeTableCells", "tableCellProperties", "tableProperties"],
-        },
-      },
     };
-  },
-  methods: {
-    ...mapActions(["updateGroup"]),
-    ...mapState(["currentGroup"]),
-
-    iframelyOembedConvert() {
-      document.querySelectorAll("oembed[url]").forEach((element) => {
-        // eslint-disable-next-line no-undef
-        iframely.load(element, element.attributes.url.value);
-      });
-    },
-
-    async handleCKeditor() {
-      const groupToUpdate = {
-        homeworkToDo: [...state.currentGroup.homeworkToDo, { message: this.editorData, time: new Date() }],
-        id: state.currentGroup.id,
-      };
-      if (this.editorData !== "") {
-        await this.updateGroup(groupToUpdate);
-        setTimeout(() => {
-          this.iframelyOembedConvert();
-        }, 900);
-      }
-      this.editorData = "";
-    },
-
-    async uploader(editor) {
-      // eslint-disable-next-line no-param-reassign
-      editor.plugins.get("FileRepository").createUploadAdapter = (loader) => new UploadAdapter(loader);
-    },
-  },
-
-  computed: {
-    ...mapState(["isLoading"]),
-  },
-
-  mounted() {
-    setTimeout(() => {
-      this.iframelyOembedConvert();
-    }, 900);
   },
 });
 </script>
