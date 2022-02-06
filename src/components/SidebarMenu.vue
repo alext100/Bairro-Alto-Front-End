@@ -48,13 +48,15 @@
             </div>
           </div>
         </div>
-        <i v-if="isExitButton" class="bx bx-log-out profile__log_out" @click="handleClick" />
+        <i v-if="isExitButton" class="bx bx-log-out profile__log_out" @click="handleLogout" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "SidebarMenu",
   props: {
@@ -93,51 +95,23 @@ export default {
       type: Array,
       default: () => [
         {
-          link: "#",
-          name: "Dashboard",
-          tooltip: "Dashboard",
+          link: `/teacher`,
+          name: "Мои группы",
           icon: "bx-grid-alt",
         },
         {
-          link: "#",
-          name: "User",
-          tooltip: "User",
-          icon: "bx-user",
+          link: `/teacher/create-group`,
+          name: "Создать группу",
+          icon: "bx-add-to-queue",
         },
         {
-          link: "#",
-          name: "Messages",
-          tooltip: "Messages",
-          icon: "bx-chat",
+          link: `/teacher/create-lesson`,
+          name: "Создать урок",
+          icon: "bx-laptop",
         },
         {
-          link: "#",
-          name: "Analytics",
-          tooltip: "Analytics",
-          icon: "bx-pie-chart-alt-2",
-        },
-        {
-          link: "#",
-          name: "File Manager",
-          tooltip: "Files",
-          icon: "bx-folder",
-        },
-        {
-          link: "#",
-          name: "Order",
-          tooltip: "Order",
-          icon: "bx-cart-alt",
-        },
-        {
-          link: "#",
-          name: "Saved",
-          tooltip: "Saved",
-          icon: "bx-heart",
-        },
-        {
-          link: "#",
-          name: "Setting",
-          tooltip: "Setting",
+          link: `/teacher`,
+          name: "Settings",
           icon: "bx-cog",
         },
       ],
@@ -242,8 +216,15 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["deleteDataFromLocalStorage"]),
     handleClick(event) {
       this.$emit("click", event);
+    },
+    handleLogout(event) {
+      if (event.target.classList.contains("profile__log_out")) {
+        this.deleteDataFromLocalStorage();
+        this.$router.push("/");
+      }
     },
   },
   /*   watch: {

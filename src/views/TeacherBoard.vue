@@ -1,5 +1,5 @@
 <template>
-  <SidebarMenu :menuItems="menuItems" :profileName="profileName" @click="handleLogout" :isExitButton="true" />
+  <SidebarMenu :profileName="profileName" :isExitButton="true" />
   <div class="container">
     <!-- <h1>Привет {{ currentUser.firstName }}!</h1> -->
     <b-card border-variant="light" class="m-4 teacher-card" style="min-width: 300px">
@@ -84,25 +84,19 @@ export default defineComponent({
     ...mapState(["currentUser", "groups", "userGroups"]),
   },
   methods: {
-    ...mapActions([
-      "getGroupsFromApi",
-      "getUserGroupsFromApi",
-      "addGroupToTeacher",
-      "deleteUserGroup",
-      "deleteDataFromLocalStorage",
-    ]),
+    ...mapActions(["getGroupsFromApi", "getUserGroupsFromApi", "addGroupToTeacher", "deleteUserGroup"]),
     async handleAddToMyGroups(groupID: string) {
       await this.addGroupToTeacher(groupID);
     },
     async handleDeleteGroupe(groupID: string) {
       await this.deleteUserGroup(groupID);
     },
-    handleLogout(event: Event) {
+    /*     handleLogout(event: Event) {
       if ((event.target as HTMLInputElement).classList.contains("profile__log_out")) {
         this.deleteDataFromLocalStorage();
         this.$router.push("/");
       }
-    },
+    }, */
   },
   mounted() {
     this.getGroupsFromApi();
@@ -112,28 +106,6 @@ export default defineComponent({
     return {
       isHiddenFormToCreate: true,
       profileName: state.currentUser.firstName,
-      menuItems: [
-        {
-          link: `/teacher`,
-          name: "Мои группы",
-          icon: "bx-grid-alt",
-        },
-        {
-          link: `/create-group`,
-          name: "Создать группу",
-          icon: "bx-add-to-queue",
-        },
-        {
-          link: `/teacher`,
-          name: "Messages",
-          icon: "bx-chat",
-        },
-        {
-          link: `/teacher`,
-          name: "Settings",
-          icon: "bx-cog",
-        },
-      ],
     };
   },
 });

@@ -1,5 +1,5 @@
 <template>
-  <SidebarMenu :menuItems="menuItems" :profileName="profileName" @click="handleLogout" :isExitButton="true" />
+  <SidebarMenu :profileName="profileName" :isExitButton="true" />
   <div class="container">
     <div class="container-sm login-form d-flex flex-column mt-5">
       <Form
@@ -70,39 +70,12 @@ export default defineComponent({
       isError: false,
       isHiddenFormToCreate: true,
       profileName: state.currentUser.firstName,
-      menuItems: [
-        {
-          link: `/teacher`,
-          name: "Мои группы",
-          icon: "bx-grid-alt",
-        },
-        {
-          link: `/create-group`,
-          name: "Создать группу",
-          icon: "bx-add-to-queue",
-        },
-        {
-          link: `/teacher`,
-          name: "Messages",
-          icon: "bx-chat",
-        },
-        {
-          link: `/teacher`,
-          name: "Settings",
-          icon: "bx-cog",
-        },
-      ],
     };
   },
 
   methods: {
-    ...mapActions(["deleteDataFromLocalStorage", "createGroup"]),
-    handleLogout(event: Event) {
-      if ((event.target as HTMLInputElement).classList.contains("profile__log_out")) {
-        this.deleteDataFromLocalStorage();
-        this.$router.push("/");
-      }
-    },
+    ...mapActions(["createGroup"]),
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async handleCreateGroup(values: Record<string, any>, actions: any) {
       const groupData = {
