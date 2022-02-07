@@ -1,4 +1,4 @@
-import { State, UserLoggedIn, UserRegisterData, Group, UserModel, GroupError } from "@/types/interfaces";
+import { State, UserLoggedIn, UserRegisterData, Group, UserModel, GroupError, Lesson } from "@/types/interfaces";
 
 const mutations = {
   loginUser(state: State, payload: UserLoggedIn) {
@@ -44,6 +44,8 @@ const mutations = {
         groups: [],
         image: "",
         homeworkToCheck: [],
+        studentGroups: [],
+        teacherGroups: [],
       },
       firstName: "",
       lastName: "",
@@ -52,6 +54,8 @@ const mutations = {
       adminAccess: false,
       teacherAccess: false,
       studentAccess: false,
+      studentGroups: [],
+      teacherGroups: [],
       id: "",
     };
   },
@@ -86,6 +90,14 @@ const mutations = {
 
   addGroupError(state: State, payload: Array<GroupError>) {
     state.groupErrors = payload;
+  },
+
+  loadLessons(state: State, payload: Array<Lesson>) {
+    state.lessons = payload;
+  },
+
+  pushNewLessonToLessons(state: State, payload: Lesson) {
+    state.lessons.push(payload);
   },
 };
 

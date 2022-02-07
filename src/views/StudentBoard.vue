@@ -1,6 +1,6 @@
 <template>
-  <SidebarMenu />
-  <div v-if="!isLoading" style="height: 100%">
+  <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
+  <div v-if="!isLoading" style="height: 100%" class="m-5">
     <div class="button-container"></div>
     <div style="height: 100%; box-sizing: border-box">
       <ag-grid-vue
@@ -48,9 +48,7 @@ export default defineComponent({
         {
           field: "errorType",
           headerName: "Тип ошибки",
-
           filter: false,
-
           maxWidth: 200,
           resizable: false,
           icons: {
@@ -58,7 +56,7 @@ export default defineComponent({
             sortDescending: '<i class="fa fa-sort-alpha-down"/>',
           },
         },
-        { field: "errorMessage", headerName: "Замечание", flex: 1, editable: true, autoHeight: true, wrapText: true },
+        { field: "errorMessage", headerName: "Замечание", flex: 1, editable: false, autoHeight: true, wrapText: true },
         {
           field: "errorComment",
           headerName: "Корректная форма",
@@ -92,28 +90,44 @@ export default defineComponent({
   },
 
   data() {
-    return {};
+    return {
+      profileName: state.currentUser.firstName,
+      menuItems: [
+        {
+          link: `/student/${state.currentUser.id}`,
+          name: "Dashboard",
+          tooltip: "Dashboard",
+          icon: "bx-grid-alt",
+        },
+        {
+          link: `/student/${state.currentUser.id}`,
+          name: "Все группы",
+          icon: "bx-group",
+        },
+        {
+          link: `/student/${state.currentUser.id}`,
+          name: "User",
+          tooltip: "User",
+          icon: "bx-user",
+        },
+        {
+          link: `/student/${state.currentUser.id}`,
+          name: "Settings",
+          tooltip: "Setting",
+          icon: "bx-cog",
+        },
+      ],
+    };
   },
   computed: {
-    ...mapState(["groupErrors", "isLoading"]),
+    ...mapState(["groupErrors", "isLoading", "currentUser"]),
   },
   async mounted() {
-    await this.getGroupsFromApi();
-    this.getGroupErrorsById(this.getCurrentStudentGroup());
+    await this.getGroupErrorsById(this.currentUser?.studentGroups[0]);
   },
 
   methods: {
-    ...mapActions(["getGroupsFromApi", "getGroupErrorsById"]),
-
-    getCurrentStudentGroup() {
-      const studentGroup = state.groups.find((group) => {
-        if (group.members.find((member) => member === this.$route.params.id)) {
-          return group.id;
-        }
-        return group.id;
-      });
-      return studentGroup.id;
-    },
+    ...mapActions(["getGroupErrorsById"]),
   },
 });
 </script>

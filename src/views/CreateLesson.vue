@@ -31,22 +31,25 @@
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Загружается...
     </button>
+    <Lessons />
   </div>
 </template>
 
 <script>
 import UploadAdapter from "@/utils/uploadAdapter";
 import { defineComponent, ref } from "vue";
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import CkEditor from "@/components/CkEditorCustom.vue";
 import state from "@/store/state";
 import SidebarMenu from "@/components/SidebarMenu.vue";
+import Lessons from "./Lessons.vue";
 
 export default defineComponent({
   name: "GroupInputMessage",
   components: {
     CkEditor,
     SidebarMenu,
+    Lessons,
   },
 
   setup() {
@@ -67,6 +70,9 @@ export default defineComponent({
 
   data() {
     return {
+      realTimeData: {
+        customers: 3,
+      },
       noType: false,
       editor: CkEditor,
       profileName: state.currentUser.firstName,
@@ -76,7 +82,7 @@ export default defineComponent({
     };
   },
   methods: {
-    /* ...mapActions(["createLesson"]), */
+    ...mapActions(["createLesson"]),
     ...mapState(["currentUser"]),
     onReady(editor) {
       editor.ui
@@ -91,18 +97,35 @@ export default defineComponent({
       });
     },
 
+    getTitleAndBody() {
+      const data = {
+        title: "",
+        body: "",
+      };
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(this.editorData, "text/html");
+      const title = doc.getElementsByTagName("h1")[0];
+      data.title = title.innerText;
+      doc.body.removeChild(title);
+      data.body = doc.body.innerHTML;
+      return data;
+    },
+
     async handleCKeditor() {
       this.noType = true;
+      const data = this.getTitleAndBody();
       if (this.editorData !== "" && this.mixedGroupedSelected !== undefined) {
         const lesson = {
+          title: data.title,
+          body: data.body,
           author: state.currentUser.id,
           level: this.mixedGroupedSelected,
-          text: this.editorData,
           date: new Date(),
         };
 
-        /*  await this.updateGroup(lesson); */
-        console.log("lesson: ", lesson);
+        await this.createLesson(lesson);
+        this.noType = false;
+        this.editorData = "";
         setTimeout(() => {
           this.iframelyOembedConvert();
         }, 900);
@@ -110,7 +133,6 @@ export default defineComponent({
       if (this.mixedGroupedSelected === undefined) {
         this.noType = true;
       }
-      this.editorData = "";
     },
 
     async uploader(editor) {

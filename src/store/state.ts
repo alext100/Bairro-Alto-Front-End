@@ -35,6 +35,7 @@ const state = {
     info: [],
   },
   lastLoadedUser: {},
+  lessons: [],
 };
 
 export default state as unknown as State;

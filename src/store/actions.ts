@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Group, GroupError, State, UserLoggedIn, UserLoginData, UserModel } from "@/types/interfaces";
+import { Group, GroupError, Lesson, State, UserLoggedIn, UserLoginData, UserModel } from "@/types/interfaces";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { ActionContext } from "vuex";
@@ -40,6 +40,7 @@ const actions = {
         teacherAccess: data.teacherAccess,
         studentAccess: data.studentAccess,
         teacherGroups: data.teacherGroups,
+        studentGroups: data.studentGroups,
         homeworkToCheck: data.homeworkToCheck,
       })
     );
@@ -197,6 +198,25 @@ const actions = {
   async createGroup({ dispatch }: ActionContext<State, State>, groupData: Group): Promise<void> {
     const newGroup = await axios.post(`${process.env.VUE_APP_URL}/group/add`, groupData);
     dispatch("getGroupsFromApi");
+  },
+
+  async createLesson({ commit }: ActionContext<State, State>, lesson: Lesson): Promise<void> {
+    const newLesson = await axios({
+      method: "POST",
+      url: `${process.env.VUE_APP_URL}/lesson/add`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: lesson,
+    });
+    commit("pushNewLessonToLessons", newLesson.data);
+  },
+
+  async getLessonsFromApi({ commit }: ActionContext<State, State>): Promise<void> {
+    const { data } = await axios({
+      method: "GET",
+      url: `${process.env.VUE_APP_URL}/lesson/get-all`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+    });
+    commit("loadLessons", data);
   },
 };
 

@@ -31,6 +31,8 @@ interface UserLoggedIn {
     groups: Array<string>;
     image: string;
     homeworkToCheck: Array<string>;
+    studentGroups: Array<string>;
+    teacherGroups: Array<string>;
   };
   token: string;
   refreshToken: string;
@@ -40,6 +42,8 @@ interface UserLoggedIn {
   id: string;
   firstName: string;
   lastName: string;
+  studentGroups: Array<string>;
+  teacherGroups: Array<string>;
 }
 
 interface UserLoginData {
@@ -77,13 +81,12 @@ interface HomeworkToCheck {
 
 interface Lesson {
   author: string;
-  lessonName: string;
+  title: string;
   lessonDescription?: string;
   level: string;
-  lessonImage?: string;
   videos?: Array<string>;
   audios?: Array<string>;
-  text: string;
+  body: string;
   date?: string;
   info?: Array<InfoModel>;
 }
@@ -119,6 +122,9 @@ interface State {
   isWrongEmailOnRegister: boolean;
   isLoading: boolean;
   lastLoadedUser: UserModel;
+  lessons: Array<Lesson>;
+  studentGroups: Array<string>;
+  teacherGroups: Array<string>;
 }
 
 export {
