@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-xl navbar-light bg-light header-navbar">
+  <nav class="navbar navbar-expand-xl navbar-light bg-light header-navbar ps-5">
     <div class="container-fluid">
       <router-link to="/" data-target=".navbar-collapse.show" data-toggle="collapse">
         <img class="logo-image" src="../../public/BA_VK_Template_1_1_logo_h50_1.webp" alt="logo" />
@@ -127,7 +127,7 @@ export default defineComponent({
 }
 .logout-button {
   padding-right: 0.5rem;
-  padding-left: 0.5rem;
+  padding-left: 0;
   background-color: transparent;
   border: transparent;
 }
