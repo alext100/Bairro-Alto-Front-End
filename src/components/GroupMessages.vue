@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container ck-content">
     <h2 class="mb-4">Сообщения группы:</h2>
     <ul v-if="!isLoading" class="list-group-item-success reverseorder">
       <li v-for="message in currentGroup.homeworkToDo || []" :key="message" class="container__list items-list">
