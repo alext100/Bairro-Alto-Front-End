@@ -99,6 +99,10 @@ const mutations = {
   pushNewLessonToLessons(state: State, payload: Lesson) {
     state.lessons.push(payload);
   },
+
+  deleteOneLessonFromLessons(state: State, payload: string) {
+    state.lessons = state.lessons.filter((lesson) => lesson.id !== payload);
+  },
 };
 
 export default mutations;
