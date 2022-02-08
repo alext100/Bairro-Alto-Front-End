@@ -89,6 +89,7 @@ interface Lesson {
   body: string;
   date?: string;
   info?: Array<InfoModel>;
+  id?: string;
 }
 
 interface GroupError {
