@@ -1,4 +1,5 @@
 <template>
+  <h2 class="mb-4 text-center">Уроки:</h2>
   <div class="row">
     <div class="col-xl-12 col-lg-12 cards-container ck-content">
       <full-card

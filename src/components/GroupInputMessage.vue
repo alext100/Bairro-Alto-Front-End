@@ -4,7 +4,7 @@
     <b-button v-if="!isLoading" class="input-form--submit-button mb-3 mt-1" @click="handleCKeditor" type="submit" pill
       >Отправить</b-button
     >
-    <button v-if="isLoading" class="btn input-form--submit-button submit-btn" type="submit" disabled>
+    <button v-if="isLoading" class="btn input-form__submit-button__spinner submit-btn" type="submit" disabled>
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Загружается...
     </button>
@@ -55,9 +55,24 @@ export default defineComponent({
       });
     },
 
+    getTitleAndBody() {
+      const data = {
+        title: "",
+        body: "",
+      };
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(this.editorData, "text/html");
+      const title = doc.getElementsByTagName("h1")[0];
+      data.title = title.innerText;
+      doc.body.removeChild(title);
+      data.body = doc.body.innerHTML;
+      return data;
+    },
+
     async handleCKeditor() {
+      const data = this.getTitleAndBody();
       const groupToUpdate = {
-        homeworkToDo: [...state.currentGroup.homeworkToDo, { message: this.editorData, time: new Date() }],
+        homeworkToDo: [...state.currentGroup.homeworkToDo, { title: data.title, message: data.body, time: new Date() }],
         id: state.currentGroup.id,
       };
       if (this.editorData !== "") {
@@ -85,3 +100,14 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+button.input-form__submit-button__spinner {
+  width: 200px;
+  background-color: #fd8904;
+  color: white;
+  border-radius: 24px;
+  border-color: black;
+  font-weight: bold;
+}
+</style>
