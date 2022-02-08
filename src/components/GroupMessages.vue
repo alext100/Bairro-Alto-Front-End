@@ -20,6 +20,8 @@
           <template v-slot:footer>
             <span class="text-nowrap text-muted footer"
               >Создано {{ new Date(homeworkToDo.time).toLocaleString() }}.<span class="font-weight-bold"></span
+              ><b-button pill class="button-edit btn-light" @click="handleEditMessage(homeworkToDo)"
+                ><em class="far fa-edit"></em> </b-button
               ><b-button
                 pill
                 class="button-delete align-self-center btn-light"
@@ -52,24 +54,26 @@ export default defineComponent({
   components: {
     FullCard,
   },
+  emits: ["updateMessage"],
   computed: {
-    ...mapState(["currentGroup", "isLoading"]),
+    ...mapState(["currentGroup", "isLoading", "lessons"]),
   },
 
   methods: {
     ...mapActions(["updateGroup", "getGroupById"]),
-    ...mapState([""]),
 
     async handleDeleteMessage(messageTime: string) {
-      console.log("homeworks: ", this.currentGroup.homeworkToDo);
       const groupToUpdate = {
         homeworkToDo: [
           ...this.currentGroup.homeworkToDo.filter((homework: HomeWorks) => homework.time !== messageTime),
         ],
         id: this.currentGroup.id,
       };
-
       await this.updateGroup(groupToUpdate);
+    },
+
+    handleEditMessage(homeworkToDo: HomeWorks) {
+      this.$emit("updateMessage", homeworkToDo);
     },
   },
 });
