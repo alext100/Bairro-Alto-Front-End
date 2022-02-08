@@ -63,6 +63,7 @@ export default defineComponent({
   position: absolute;
   font-size: 44px;
   right: calc(100% - 50px);
+  bottom: calc(100% - 50px);
 }
 
 .tooltiptext {
