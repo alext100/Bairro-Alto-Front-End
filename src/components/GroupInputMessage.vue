@@ -9,6 +9,7 @@
       Загружается...
     </button>
   </div>
+  <GroupMessages @updateMessage="handleUpdateMessage" />
 </template>
 
 <script>
@@ -17,11 +18,13 @@ import UploadAdapter from "@/utils/uploadAdapter";
 import { defineComponent, ref } from "vue";
 import { mapActions, mapState } from "vuex";
 import CkEditor from "./CkEditorCustom.vue";
+import GroupMessages from "./GroupMessages.vue";
 
 export default defineComponent({
   name: "GroupInputMessage",
   components: {
     CkEditor,
+    GroupMessages,
   },
 
   setup() {
@@ -82,6 +85,10 @@ export default defineComponent({
         }, 900);
       }
       this.editorData = "";
+    },
+
+    handleUpdateMessage(homeworkToDo) {
+      this.editorData = homeworkToDo.title + homeworkToDo.message;
     },
 
     async uploader(editor) {

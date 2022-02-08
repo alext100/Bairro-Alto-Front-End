@@ -201,6 +201,7 @@ const actions = {
   },
 
   async createLesson({ commit }: ActionContext<State, State>, lesson: Lesson): Promise<void> {
+    commit("startLoading");
     const newLesson = await axios({
       method: "POST",
       url: `${process.env.VUE_APP_URL}/lesson/add`,
@@ -208,15 +209,44 @@ const actions = {
       data: lesson,
     });
     commit("pushNewLessonToLessons", newLesson.data);
+    commit("stopLoading");
   },
 
   async getLessonsFromApi({ commit }: ActionContext<State, State>): Promise<void> {
+    commit("startLoading");
     const { data } = await axios({
       method: "GET",
       url: `${process.env.VUE_APP_URL}/lesson/get-all`,
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
     });
     commit("loadLessons", data);
+    commit("stopLoading");
+  },
+
+  async deleteLessonById({ commit }: ActionContext<State, State>, lessonId: string): Promise<void> {
+    commit("startLoading");
+    const data = await axios({
+      method: "DELETE",
+      url: `${process.env.VUE_APP_URL}/lesson/delete/${lessonId}`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+    });
+    commit("deleteOneLessonFromLessons", lessonId);
+    commit("stopLoading");
+  },
+
+  async updateLessonById(
+    { dispatch, commit }: ActionContext<State, State>,
+    { lessonId, lesson }: { lessonId: string; lesson: Lesson }
+  ): Promise<void> {
+    commit("startLoading");
+    await axios({
+      method: "PUT",
+      url: `${process.env.VUE_APP_URL}/lesson/update/${lessonId}`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: lesson,
+    });
+    dispatch("getLessonsFromApi");
+    commit("stopLoading");
   },
 };
 

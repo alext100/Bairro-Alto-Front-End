@@ -24,14 +24,19 @@
         <p v-if="noType" class="no-error-type-alert m-1">Выберите уровень урока</p>
       </b-form-group>
     </b-card>
-    <b-button v-if="!isLoading" class="input-form--submit-button mb-3 mt-1" @click="handleCKeditor" type="submit" pill
-      >Отправить</b-button
+    <b-button
+      v-if="!isLoading"
+      class="input-form--submit-button mb-3 mt-1"
+      @click="handleCKeditor"
+      type="submit"
+      pill
+      >{{ !isEdited || editorData === "" ? "Отправить" : "Отредактировать" }}</b-button
     >
     <button v-if="isLoading" class="btn input-form--submit-button submit-btn" type="submit" disabled>
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Загружается...
     </button>
-    <Lessons />
+    <Lessons @update-lesson="handleUpdate" />
   </div>
 </template>
 
@@ -79,10 +84,12 @@ export default defineComponent({
       data: {
         editorData: null,
       },
+      isEdited: false,
+      lessonId: "",
     };
   },
   methods: {
-    ...mapActions(["createLesson"]),
+    ...mapActions(["createLesson", "updateLessonById"]),
     ...mapState(["currentUser"]),
     onReady(editor) {
       editor.ui
@@ -114,7 +121,24 @@ export default defineComponent({
     async handleCKeditor() {
       this.noType = true;
       const data = this.getTitleAndBody();
-      if (this.editorData !== "" && this.mixedGroupedSelected !== undefined) {
+
+      if (this.isEdited || this.editorData !== "") {
+        const lesson = {
+          title: data.title,
+          body: data.body,
+          author: state.currentUser.id,
+          level: this.mixedGroupedSelected,
+          date: new Date(),
+        };
+        const { lessonId } = this;
+
+        await this.updateLessonById({ lessonId, lesson });
+        this.noType = false;
+        this.editorData = "";
+        setTimeout(() => {
+          this.iframelyOembedConvert();
+        }, 1100);
+      } else if (this.editorData !== "" && this.mixedGroupedSelected !== undefined) {
         const lesson = {
           title: data.title,
           body: data.body,
@@ -128,7 +152,7 @@ export default defineComponent({
         this.editorData = "";
         setTimeout(() => {
           this.iframelyOembedConvert();
-        }, 900);
+        }, 1100);
       }
       if (this.mixedGroupedSelected === undefined) {
         this.noType = true;
@@ -139,6 +163,12 @@ export default defineComponent({
       // eslint-disable-next-line no-param-reassign
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => new UploadAdapter(loader);
     },
+
+    handleUpdate(lesson) {
+      this.editorData = lesson.title + lesson.body;
+      this.isEdited = true;
+      this.lessonId = lesson.id;
+    },
   },
   computed: {
     ...mapState(["isLoading"]),
@@ -147,7 +177,7 @@ export default defineComponent({
   mounted() {
     setTimeout(() => {
       this.iframelyOembedConvert();
-    }, 900);
+    }, 1000);
   },
 });
 </script>

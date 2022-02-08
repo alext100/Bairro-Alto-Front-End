@@ -6,21 +6,27 @@
         v-for="lesson in lessons || []"
         :key="lesson"
         type="body"
-        icon="fas fa-user-edit"
-        class="mb-4 mb-xl-0"
+        class="mb-4 mt-4 mb-xl-0"
         :shadow="true"
         shadowSize="md"
         :hover="true"
       >
         <h2 class="text-center card-title text-uppercase text-muted mb-0">{{ lesson.title }}</h2>
         <div class="m-2 card-text">
-          <div v-html="lesson.body"></div>
+          <div v-html="lesson?.body"></div>
         </div>
         <template v-slot:footer>
-          <span class="text-nowrap text-muted"
-            >Создано <span class="font-weight-bold">{{ new Date(lesson.date).toLocaleString() }}.</span> Уровень
-            {{ lesson.level }}</span
-          >
+          <span class="text-nowrap text-muted footer"
+            >Создано {{ new Date(lesson.date).toLocaleString() }}.<span class="font-weight-bold"></span> Уровень
+            {{ lesson.level
+            }}<b-button pill class="button-edit btn-light" @click="handleEditLesson(lesson)"
+              ><em class="far fa-edit"></em> </b-button
+            ><b-button
+              pill
+              class="button-delete align-self-center btn-light"
+              @click="handleDeleteLesson(lesson.id), $toast('Урок удалён')"
+              ><em class="fa fa-trash-alt"></em> </b-button
+          ></span>
         </template>
       </full-card>
     </div>
@@ -31,15 +37,24 @@
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
 import FullCard from "@/components/FullCard.vue";
+import { Lesson } from "@/types/interfaces";
 
 export default defineComponent({
   name: "Lessons",
   components: { FullCard },
+  emits: ["updateLesson"],
   computed: {
     ...mapState(["lessons", "isLoading"]),
   },
   methods: {
-    ...mapActions(["getLessonsFromApi"]),
+    ...mapActions(["getLessonsFromApi", "deleteLessonById"]),
+    async handleDeleteLesson(lessonId: string) {
+      await this.deleteLessonById(lessonId);
+    },
+
+    handleEditLesson(lesson: Lesson) {
+      this.$emit("updateLesson", lesson);
+    },
   },
   mounted() {
     this.getLessonsFromApi();
@@ -52,5 +67,15 @@ export default defineComponent({
 .cards-container {
   display: flex;
   flex-direction: column-reverse;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+.button-edit,
+.button-delete {
+  font-size: 16px;
+  background-color: transparent;
+  border: transparent;
 }
 </style>
