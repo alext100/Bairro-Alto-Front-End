@@ -248,6 +248,20 @@ const actions = {
     dispatch("getLessonsFromApi");
     commit("stopLoading");
   },
+
+  async uploadAudio({ commit }: ActionContext<State, State>, file: Array<File>): Promise<void> {
+    commit("startLoading");
+    const formData = new FormData();
+    formData.append("audio", file[0], file[0].name);
+    const audio = await axios({
+      method: "POST",
+      url: process.env.VUE_APP_AUDIO_UPLOAD_URL,
+      data: formData,
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }).catch((error) => error);
+    commit("stopLoading");
+    return audio;
+  },
 };
 
 export default actions;
