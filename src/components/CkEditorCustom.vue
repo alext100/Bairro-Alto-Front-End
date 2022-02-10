@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="ckeditor-container">
     <ckeditor
       :editor="editor"
       v-model="editorData"
@@ -40,7 +40,7 @@ import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import Indent from "@ckeditor/ckeditor5-indent/src/indent";
 import List from "@ckeditor/ckeditor5-list/src/list";
-import ListStyle from "@ckeditor/ckeditor5-list/src/liststyle";
+import ListProperties from "@ckeditor/ckeditor5-list/src/listproperties";
 import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
 import MediaEmbedToolbar from "@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar";
 import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
@@ -128,7 +128,7 @@ export default defineComponent({
         ImageUpload,
         Indent,
         List,
-        ListStyle,
+        ListProperties,
         MediaEmbed,
         MediaEmbedToolbar,
         PasteFromOffice,

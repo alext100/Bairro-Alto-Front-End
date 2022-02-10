@@ -14,6 +14,17 @@
         <h2 class="text-center card-title text-uppercase text-muted mb-0">{{ lesson.title }}</h2>
         <div class="m-2 card-text">
           <div v-html="lesson?.body"></div>
+          <div v-if="lesson.audios !== []">
+            <div v-for="audio in lesson.audios || []" :key="audio">
+              <audio controls="true">
+                <source :src="audio" type="audio/ogg" />
+                <source :src="audio" type="audio/mpeg" />
+                <source :src="audio" type="audio/mp3" />
+                <source :src="audio" type="audio/wav" />
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          </div>
         </div>
         <template v-slot:footer>
           <span class="text-nowrap text-muted footer"
