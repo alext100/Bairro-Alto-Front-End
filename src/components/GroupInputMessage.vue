@@ -1,6 +1,29 @@
 <template>
   <div class="container-sm d-flex flex-column mt-5">
     <CkEditor v-model="editorData" />
+    <form class="row g-3" @submit.prevent="handleAudio">
+      <div class="col-auto">
+        <div class="input-group">
+          <label for="inputGroupFile" class="form-label"
+            ><em class="bi bi-file-earmark-music inputfile-icon">
+              <span class="inputfile-description">{{ this.fileNameAndSize }}</span>
+            </em>
+            <p class="inputfile-alert" v-if="errorAlert !== ''">{{ this.errorAlert }}</p></label
+          >
+          <input
+            data-input="false"
+            iconName="bi bi-file-earmark-music"
+            type="file"
+            ref="fileInput"
+            @input="chooseFile"
+            class="form-control inputfile"
+            id="inputGroupFile"
+            aria-describedby="inputGroupFileAddon"
+            aria-label="Upload"
+          />
+        </div>
+      </div>
+    </form>
     <b-button v-if="!isLoading" class="input-form--submit-button mb-3 mt-1" @click="handleCKeditor" type="submit" pill
       >Отправить</b-button
     >
@@ -40,10 +63,14 @@ export default defineComponent({
       data: {
         editorData: null,
       },
+      audio: [],
+      fileNameAndSize: "",
+      errorAlert: "",
+      homeworkTimeCreated: "",
     };
   },
   methods: {
-    ...mapActions(["updateGroup"]),
+    ...mapActions(["updateGroup", "uploadAudio"]),
     ...mapState(["currentGroup"]),
     onReady(editor) {
       editor.ui
@@ -73,22 +100,50 @@ export default defineComponent({
     },
 
     async handleCKeditor() {
-      const data = this.getTitleAndBody();
-      const groupToUpdate = {
-        homeworkToDo: [...state.currentGroup.homeworkToDo, { title: data.title, message: data.body, time: new Date() }],
-        id: state.currentGroup.id,
-      };
+      this.errorAlert = "";
       if (this.editorData !== "") {
+        const data = this.getTitleAndBody();
+        const groupToUpdate = {
+          homeworkToDo: [
+            ...state.currentGroup.homeworkToDo.filter((homework) => homework.time !== this.homeworkTimeCreated),
+            { title: data.title, message: data.body, time: new Date(), audios: this.audio },
+          ],
+          id: state.currentGroup.id,
+        };
         await this.updateGroup(groupToUpdate);
         setTimeout(() => {
           this.iframelyOembedConvert();
         }, 900);
       }
+      this.fileNameAndSize = "";
+      this.errorAlert = "";
       this.editorData = "";
+    },
+
+    async chooseFile() {
+      this.audio = [];
+      this.errorAlert = "";
+      const input = this.$refs?.fileInput;
+      const file = input?.files;
+      const extensionLists = {};
+      extensionLists.audio = ["mp3", "ogg", "wav"];
+      const isValidFileType = (fName, fType) =>
+        extensionLists[fType].indexOf(fName.split(".").pop().toLowerCase()) > -1;
+      if (!isValidFileType(file[0].name, "audio")) {
+        this.errorAlert = "Выберите файл формата mp3, ogg, wav";
+      } else if (file && file[0]) {
+        this.errorAlert = "";
+        const uploadAudio = await this.uploadAudio(file);
+        this.audio = uploadAudio.data;
+      }
     },
 
     handleUpdateMessage(homeworkToDo) {
       this.editorData = homeworkToDo.title + homeworkToDo.message;
+      this.isEdited = true;
+      this.audio = homeworkToDo.audios;
+      this.homeworkTimeCreated = homeworkToDo.time;
+      this.fileNameAndSize = this.audio[0] ? this.audio[0].split("/").filter(Boolean).pop() : "";
     },
 
     async uploader(editor) {
@@ -104,6 +159,16 @@ export default defineComponent({
     setTimeout(() => {
       this.iframelyOembedConvert();
     }, 900);
+
+    this.$refs.fileInput.addEventListener("change", (e) => {
+      const [file] = e.target.files;
+      const { name: fileName, size } = file;
+      const fileSize = (size / 1000).toFixed(2);
+      if (fileSize >= 32000) {
+        this.errorAlert = "Максимальный размер файла 32 мб!";
+      }
+      this.fileNameAndSize = `${fileName} - ${fileSize}KB`;
+    });
   },
 });
 </script>
