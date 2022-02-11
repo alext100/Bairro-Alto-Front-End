@@ -13,7 +13,7 @@
       <div class="col-auto" v-if="$slots.icon || icon">
         <slot name="icon">
           <div class="icon icon-shape rounded-circle shadow" :class="[`bg-${type}`, iconClasses]">
-            <i :class="icon"></i>
+            <em :class="icon"></em>
           </div>
         </slot>
       </div>
