@@ -212,7 +212,8 @@ export default defineComponent({
 
       const extensionLists = {};
       extensionLists.audio = ["mp3", "ogg", "wav"];
-      const isValidFileType = (fName, fType) => extensionLists[fType].indexOf(fName.split(".").pop()) > -1;
+      const isValidFileType = (fName, fType) =>
+        extensionLists[fType].indexOf(fName.split(".").pop().toLowerCase()) > -1;
 
       if (!isValidFileType(file[0].name, "audio")) {
         this.errorAlert = "Выберите файл формата mp3, ogg, wav";
