@@ -1,13 +1,13 @@
 <template>
   <div class="container">
-    <h4>Добавить урок в эту группу</h4>
+    <h4>Добавить или удалить урок из этой группы</h4>
     <div class="button-container">
       <button
         v-if="rowIsSelected"
         v-on:click="handleAddLessonToGroup(), $toast('Добавлено!')"
         class="btn btn-danger m-1"
       >
-        Добавить
+        Сохранить
       </button>
     </div>
     <div style="height: 100%; box-sizing: border-box">
@@ -56,7 +56,8 @@ export default defineComponent({
 
     const addLessonToCurrentGroup = (params) => {
       const lessonId = params.data.id;
-      if (store.state.currentGroup.lessons.includes(lessonId)) {
+      const currentGroupLessons = store.state.currentGroup.lessons;
+      if (currentGroupLessons && currentGroupLessons.includes(lessonId)) {
         return false;
       }
       return true;
@@ -64,7 +65,8 @@ export default defineComponent({
 
     const deleteLessonFromCurrentGroup = (params) => {
       const lessonId = params.data.id;
-      if (store.state.currentGroup.lessons.includes(lessonId)) {
+      const currentGroupLessons = store.state.currentGroup.lessons;
+      if (currentGroupLessons && currentGroupLessons.includes(lessonId)) {
         return true;
       }
       return false;
@@ -180,12 +182,7 @@ export default defineComponent({
     ...mapState(["lessons", "currentGroup"]),
   },
   methods: {
-    ...mapActions(["toggleLessonInGroup", "getLessonsFromApi"]),
-
-    redrawAllRows() {
-      // progressColor();
-      this.gridApi.redrawRows();
-    },
+    ...mapActions(["toggleLessonInGroup", "getLessonsFromApi", "getGroupById"]),
 
     async handleAddLessonToGroup() {
       const api = this.gridApi;
@@ -226,6 +223,7 @@ export default defineComponent({
   },
   mounted() {
     this.getLessonsFromApi();
+    this.getGroupById(this.$route.params.id);
   },
 });
 </script>

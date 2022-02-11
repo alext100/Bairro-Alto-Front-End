@@ -133,7 +133,7 @@ form {
 .login__wrong {
   color: var(--error-color);
   font-size: 15px;
-  font-family: arial;
+  font-family: Noto Sans, Arial, sans-serif;
   font-weight: bold;
   margin-bottom: 10px;
 }

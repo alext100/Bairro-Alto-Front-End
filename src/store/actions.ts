@@ -190,13 +190,13 @@ const actions = {
     { commit }: ActionContext<State, State>,
     { groupId, errorId }: { groupId: string; errorId: string }
   ): Promise<void> {
-    const data = await axios.patch(`${process.env.VUE_APP_URL}/error/delete-error-from-group/${groupId}`, {
+    await axios.patch(`${process.env.VUE_APP_URL}/error/delete-error-from-group/${groupId}`, {
       id: errorId,
     });
   },
 
   async createGroup({ dispatch }: ActionContext<State, State>, groupData: Group): Promise<void> {
-    const newGroup = await axios.post(`${process.env.VUE_APP_URL}/group/add`, groupData);
+    await axios.post(`${process.env.VUE_APP_URL}/group/add`, groupData);
     dispatch("getGroupsFromApi");
   },
 
@@ -225,7 +225,7 @@ const actions = {
 
   async deleteLessonById({ commit }: ActionContext<State, State>, lessonId: string): Promise<void> {
     commit("startLoading");
-    const data = await axios({
+    await axios({
       method: "DELETE",
       url: `${process.env.VUE_APP_URL}/lesson/delete/${lessonId}`,
       headers: { Authorization: `Bearer ${state.currentUser.token}` },

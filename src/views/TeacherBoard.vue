@@ -1,7 +1,6 @@
 <template>
   <SidebarMenu :profileName="profileName" :isExitButton="true" />
   <div class="container">
-    <!-- <h1>Привет {{ currentUser.firstName }}!</h1> -->
     <b-card border-variant="light" class="m-4 teacher-card" style="min-width: 300px">
       <b-card-text
         >В этом разделе можно найти все группы школы и добавить группы в твой список или удалить их оттуда. Перейдя в
