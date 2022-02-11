@@ -262,6 +262,19 @@ const actions = {
     commit("stopLoading");
     return audio;
   },
+
+  async toggleLessonInGroup(
+    { commit }: ActionContext<State, State>,
+    { groupId, lessonId }: { groupId: string; lessonId: string }
+  ) {
+    const updatedLesson = await axios({
+      method: "PATCH",
+      url: `${process.env.VUE_APP_URL}/group/add-group-lesson/${groupId}`,
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      data: { id: lessonId },
+    }).catch((error) => error);
+    commit("updateGroupLessons", updatedLesson.data);
+  },
 };
 
 export default actions;
