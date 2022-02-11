@@ -250,7 +250,6 @@ body {
   margin: 0 10px 0 10px;
 }
 .sidebar {
-  position: relative;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -296,8 +295,6 @@ body {
   top: 50%;
   right: -2px;
   transform: translateY(-50%);
-  font-size: 22px;
-  transition: all 0.4s ease;
   font-size: 23px;
   text-align: center;
   cursor: pointer;
