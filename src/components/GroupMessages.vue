@@ -7,7 +7,6 @@
           v-for="homeworkToDo in currentGroup.homeworkToDo || []"
           :key="homeworkToDo"
           type="body"
-          icon="fas fa-user-edit"
           class="mb-4 mt-4 mb-xl-0"
           :shadow="true"
           shadowSize="md"
