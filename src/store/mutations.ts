@@ -103,6 +103,10 @@ const mutations = {
   deleteOneLessonFromLessons(state: State, payload: string) {
     state.lessons = state.lessons.filter((lesson) => lesson.id !== payload);
   },
+
+  updateGroupLessons(state: State, payload: Array<string>) {
+    state.currentGroup.lessons = payload;
+  },
 };
 
 export default mutations;
