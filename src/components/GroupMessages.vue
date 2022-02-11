@@ -1,7 +1,7 @@
 <template>
   <div class="container ck-content">
-    <h2 class="mb-4 text-center">Сообщения группы:</h2>
-    <div v-if="!isLoading" class="row">
+    <h2 class="mb-4 text-center">TPC:</h2>
+    <div class="row">
       <div class="col-xl-12 col-lg-12 cards-container ck-content reverseorder">
         <full-card
           v-for="homeworkToDo in currentGroup.homeworkToDo || []"
@@ -15,6 +15,17 @@
           <h2 class="text-center card-title text-uppercase mb-1">{{ homeworkToDo.title }}</h2>
           <div class="m-2 card-text">
             <div v-html="homeworkToDo.message"></div>
+          </div>
+          <div v-if="homeworkToDo.audios !== []">
+            <div v-for="audio in homeworkToDo.audios || []" :key="audio">
+              <audio controls="true">
+                <source :src="audio" type="audio/ogg" />
+                <source :src="audio" type="audio/mpeg" />
+                <source :src="audio" type="audio/mp3" />
+                <source :src="audio" type="audio/wav" />
+                Your browser does not support the audio element.
+              </audio>
+            </div>
           </div>
           <template v-slot:footer>
             <span class="text-nowrap text-muted footer"
@@ -31,9 +42,6 @@
           </template>
         </full-card>
       </div>
-    </div>
-    <div v-if="isLoading" class="spinner-border" role="status">
-      <span class="visually-hidden">Загружается...</span>
     </div>
   </div>
 </template>
