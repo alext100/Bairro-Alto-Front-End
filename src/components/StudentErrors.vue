@@ -19,10 +19,6 @@
         :rowSelection="rowSelection"
         @row-selected="onRowSelected"
       >
-        <!--
-          :enableCellChangeFlash="true"
-          :suppressAggAtRootLevel="true"
-        :suppressRowClickSelection="true" -->
         ></ag-grid-vue
       >
     </div>

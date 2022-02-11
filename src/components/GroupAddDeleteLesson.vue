@@ -184,11 +184,6 @@ export default defineComponent({
   methods: {
     ...mapActions(["toggleLessonInGroup", "getLessonsFromApi", "getGroupById"]),
 
-    redrawAllRows() {
-      // progressColor();
-      this.gridApi.redrawRows();
-    },
-
     async handleAddLessonToGroup() {
       const api = this.gridApi;
       const selectedRows = api.getSelectedRows();
