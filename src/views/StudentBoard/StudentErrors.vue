@@ -1,7 +1,8 @@
 <template>
   <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
   <div v-if="!isLoading" style="height: 100%" class="m-5">
-    <div class="button-container"></div>
+    <h1 v-if="lastLoadedUser.studentGroups[0] !== undefined" class="h1">{{ currentGroup.groupName }}</h1>
+    <h1 v-if="lastLoadedUser.studentGroups[0] === undefined" class="h1">Вас ещё не добавили ни в одну группу!</h1>
     <div style="height: 100%; box-sizing: border-box">
       <ag-grid-vue
         class="ag-theme-alpine"
@@ -28,13 +29,14 @@ import { AgGridVue } from "ag-grid-vue3";
 import { computed, defineComponent } from "vue";
 import { mapActions, mapState, useStore } from "vuex";
 import SidebarMenu from "@/components/SidebarMenu.vue";
+import menuItems from "./sideBarStudentMenuItems";
 
 function dateFormatter(params) {
   return new Date(params.value).toLocaleDateString();
 }
 
 export default defineComponent({
-  name: "StudentBoard",
+  name: "StudentErrors",
   components: {
     AgGridVue,
     SidebarMenu,
@@ -44,6 +46,7 @@ export default defineComponent({
     const store = useStore();
 
     return {
+      /*     getUser: () => store.dispatch(`getUserById(${this.currentUser.id})`), */
       columnDefs: [
         {
           field: "errorType",
@@ -92,42 +95,25 @@ export default defineComponent({
   data() {
     return {
       profileName: state.currentUser.firstName,
-      menuItems: [
-        {
-          link: `/student/${state.currentUser.id}`,
-          name: "Dashboard",
-          tooltip: "Dashboard",
-          icon: "bx-grid-alt",
-        },
-        {
-          link: `/student/${state.currentUser.id}`,
-          name: "Все группы",
-          icon: "bx-group",
-        },
-        {
-          link: `/student/${state.currentUser.id}`,
-          name: "User",
-          tooltip: "User",
-          icon: "bx-user",
-        },
-        {
-          link: `/student/${state.currentUser.id}`,
-          name: "Settings",
-          tooltip: "Setting",
-          icon: "bx-cog",
-        },
-      ],
+      menuItems: menuItems(),
     };
   },
+  methods: {
+    ...mapActions(["getGroupErrorsById", "getGroupById", "getUserById"]),
+  },
   computed: {
-    ...mapState(["groupErrors", "isLoading", "currentUser"]),
+    ...mapState(["groupErrors", "isLoading", "currentUser", "currentGroup", "lastLoadedUser"]),
   },
   async mounted() {
-    await this.getGroupErrorsById(this.currentUser?.studentGroups[0]);
-  },
+    await this.getUserById(this.currentUser.id);
 
-  methods: {
-    ...mapActions(["getGroupErrorsById"]),
+    if (this.lastLoadedUser?.studentGroups[0]) {
+      await this.getGroupById(this.lastLoadedUser?.studentGroups[0]);
+      await this.getGroupErrorsById(this.lastLoadedUser?.studentGroups[0]);
+    } else console.log("error");
+  },
+  async created() {
+    await this.getUserById(this.currentUser.id);
   },
 });
 </script>
