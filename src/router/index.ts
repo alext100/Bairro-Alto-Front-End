@@ -14,7 +14,10 @@ const OnlineLesson = () => import(/* webpackChunkName: "teacher-board-chunk" */ 
 const CreateGroup = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/CreateGroup.vue");
 // const CreateLesson = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/CreateLesson.vue"); provoke error on deploy
 
-const StudentBoard = () => import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard.vue");
+const StudentBoard = () =>
+  import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard/StudentBoard.vue");
+const StudentErrors = () =>
+  import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard/StudentErrors.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -48,6 +51,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/student/:id",
     name: "StudentBoard",
     component: StudentBoard,
+    beforeEnter: studentProtectedRoute,
+  },
+  {
+    path: "/student/errors/:id",
+    name: "StudentErrors",
+    component: StudentErrors,
     beforeEnter: studentProtectedRoute,
   },
   {
