@@ -76,7 +76,7 @@ const mutations = {
     state.loadedUsersFromGroup.push(payload);
   },
 
-  lastLoadedUser(state: State, payload: UserModel) {
+  loadLastUser(state: State, payload: UserModel) {
     state.lastLoadedUser = payload;
   },
 
