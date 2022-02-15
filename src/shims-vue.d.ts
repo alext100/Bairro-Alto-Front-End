@@ -10,3 +10,4 @@ declare module "@ckeditor/ckeditor5-vue" {
 
   export = ClassicEditorBuild;
 }
+declare module "vue-audio-visual";

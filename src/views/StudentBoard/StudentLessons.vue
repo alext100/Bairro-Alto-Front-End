@@ -18,13 +18,21 @@
             <div v-html="lesson?.body"></div>
             <div v-if="lesson.audios !== []">
               <div v-for="audio in lesson.audios || []" :key="audio">
-                <audio controls="true">
+                <audio ref="player" controls="true">
                   <source :src="audio" type="audio/ogg" />
                   <source :src="audio" type="audio/mpeg" />
                   <source :src="audio" type="audio/mp3" />
                   <source :src="audio" type="audio/wav" />
                   Your browser does not support the audio element.
                 </audio>
+                <av-bars
+                  caps-color="#FFF"
+                  :bar-color="['#f00', '#ff0', '#0f0']"
+                  canv-fill-color="#000"
+                  :caps-height="2"
+                  :audio-src="audio"
+                  cors-anonym
+                ></av-bars>
               </div>
             </div>
           </div>
