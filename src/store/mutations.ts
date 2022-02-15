@@ -107,6 +107,10 @@ const mutations = {
   updateGroupLessons(state: State, payload: Array<string>) {
     state.currentGroup.lessons = payload;
   },
+
+  setGroupLessons(state: State, payload: Array<Lesson>) {
+    state.groupLessons = payload;
+  },
 };
 
 export default mutations;

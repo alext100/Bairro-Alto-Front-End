@@ -111,6 +111,15 @@ const actions = {
   async getGroupById({ commit }: ActionContext<State, State>, groupId: string): Promise<void> {
     commit("startLoading");
     const { data } = await axios.get(`${process.env.VUE_APP_URL}/group/get-one-by-id/${groupId}`);
+    localStorage.setItem(
+      "currentGroupId",
+      JSON.stringify({
+        id: data.id,
+        groupErrors: data.groupErrors,
+        groupName: data.groupName,
+        homeworkToDo: data.homeworkToDo,
+      })
+    );
     commit("loadOneGroup", data);
     commit("stopLoading");
   },
@@ -274,6 +283,17 @@ const actions = {
       data: { id: lessonId },
     }).catch((error) => error);
     commit("updateGroupLessons", updatedLesson.data);
+  },
+
+  async getGroupLessonsById({ commit }: ActionContext<State, State>, groupId: string): Promise<void> {
+    commit("startLoading");
+    const { data } = await axios({
+      method: "GET",
+      url: `${process.env.VUE_APP_URL}/lesson/get-group-lessons/${groupId}`,
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    commit("setGroupLessons", data.lessons);
+    commit("stopLoading");
   },
 };
 
