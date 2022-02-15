@@ -14,9 +14,9 @@ export default function menuItems() {
       icon: "bx-message-error",
     },
     {
-      link: `/student/${state.currentUser.id}`,
-      name: "User",
-      tooltip: "User",
+      link: `/student/lessons/${state.currentUser.id}`,
+      name: "Уроки",
+      tooltip: "Уроки",
       icon: "bx-user",
     },
     {
