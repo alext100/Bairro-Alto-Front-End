@@ -88,7 +88,7 @@ interface Lesson {
   audios?: Array<string>;
   body: string;
   date?: string;
-  info?: Array<InfoModel>;
+  info?: Record<string, unknown>;
   id?: string;
 }
 
@@ -126,6 +126,7 @@ interface State {
   lessons: Array<Lesson>;
   studentGroups: Array<string>;
   teacherGroups: Array<string>;
+  groupLessons: Array<Lesson>;
 }
 
 export {
