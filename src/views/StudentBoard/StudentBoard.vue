@@ -7,7 +7,7 @@ import state from "@/store/state";
 import { defineComponent } from "vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import { mapState } from "vuex";
-import menuItems from "./sideBarStudentMenuItems";
+import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
 export default defineComponent({
   name: "StudentBoard",
@@ -18,7 +18,7 @@ export default defineComponent({
   data() {
     return {
       profileName: state.currentUser.firstName,
-      menuItems: menuItems(),
+      menuItems: sideBarStudentMenuItems(),
     };
   },
   computed: {

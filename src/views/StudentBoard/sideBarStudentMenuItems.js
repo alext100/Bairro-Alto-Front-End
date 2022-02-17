@@ -1,6 +1,6 @@
 import state from "../../store/state";
 
-export default function menuItems() {
+export default function sideBarStudentMenuItems() {
   return [
     {
       link: `/student/${state.currentUser.id}`,
@@ -17,7 +17,13 @@ export default function menuItems() {
       link: `/student/lessons/${state.currentUser.id}`,
       name: "Уроки",
       tooltip: "Уроки",
-      icon: "bx-user",
+      icon: "bx-book-content",
+    },
+    {
+      link: `/student/chat/${state.currentUser.id}`,
+      name: "Чат",
+      tooltip: "Чат",
+      icon: "bx-chat",
     },
     {
       link: `/student/${state.currentUser.id}`,

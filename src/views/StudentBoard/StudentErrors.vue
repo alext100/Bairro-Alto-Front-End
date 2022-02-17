@@ -29,7 +29,7 @@ import { AgGridVue } from "ag-grid-vue3";
 import { computed, defineComponent } from "vue";
 import { mapActions, mapState, useStore } from "vuex";
 import SidebarMenu from "@/components/SidebarMenu.vue";
-import menuItems from "./sideBarStudentMenuItems";
+import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
 function dateFormatter(params) {
   return new Date(params.value).toLocaleDateString();
@@ -95,7 +95,7 @@ export default defineComponent({
   data() {
     return {
       profileName: state.currentUser.firstName,
-      menuItems: menuItems(),
+      menuItems: sideBarStudentMenuItems(),
     };
   },
   methods: {

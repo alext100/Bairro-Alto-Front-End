@@ -4,6 +4,12 @@
     <h2 class="mb-4 text-center">Уроки:</h2>
     <div class="row">
       <div class="col-xl-12 col-lg-12 cards-container ck-content">
+        <n-space vertical>
+          <n-skeleton v-if="isLoading" height="40px" width="33%" />
+          <n-skeleton v-if="isLoading" height="40px" width="66%" :sharp="false" />
+          <n-skeleton v-if="isLoading" height="40px" round />
+          <n-skeleton v-if="isLoading" height="40px" circle />
+        </n-space>
         <full-card
           v-for="lesson in groupLessons || []"
           :key="lesson"
@@ -25,14 +31,6 @@
                   <source :src="audio" type="audio/wav" />
                   Your browser does not support the audio element.
                 </audio>
-                <av-bars
-                  caps-color="#FFF"
-                  :bar-color="['#f00', '#ff0', '#0f0']"
-                  canv-fill-color="#000"
-                  :caps-height="2"
-                  :audio-src="audio"
-                  cors-anonym
-                ></av-bars>
               </div>
             </div>
           </div>
@@ -53,19 +51,22 @@ import { defineComponent } from "vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import { mapActions, mapGetters, mapState } from "vuex";
 import FullCard from "@/components/FullCard.vue";
-import menuItems from "./sideBarStudentMenuItems";
+import { NSkeleton, NSpace } from "naive-ui";
+import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
 export default defineComponent({
   name: "StudentLessons",
   components: {
     SidebarMenu,
     FullCard,
+    NSkeleton,
+    NSpace,
   },
 
   data() {
     return {
       profileName: state.currentUser.firstName,
-      menuItems: menuItems(),
+      menuItems: sideBarStudentMenuItems(),
     };
   },
   computed: {
