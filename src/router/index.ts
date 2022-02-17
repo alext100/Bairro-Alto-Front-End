@@ -20,6 +20,7 @@ const StudentErrors = () =>
   import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard/StudentErrors.vue");
 const StudentLessons = () =>
   import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard/StudentLessons.vue");
+const StudentChat = () => import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard/StudentChat.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -65,6 +66,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/student/lessons/:id",
     name: "StudentLessons",
     component: StudentLessons,
+    beforeEnter: studentProtectedRoute,
+  },
+  {
+    path: "/student/chat/:id",
+    name: "StudentChat",
+    component: StudentChat,
     beforeEnter: studentProtectedRoute,
   },
   {
