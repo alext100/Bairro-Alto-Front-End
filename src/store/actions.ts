@@ -1,18 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import * as firestoreService from "@/database/firestore";
 import { Group, GroupError, Lesson, State, UserLoggedIn, UserLoginData, UserModel } from "@/types/interfaces";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { ActionContext } from "vuex";
+import { getAuth, signInAnonymously } from "firebase/auth";
 import state from "./state";
+
+const auth = getAuth();
 
 const actions = {
   async login({ dispatch, commit }: ActionContext<State, State>, userData: UserLoginData): Promise<void> {
     commit("startLoading");
-    const response = await axios.post(process.env.VUE_APP_LOGIN_URL, userData);
+    const response = await axios.post(<string>process.env.VUE_APP_LOGIN_URL, userData);
     const { token } = response.data;
     const user = jwtDecode(token);
     dispatch("userLogedFromApi", { user, token });
     localStorage.setItem("userData", JSON.stringify({ token }));
+
+    signInAnonymously(auth)
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .then(() => {})
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+
     commit("stopLoading");
   },
 
@@ -47,6 +60,13 @@ const actions = {
     commit("loginUser", data);
     commit("loadUser", data);
     commit("stopLoading");
+    await firestoreService.addIdentifiedUser(data.id, {
+      _id: data.id,
+      username: `${user.firstName} ${user.lastName.charAt(0)}`,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    });
   },
 
   async registerUser({ commit }: ActionContext<State, State>, userData: UserLoginData): Promise<void> {
