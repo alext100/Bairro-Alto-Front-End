@@ -1,6 +1,12 @@
 <template>
-  <div>
-    <Form @submit="handleLogin" :validation-schema="schema" @invalid-submit="onInvalidSubmit" @change="onChange">
+  <div class="container">
+    <Form
+      @submit="handleLogin"
+      :validation-schema="schema"
+      @invalid-submit="onInvalidSubmit"
+      @change="onChange"
+      class="shadow-lg"
+    >
       <TextInput
         :value="email"
         name="email"
@@ -131,7 +137,8 @@ export default defineComponent({
 form {
   width: 300px;
   margin: 0px auto;
-  padding-bottom: 60px;
+  padding: 15px 5px 30px;
+  border-style: ridge;
 }
 
 .submit-btn,

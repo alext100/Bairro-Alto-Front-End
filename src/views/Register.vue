@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Form @submit="handleCreate" :validation-schema="schema" @invalid-submit="onInvalidSubmit">
+    <Form @submit="handleCreate" :validation-schema="schema" @invalid-submit="onInvalidSubmit" class="shadow-lg">
       <TextInput
         :value="firstName"
         name="firstName"
@@ -156,7 +156,8 @@ export default defineComponent({
 form {
   width: 300px;
   margin: 0px auto;
-  padding-bottom: 60px;
+  padding: 15px 5px 30px;
+  border-style: ridge;
 }
 
 .submit-btn {
