@@ -154,9 +154,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 form {
-  width: 300px;
+  width: 350px;
   margin: 0px auto;
-  padding: 15px 5px 30px;
+  padding: 15px 20px 30px;
   border-style: ridge;
 }
 

@@ -86,6 +86,7 @@ const actions = {
   async deleteDataFromLocalStorage({ commit }: ActionContext<State, State>): Promise<void> {
     localStorage.removeItem("userData");
     localStorage.removeItem("currentGroupId");
+    localStorage.removeItem("token");
     sessionStorage.clear();
     const logedOutUser = { token: "", refreshToken: "" };
     commit("logoutUser", logedOutUser);

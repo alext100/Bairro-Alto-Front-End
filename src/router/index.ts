@@ -15,6 +15,7 @@ const GroupPage = () => import(/* webpackChunkName: "teacher-board-chunk" */ "..
 const OnlineLesson = () =>
   import(/* webpackChunkName: "teacher-board-chunk" */ "../views/TeacherBoard/OnlineLesson.vue");
 const CreateGroup = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/TeacherBoard/CreateGroup.vue");
+const TeacherChat = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/TeacherBoard/TeacherChat.vue");
 // const CreateLesson = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/CreateLesson.vue"); provoke error on deploy
 
 const StudentBoard = () =>
@@ -51,6 +52,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/teacher",
     name: "TeacherBoard",
     component: TeacherBoard,
+    beforeEnter: teacherProtectedRoute,
+  },
+  {
+    path: "/teacher/chat",
+    name: "TeacherChat",
+    component: TeacherChat,
     beforeEnter: teacherProtectedRoute,
   },
   {

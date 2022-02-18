@@ -1,5 +1,5 @@
 <template>
-  <SidebarMenu :profileName="profileName" :isExitButton="true" />
+  <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
   <div class="container">
     <b-card border-variant="light" class="m-4 teacher-card" style="min-width: 300px">
       <b-card-text
@@ -74,6 +74,7 @@ import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import state from "@/store/state";
+import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
 
 export default defineComponent({
   name: "TeacherBoard",
@@ -103,6 +104,7 @@ export default defineComponent({
   },
   data() {
     return {
+      menuItems: sidebarTeacherMenuItems(),
       isHiddenFormToCreate: true,
       profileName: state.currentUser.firstName,
     };

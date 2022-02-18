@@ -1,5 +1,5 @@
 <template>
-  <SidebarMenu :profileName="profileName" :isExitButton="true" />
+  <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
   <div class="container-sm d-flex flex-column mt-5">
     <CkEditor v-model="editorData" />
     <form class="row g-3" @submit.prevent="handleAudio">
@@ -70,6 +70,7 @@ import CkEditor from "@/components/CkEditorCustom.vue";
 import state from "@/store/state";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import Lessons from "@/views/TeacherBoard/Lessons.vue";
+import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
 
 export default defineComponent({
   name: "GroupInputMessage",
@@ -113,6 +114,7 @@ export default defineComponent({
       lessonAudios: [],
       fileNameAndSize: "",
       errorAlert: "",
+      menuItems: sidebarTeacherMenuItems(),
     };
   },
   methods: {
