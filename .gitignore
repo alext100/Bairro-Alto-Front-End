@@ -25,4 +25,3 @@ pnpm-debug.log*
 .env
 firebase-debug.log
 .scannerwork
-.firebase

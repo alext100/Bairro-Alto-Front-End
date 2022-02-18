@@ -19,13 +19,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
-import GroupMembersVue from "@/components/GroupMembers.vue";
-import GroupInputMessageVue from "@/components/GroupInputMessage.vue";
-import AddUserVue from "@/components/GroupAddUser.vue";
-import StudentErrorsVue from "@/components/StudentErrors.vue";
-import GroupAddDeleteLesson from "@/components/GroupAddDeleteLesson.vue";
+import GroupMembersVue from "@/views/TeacherBoard/GroupMembers.vue";
+import GroupInputMessageVue from "@/views/TeacherBoard/GroupInputMessage.vue";
+import AddUserVue from "@/views/TeacherBoard/GroupAddUser.vue";
+import StudentErrorsVue from "@/views/TeacherBoard/StudentErrors.vue";
+import GroupAddDeleteLesson from "@/views/TeacherBoard/GroupAddDeleteLesson.vue";
 
-import OnlineLessonVue from "./OnlineLesson.vue";
+import OnlineLessonVue from "@/views/TeacherBoard/OnlineLesson.vue";
 
 export default defineComponent({
   name: "GroupPage",

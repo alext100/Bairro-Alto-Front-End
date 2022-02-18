@@ -74,7 +74,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/content-styles.css";
+@import "../../assets/content-styles.css";
 .cards-container {
   display: flex;
   flex-direction: column-reverse;

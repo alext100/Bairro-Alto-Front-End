@@ -2,16 +2,19 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
 import Home from "@/views/Home.vue";
-import CreateLesson from "@/views/CreateLesson.vue";
+import CreateLesson from "@/views/TeacherBoard/CreateLesson.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
-const AdminBoard = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard.vue");
-const AdminAllGroups = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminAllGroups.vue");
+const AdminBoard = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AdminBoard.vue");
+const AdminAllGroups = () =>
+  import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AdminAllGroups.vue");
 
-const TeacherBoard = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/TeacherBoard.vue");
-const GroupPage = () => import(/* webpackChunkName: "teacher-board-chunk" */ "../views/Group.vue");
-const OnlineLesson = () => import(/* webpackChunkName: "teacher-board-chunk" */ "../views/OnlineLesson.vue");
-const CreateGroup = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/CreateGroup.vue");
+const TeacherBoard = () =>
+  import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/TeacherBoard/TeacherBoard.vue");
+const GroupPage = () => import(/* webpackChunkName: "teacher-board-chunk" */ "../views/TeacherBoard/Group.vue");
+const OnlineLesson = () =>
+  import(/* webpackChunkName: "teacher-board-chunk" */ "../views/TeacherBoard/OnlineLesson.vue");
+const CreateGroup = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/TeacherBoard/CreateGroup.vue");
 // const CreateLesson = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/CreateLesson.vue"); provoke error on deploy
 
 const StudentBoard = () =>
