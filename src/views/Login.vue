@@ -31,8 +31,8 @@
         Загружается...
       </button>
 
-      <router-link :to="{ name: 'Register' }">
-        <button v-if="!isLoading" class="register-btn" type="button">Зарегистрироваться</button>
+      <router-link :to="{ name: 'Register' }" class="text-decoration-none">
+        <button v-if="!isLoading" class="register-btn text-decoration-none" type="button">Зарегистрироваться</button>
       </router-link>
     </Form>
   </div>
@@ -135,9 +135,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 form {
-  width: 300px;
+  width: 350px;
   margin: 0px auto;
-  padding: 15px 5px 30px;
+  padding: 15px 20px 30px;
   border-style: ridge;
 }
 
