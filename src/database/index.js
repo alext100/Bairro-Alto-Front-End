@@ -7,7 +7,7 @@ const config = {
   apiKey: process.env.VUE_APP_FIREBASE_API,
   authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.VUE_APP_FIREBASE_DATABASE,
-  projectId: "bairro-alto",
+  projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
   storageBucket: process.env.VUE_APP_FIREBASE_BUCKET,
   messagingSenderId: process.env.VUE_APP_FIREBASE_SENDER,
   appId: process.env.VUE_APP_FIREBASE_APPID,
