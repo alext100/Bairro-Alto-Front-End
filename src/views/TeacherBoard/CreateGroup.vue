@@ -1,5 +1,5 @@
 <template>
-  <SidebarMenu :profileName="profileName" :isExitButton="true" />
+  <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
   <div class="container">
     <div class="container-sm login-form d-flex flex-column mt-5">
       <Form
@@ -35,6 +35,7 @@ import { mapActions, mapState } from "vuex";
 import { Form } from "vee-validate";
 import * as Yup from "yup";
 import TextInput from "@/components/TextInput.vue";
+import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
 
 export default defineComponent({
   name: "CreateGroup",
@@ -70,6 +71,7 @@ export default defineComponent({
       isError: false,
       isHiddenFormToCreate: true,
       profileName: state.currentUser.firstName,
+      menuItems: sidebarTeacherMenuItems(),
     };
   },
 
