@@ -62,10 +62,10 @@ const actions = {
     commit("stopLoading");
     await firestoreService.addIdentifiedUser(data.id, {
       _id: data.id,
-      username: `${user.firstName} ${user.lastName.charAt(0)}`,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
+      username: `${data?.firstName} ${data?.lastName.charAt(0)}`,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
     });
   },
 
@@ -85,6 +85,7 @@ const actions = {
 
   async deleteDataFromLocalStorage({ commit }: ActionContext<State, State>): Promise<void> {
     localStorage.removeItem("userData");
+    localStorage.removeItem("currentGroupId");
     sessionStorage.clear();
     const logedOutUser = { token: "", refreshToken: "" };
     commit("logoutUser", logedOutUser);
