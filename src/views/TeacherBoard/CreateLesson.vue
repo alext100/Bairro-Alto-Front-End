@@ -69,7 +69,7 @@ import { mapActions, mapState } from "vuex";
 import CkEditor from "@/components/CkEditorCustom.vue";
 import state from "@/store/state";
 import SidebarMenu from "@/components/SidebarMenu.vue";
-import Lessons from "./Lessons.vue";
+import Lessons from "@/views/TeacherBoard/Lessons.vue";
 
 export default defineComponent({
   name: "GroupInputMessage",

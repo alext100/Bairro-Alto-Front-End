@@ -49,7 +49,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
-import FullCard from "./FullCard.vue";
+import FullCard from "@/components/FullCard.vue";
 
 interface HomeWorks {
   message: string;
