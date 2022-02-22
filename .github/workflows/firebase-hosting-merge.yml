@@ -25,6 +25,7 @@ jobs:
           VUE_APP_FIREBASE_SENDER: '${{ secrets.VUE_APP_FIREBASE_SENDER }}'
           VUE_APP_FIREBASE_APPID: '${{ secrets.VUE_APP_FIREBASE_APPID }}'
           VUE_APP_FIREBASE_MEASUREMENT: '${{ secrets.VUE_APP_FIREBASE_MEASUREMENT }}'
+          VUE_APP_WEB_COLLECTION_ID: '${{ secrets.VUE_APP_WEB_COLLECTION_ID }}'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
