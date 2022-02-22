@@ -101,6 +101,23 @@ interface GroupError {
   info?: Array<InfoModel>;
 }
 
+interface Post {
+  id?: string;
+  title: string;
+  body: string;
+  category: string;
+}
+
+interface Category {
+  id?: string;
+  title: string;
+  slug: string;
+}
+interface WebContent {
+  id?: string;
+  posts: Array<Post>;
+  categories: Array<Category>;
+}
 interface State {
   user: UserModel;
   userId: string;
@@ -127,6 +144,7 @@ interface State {
   studentGroups: Array<string>;
   teacherGroups: Array<string>;
   groupLessons: Array<Lesson>;
+  webContent: WebContent;
 }
 
 export {
@@ -140,4 +158,6 @@ export {
   HomeworkToCheck,
   Group,
   InfoModel,
+  WebContent,
+  Post,
 };
