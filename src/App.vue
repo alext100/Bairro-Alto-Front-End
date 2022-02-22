@@ -1,17 +1,29 @@
 <template>
   <Header />
-  <router-view v-slot="{ Component }">
-    <component :is="Component" />
-  </router-view>
+  <n-config-provider :locale="ruRU" :date-locale="dateRuRU">
+    <n-message-provider>
+      <router-view v-slot="{ Component }">
+        <component :is="Component" />
+      </router-view>
+    </n-message-provider>
+  </n-config-provider>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { NMessageProvider, NConfigProvider, ruRU, dateRuRU } from "naive-ui";
 import Header from "./views/Header.vue";
 
 export default defineComponent({
   name: "app",
-  components: { Header },
+  components: { Header, NMessageProvider, NConfigProvider },
+
+  setup() {
+    return {
+      ruRU,
+      dateRuRU,
+    };
+  },
 });
 </script>
 

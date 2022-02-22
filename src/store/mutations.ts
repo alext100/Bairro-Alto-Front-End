@@ -1,4 +1,13 @@
-import { State, UserLoggedIn, UserRegisterData, Group, UserModel, GroupError, Lesson } from "@/types/interfaces";
+import {
+  State,
+  UserLoggedIn,
+  UserRegisterData,
+  Group,
+  UserModel,
+  GroupError,
+  Lesson,
+  WebContent,
+} from "@/types/interfaces";
 
 const mutations = {
   loginUser(state: State, payload: UserLoggedIn) {
@@ -110,6 +119,18 @@ const mutations = {
 
   setGroupLessons(state: State, payload: Array<Lesson>) {
     state.groupLessons = payload;
+  },
+
+  setWebContent(state: State, payload: WebContent) {
+    state.webContent = payload;
+  },
+
+  deleteOnePostFromPosts(state: State, payload: string) {
+    state.webContent.posts = state.webContent.posts.filter((post) => post.id !== payload);
+  },
+
+  deleteOneCategory(state: State, payload: string) {
+    state.webContent.categories = state.webContent.categories.filter((category) => category.id !== payload);
   },
 };
 
