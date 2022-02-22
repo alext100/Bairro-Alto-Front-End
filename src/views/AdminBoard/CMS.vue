@@ -397,7 +397,7 @@ textarea {
 
 .modal-screen {
   position: fixed;
-  top: 15%;
+  top: 7%;
   left: calc(50% - 300px);
   width: 600px;
   height: auto;
