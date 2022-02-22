@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as firestoreService from "@/database/firestore";
-import { Group, GroupError, Lesson, State, UserLoggedIn, UserLoginData, UserModel } from "@/types/interfaces";
+import {
+  Group,
+  GroupError,
+  Lesson,
+  State,
+  UserLoggedIn,
+  UserLoginData,
+  UserModel,
+  WebContent,
+} from "@/types/interfaces";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { ActionContext } from "vuex";
@@ -315,6 +324,30 @@ const actions = {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     commit("setGroupLessons", data.lessons);
+    commit("stopLoading");
+  },
+
+  async getWebContent({ commit }: ActionContext<State, State>): Promise<void> {
+    commit("startLoading");
+    const { data } = await axios({
+      method: "GET",
+      url: `${process.env.VUE_APP_URL}/web-content/get-web-content/`,
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    commit("setWebContent", data[0]);
+    commit("stopLoading");
+  },
+
+  async updateWebContent({ dispatch, commit }: ActionContext<State, State>, webContent: WebContent): Promise<void> {
+    commit("startLoading");
+    const collectionId = process.env.VUE_APP_WEB_COLLECTION_ID;
+    const updated = await axios({
+      method: "PUT",
+      url: `${process.env.VUE_APP_URL}/web-content/update-web-content/${collectionId}`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: webContent,
+    });
+    dispatch("getWebContent");
     commit("stopLoading");
   },
 };
