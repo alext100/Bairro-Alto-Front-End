@@ -6,6 +6,7 @@ import CreateLesson from "@/views/TeacherBoard/CreateLesson.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
 const AdminBoard = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AdminBoard.vue");
+const CMS = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/CMS.vue");
 const AdminAllGroups = () =>
   import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AdminAllGroups.vue");
 
@@ -46,6 +47,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/admin",
     name: "AdminBoard",
     component: AdminBoard,
+    beforeEnter: adminProtectedRoute,
+  },
+  {
+    path: "/cms",
+    name: "CMS",
+    component: CMS,
     beforeEnter: adminProtectedRoute,
   },
   {
