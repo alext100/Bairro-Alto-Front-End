@@ -350,6 +350,32 @@ const actions = {
     dispatch("getWebContent");
     commit("stopLoading");
   },
+
+  async deleteWebPost({ commit }: ActionContext<State, State>, postId: string): Promise<void> {
+    commit("startLoading");
+    const collectionId = process.env.VUE_APP_WEB_COLLECTION_ID;
+    await axios({
+      method: "DELETE",
+      url: `${process.env.VUE_APP_URL}/web-content/delete-post/${postId}`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: { collectionId },
+    });
+    commit("deleteOnePostFromPosts", postId);
+    commit("stopLoading");
+  },
+
+  async deleteWebCategory({ commit }: ActionContext<State, State>, categoryId: string): Promise<void> {
+    commit("startLoading");
+    const collectionId = process.env.VUE_APP_WEB_COLLECTION_ID;
+    await axios({
+      method: "DELETE",
+      url: `${process.env.VUE_APP_URL}/web-content/delete-category/${categoryId}`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: { collectionId },
+    });
+    commit("deleteOneCategory", categoryId);
+    commit("stopLoading");
+  },
 };
 
 export default actions;
