@@ -41,7 +41,7 @@
       <PostList v-if="!isLoading" v-model:posts="catItems" v-model:currentPost="curItem" />
     </div>
 
-    <div class="col-7 p-4 col3 richtext-editor">
+    <div class="col-7 p-2 col3 richtext-editor">
       <template v-if="curItem">
         <template v-for="key in Object.keys(config.fields.posts)" :key="key">
           <template v-if="config.fields.posts[key] === 'text'">
@@ -183,7 +183,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getWebContent", "updateWebContent"]),
+    ...mapActions(["getWebContent", "updateWebContent", "updatePostById"]),
 
     setCurCat(cat) {
       this.curCat = cat;
@@ -219,12 +219,7 @@ export default {
       this.catItems = this.webContent.posts.filter((x) => x.category === cat);
     },
     async save() {
-      this.newWebContentData = {
-        posts: [...this.webContent.posts],
-        categories: [...this.webContent.categories],
-      };
-      await this.updateWebContent(this.newWebContentData);
-      this.newWebContentData = {};
+      await this.updatePostById(this.curItem);
     },
   },
 };
@@ -234,10 +229,6 @@ export default {
 body {
   background-color: #f6f1f1;
 }
-
-/* .row {
-  height: 100%;
-} */
 
 .categories {
   height: 100%;
@@ -381,7 +372,7 @@ textarea {
 .richtext-editor {
   position: fixed;
   right: 0;
-  height: 100%;
+  height: 95%;
   overflow: hidden;
   overflow-y: auto;
 }
