@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
-import Home from "@/views/Home.vue";
+import MainPage from "@/pages/Main.vue";
 import CreateLesson from "@/views/TeacherBoard/CreateLesson.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
@@ -30,8 +30,8 @@ const StudentChat = () => import(/* webpackChunkName: "student-board-chunk" */ "
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "Home",
-    component: Home,
+    name: "MainPage",
+    component: MainPage,
   },
   {
     path: "/register",
