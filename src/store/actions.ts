@@ -357,7 +357,7 @@ const actions = {
     const collectionId = process.env.VUE_APP_WEB_COLLECTION_ID;
     await axios({
       method: "PUT",
-      url: `${process.env.VUE_APP_URL_LOCAL}/web-content/update-post/${post.id}`,
+      url: `${process.env.VUE_APP_URL}/web-content/update-post/${post.id}`,
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
       data: { post, collectionId },
     });
