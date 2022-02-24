@@ -103,7 +103,11 @@ const actions = {
   },
 
   async getGroupsFromApi({ commit }: ActionContext<State, State>): Promise<void> {
-    const { data } = await axios.get(`${process.env.VUE_APP_URL}/group/get-all`);
+    const { data } = await axios({
+      method: "GET",
+      url: `${process.env.VUE_APP_URL}/group/get-all`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+    });
     commit("loadGroups", data);
   },
 
@@ -170,7 +174,12 @@ const actions = {
 
   async updateGroup({ dispatch, commit }: ActionContext<State, State>, groupToUpdate: Group): Promise<void> {
     commit("startLoading");
-    await axios.put(`${process.env.VUE_APP_URL}/group/update-group-by-id/${groupToUpdate.id}`, groupToUpdate);
+    await axios({
+      method: "PUT",
+      url: `${process.env.VUE_APP_URL}/group/update-group-by-id/${groupToUpdate.id}`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: groupToUpdate,
+    });
     dispatch("getGroupById", groupToUpdate.id);
     commit("stopLoading");
   },
@@ -182,7 +191,12 @@ const actions = {
     commit("startLoading");
     const idOfUser = (user: UserModel) => user.id === userId;
     if (state.loadedUsersFromGroup.find(idOfUser) === undefined) {
-      await axios.patch(`${process.env.VUE_APP_URL}/group/add-group-to-any-user/${userId}`, { id: groupId });
+      await axios({
+        method: "PATCH",
+        url: `${process.env.VUE_APP_URL}/group/add-group-to-any-user/${userId}`,
+        headers: { Authorization: `Bearer ${state.currentUser.token}` },
+        data: { id: groupId },
+      });
       dispatch("getUserById", userId);
       dispatch("getGroupById", groupId);
     }
@@ -202,7 +216,12 @@ const actions = {
   ): Promise<void> {
     const idOfUser = (user: UserModel) => user.id === userId;
     if (state.loadedUsersFromGroup.find(idOfUser) !== undefined) {
-      await axios.patch(`${process.env.VUE_APP_URL}/group/delete-group-member/${userId}`, { id: groupId });
+      await axios({
+        method: "PATCH",
+        url: `${process.env.VUE_APP_URL}/group/delete-group-member/${userId}`,
+        headers: { Authorization: `Bearer ${state.currentUser.token}` },
+        data: { id: groupId },
+      });
       dispatch("getGroupById", groupId);
     }
   },
@@ -211,7 +230,12 @@ const actions = {
     { dispatch }: ActionContext<State, State>,
     { groupId, groupError }: { groupId: string; groupError: GroupError }
   ): Promise<void> {
-    await axios.patch(`${process.env.VUE_APP_URL}/error/add-error-to-group/${groupId}`, { ...groupError });
+    await axios({
+      method: "PATCH",
+      url: `${process.env.VUE_APP_URL}/error/add-error-to-group/${groupId}`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: { ...groupError },
+    });
     dispatch("getGroupById", groupId);
     dispatch("getGroupErrorsById", groupId);
   },
@@ -224,20 +248,33 @@ const actions = {
   },
 
   async updateGroupErrorsById({ dispatch }: ActionContext<State, State>, groupError: GroupError): Promise<void> {
-    await axios.put(`${process.env.VUE_APP_URL}/error/update-group-error/${groupError.id}`, groupError);
+    await axios({
+      method: "PUT",
+      url: `${process.env.VUE_APP_URL}/error/update-group-error/${groupError.id}`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: groupError,
+    });
   },
 
   async deleteGroupError(
     { commit }: ActionContext<State, State>,
     { groupId, errorId }: { groupId: string; errorId: string }
   ): Promise<void> {
-    await axios.patch(`${process.env.VUE_APP_URL}/error/delete-error-from-group/${groupId}`, {
-      id: errorId,
+    await axios({
+      method: "PATCH",
+      url: `${process.env.VUE_APP_URL}/error/delete-error-from-group/${groupId}`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: { id: errorId },
     });
   },
 
   async createGroup({ dispatch }: ActionContext<State, State>, groupData: Group): Promise<void> {
-    await axios.post(`${process.env.VUE_APP_URL}/group/add`, groupData);
+    await axios({
+      method: "POST",
+      url: `${process.env.VUE_APP_URL}/group/add`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: groupData,
+    });
     dispatch("getGroupsFromApi");
   },
 
