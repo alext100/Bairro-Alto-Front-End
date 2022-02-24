@@ -198,7 +198,7 @@ export default {
         if (field === "title") {
           newItem[field] = "Untitled";
         } else if (field === "body") {
-          newItem[field] = "<h1>&nbsp;</h1>";
+          newItem[field] = "<span>&nbsp;</span>";
         } else {
           newItem[field] = "";
         }

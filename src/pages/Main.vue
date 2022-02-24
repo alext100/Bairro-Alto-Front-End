@@ -38,6 +38,30 @@
         </template>
       </n-carousel>
     </div>
+
+    <section class="main-page__features">
+      <div class="features">
+        <router-link to="/" class="features-item">
+          <h2 class="features-title">Методика</h2>
+          <div v-if="methodic[0]?.body" class="features-text features-text__db" v-html="methodicBody?.body"></div>
+          <div v-else class="features-text">
+            Преподаём по лексическому подходу — то есть делаем акцент на запоминании и использовании не отдельных слов,
+            а фраз и словосочетаний — так легче запоминать слова и легче научиться разговаривать.
+          </div>
+          <span>Подробнее...</span>
+        </router-link>
+        <router-link to="/" class="features-item">
+          <h2 class="features-title">Атмосфера</h2>
+          <div v-if="atmosphere[0]?.body" class="features-text features-text__db" v-html="atmosphereBody?.body"></div>
+          <!-- <div v-if="atmosphere[0]?.body" class="features-text features-text__db" v-html="atmosphere[0]?.body"></div> -->
+          <div v-else class="features-text">
+            Школа небольшая и уютная. Аудитории школы находятся в мансарде. В перерывах пьём чай (иногда вино), едим
+            печенье и листаем книги на итальянском.
+          </div>
+          <span>Подробнее...</span>
+        </router-link>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -51,6 +75,20 @@ function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+function getTitleAndBody(item) {
+  const data = {
+    title: "",
+    body: "",
+  };
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(item, "text/html");
+  const title = doc.getElementsByTagName("h1")[0];
+  data.title = title.innerText;
+  doc.body.removeChild(title);
+  data.body = doc.body.innerHTML;
+  return data;
+}
+
 export default defineComponent({
   name: "MainPage",
 
@@ -59,11 +97,25 @@ export default defineComponent({
     const { state, dispatch } = useStore();
     onMounted(() => dispatch("getWebContent"));
     const allTeachers = computed(() => state.webContent?.posts.filter((post) => post.category === "Преподаватели"));
+    const methodic = computed(() =>
+      state.webContent?.posts.filter((post) => post.title === "Лексический подход - главная страница")
+    );
+    const methodicBody = computed(() => getTitleAndBody(methodic?.value[0].body));
+
+    const atmosphere = computed(() =>
+      state.webContent?.posts.filter((post) => post.title === "Атмосфера - главная страница")
+    );
+    const atmosphereBody = computed(() => getTitleAndBody(atmosphere?.value[0].body));
+
     const teacher = computed(() => allTeachers.value[getRandomInteger(0, allTeachers.value.length - 1)]);
 
     return {
       teacher,
       allTeachers,
+      atmosphere,
+      methodic,
+      atmosphereBody,
+      methodicBody,
     };
   },
 
@@ -94,6 +146,49 @@ export default defineComponent({
   display: flex;
 }
 
+.main-page__features {
+  border-top: 1px solid #d59758;
+  padding-top: 3rem;
+  padding-bottom: 4.5rem;
+  border-bottom: 1px solid #d59758;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+}
+
+.features-item {
+  color: #d59758;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.features-text {
+  color: #000;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+@media (min-width: 900px) {
+  .features {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .features-item {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 30%;
+    flex: 0 0 45%;
+  }
+}
+
+@media (min-width: 1199px) {
+  .features {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
 @media (min-width: 480px) {
   .main-page__title {
     max-width: 42rem;
@@ -113,7 +208,6 @@ export default defineComponent({
     font-size: 3rem;
   }
 }
-
 @media (max-width: 479px) {
   .main-page__title {
     font-size: 2.5rem;
