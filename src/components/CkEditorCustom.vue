@@ -12,16 +12,17 @@
 
 <script>
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
-import EssentialsPlugin from "@ckeditor/ckeditor5-essentials/src/essentials";
-import BoldPlugin from "@ckeditor/ckeditor5-basic-styles/src/bold";
-import ItalicPlugin from "@ckeditor/ckeditor5-basic-styles/src/italic";
-import LinkPlugin from "@ckeditor/ckeditor5-link/src/link";
 import ParagraphPlugin from "@ckeditor/ckeditor5-paragraph/src/paragraph";
 import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
 import AutoImage from "@ckeditor/ckeditor5-image/src/autoimage";
 import AutoLink from "@ckeditor/ckeditor5-link/src/autolink";
+import BoldPlugin from "@ckeditor/ckeditor5-basic-styles/src/bold";
+import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote";
+import Clipboard from "@ckeditor/ckeditor5-clipboard/src/clipboard";
+import Code from "@ckeditor/ckeditor5-basic-styles/src/code";
 import DataFilter from "@ckeditor/ckeditor5-html-support/src/datafilter";
 import DataSchema from "@ckeditor/ckeditor5-html-support/src/dataschema";
+import EssentialsPlugin from "@ckeditor/ckeditor5-essentials/src/essentials";
 import FindAndReplace from "@ckeditor/ckeditor5-find-and-replace/src/findandreplace";
 import FontBackgroundColor from "@ckeditor/ckeditor5-font/src/fontbackgroundcolor";
 import FontColor from "@ckeditor/ckeditor5-font/src/fontcolor";
@@ -34,11 +35,16 @@ import HorizontalLine from "@ckeditor/ckeditor5-horizontal-line/src/horizontalli
 import HtmlEmbed from "@ckeditor/ckeditor5-html-embed/src/htmlembed";
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageCaption from "@ckeditor/ckeditor5-image/src/imagecaption";
+import ImageResizeEditing from "@ckeditor/ckeditor5-image/src/imageresize/imageresizeediting";
+import ImageResizeHandles from "@ckeditor/ckeditor5-image/src/imageresize/imageresizehandles";
 import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
 import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
 import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import Indent from "@ckeditor/ckeditor5-indent/src/indent";
+import ItalicPlugin from "@ckeditor/ckeditor5-basic-styles/src/italic";
+import LinkPlugin from "@ckeditor/ckeditor5-link/src/link";
+import LinkImage from "@ckeditor/ckeditor5-link/src/linkimage";
 import List from "@ckeditor/ckeditor5-list/src/list";
 import ListProperties from "@ckeditor/ckeditor5-list/src/listproperties";
 import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
@@ -61,9 +67,11 @@ import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties";
 import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 import TextTransformation from "@ckeditor/ckeditor5-typing/src/texttransformation";
 import Title from "@ckeditor/ckeditor5-heading/src/title";
+import TodoList from "@ckeditor/ckeditor5-list/src/todolist";
 import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline";
 import WordCount from "@ckeditor/ckeditor5-word-count/src/wordcount";
 import { computed, defineComponent, ref } from "vue";
+import sanitizeHtml from "sanitize-html";
 import UploadAdapter from "../utils/uploadAdapter";
 
 export default defineComponent({
@@ -91,6 +99,26 @@ export default defineComponent({
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => new UploadAdapter(loader);
     };
 
+    const imageConfiguration = {
+      resizeOptions: [
+        {
+          name: "resizeImage:original",
+          value: null,
+          label: "Original",
+        },
+        {
+          name: "resizeImage:40",
+          value: "40",
+          label: "40%",
+        },
+        {
+          name: "resizeImage:60",
+          value: "60",
+          label: "60%",
+        },
+      ],
+    };
+
     const editorConfig = {
       extraPlugins: [uploader],
       removePlugins: ["MediaEmbedToolbar"],
@@ -100,16 +128,16 @@ export default defineComponent({
       },
 
       plugins: [
-        EssentialsPlugin,
-        BoldPlugin,
-        ItalicPlugin,
-        LinkPlugin,
-        ParagraphPlugin,
         Alignment,
         AutoImage,
         AutoLink,
+        BoldPlugin,
+        BlockQuote,
+        Clipboard,
+        Code,
         DataFilter,
         DataSchema,
+        EssentialsPlugin,
         FindAndReplace,
         FontBackgroundColor,
         FontColor,
@@ -125,13 +153,19 @@ export default defineComponent({
         ImageResize,
         ImageStyle,
         ImageToolbar,
+        ImageResizeEditing,
+        ImageResizeHandles,
         ImageUpload,
         Indent,
+        ItalicPlugin,
+        LinkPlugin,
+        LinkImage,
         List,
         ListProperties,
         MediaEmbed,
         MediaEmbedToolbar,
         PasteFromOffice,
+        ParagraphPlugin,
         RemoveFormat,
         SourceEditing,
         SpecialCharacters,
@@ -149,6 +183,7 @@ export default defineComponent({
         TableToolbar,
         TextTransformation,
         Title,
+        TodoList,
         Underline,
         WordCount,
       ],
@@ -156,12 +191,14 @@ export default defineComponent({
       toolbar: {
         items: [
           "heading",
+          "blockQuote",
           "|",
           "bold",
           "italic",
           "link",
           "bulletedList",
           "numberedList",
+          "todoList",
           "|",
           "imageUpload",
           "mediaEmbed",
@@ -193,19 +230,82 @@ export default defineComponent({
           "subscript",
           "superscript",
           "strikethrough",
+          "code",
         ],
         shouldNotGroupWhenFull: true,
       },
       language: "pt",
       image: {
-        toolbar: ["imageTextAlternative", "imageStyle:inline", "imageStyle:block", "imageStyle:side"],
+        toolbar: [
+          "imageStyle:inline",
+          "imageStyle:block",
+          "imageStyle:side",
+          "|",
+          "toggleImageCaption",
+          "imageTextAlternative",
+          "|",
+          "linkImage",
+          "resizeImage",
+        ],
       },
       table: {
         contentToolbar: ["tableColumn", "tableRow", "mergeTableCells", "tableCellProperties", "tableProperties"],
       },
+
+      htmlEmbed: {
+        showPreviews: true,
+        sanitizeHtml: (inputHtml) => {
+          const outputHtml = sanitizeHtml(inputHtml);
+
+          return {
+            html: outputHtml,
+
+            hasChanged: true,
+          };
+        },
+      },
+      htmlSupport: {
+        allow: [
+          {
+            name: /.*/,
+            attributes: true,
+            classes: true,
+            styles: true,
+          },
+        ],
+      },
+      typing: {
+        transformations: {
+          extra: [
+            { from: ":)", to: "🙂" },
+            { from: ":+1:", to: "👍" },
+            { from: ":tada:", to: "🎉" },
+            {
+              from: /(^|\s)(")([^"]*)(")$/,
+              to: [null, "«", null, "»"],
+            },
+            {
+              from: /([.?!] )([a-z])$/,
+              to: (matches) => [null, matches[1].toUpperCase()],
+            },
+          ],
+        },
+      },
+      link: {
+        addTargetToExternalLinks: true,
+        decorators: [
+          {
+            mode: "manual",
+            label: "Downloadable",
+            attributes: {
+              download: "download",
+            },
+          },
+        ],
+      },
     };
 
-    return { editorData, editorConfig, isFocused, onReady };
+    return { editorData, editorConfig, isFocused, onReady, imageConfiguration };
   },
 
   data() {

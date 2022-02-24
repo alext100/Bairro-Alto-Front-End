@@ -1,15 +1,14 @@
 <template>
-  <div class="home container dflex">
-    <h1 class="pageHeader-title">Уютная школа португальского языка</h1>
-    <div class="main-teacher shadow">
-      <h2 class="m-5">Преподаватели</h2>
+  <div class="home container dflex mb-5">
+    <h1 class="main-page__title">Уютная школа португальского языка</h1>
+    <div class="main-page__teachers shadow">
+      <h2 class="mx-5 m-1 teachers__title">Преподаватели</h2>
       <n-carousel
         autoplay
+        draggable
         :interval="7000"
-        effect="custom"
-        :transition-props="{ name: 'creative' }"
         show-arrow
-        style="width: 100%; height: 550px"
+        :transition-style="{ transitionDuration: 800, transitionTimingFunction: 'cubic-bezier(.29, 1.01, 1, 0.48)' }"
       >
         <div v-for="teacher in allTeachers" :key="teacher">
           <n-card :bordered="false">
@@ -80,45 +79,44 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.pageHeader-title {
+<style>
+.main-page__title {
   margin-top: 0;
-  margin-bottom: 3rem;
-  font-size: 2.7rem;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
   line-height: 1.4;
   font-weight: 400;
 }
+.teachers__title {
+  color: var(--bairro-alto-logo-color);
+}
 .teacher__body {
-  object-fit: cover;
-}
-
-.teacher-info {
-  position: absolute;
-  display: block;
-  bottom: 21%;
-  right: 0%;
-  max-width: 17rem;
-  color: #eee;
-  font-size: 1.1rem;
-  font-family: Noto Sans, Arial, sans-serif;
-  line-height: 1.59;
-}
-
-:deep(.creative-enter-from),
-:deep(.creative-leave-to) {
-  opacity: 0;
-  transform: scale(0.9);
-}
-
-:deep(.creative-enter-active),
-:deep(.creative-leave-active) {
-  transition: all 0.8s ease;
+  display: flex;
 }
 
 @media (min-width: 480px) {
-  .pageHeader-title {
+  .main-page__title {
     max-width: 42rem;
-    font-size: 4rem;
+    font-size: 3.5rem;
+  }
+  .teacher__body {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 768px) {
+  .teacher__body {
+    flex-direction: column;
+  }
+  .main-page__title {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .main-page__title {
+    font-size: 2.5rem;
   }
 }
 
@@ -137,7 +135,7 @@ export default defineComponent({
   width: 32px;
   height: 32px;
   margin-right: 12px;
-  color: rgb(255, 168, 28);
+  color: var(--bairro-alto-logo-color);
   background-color: rgba(7, 7, 7, 0.6);
   border-width: 0;
   border-radius: 8px;
@@ -176,6 +174,6 @@ export default defineComponent({
 
 .custom-dots li.is-active {
   width: 40px;
-  background: rgb(255, 168, 28);
+  background: var(--bairro-alto-logo-color);
 }
 </style>
