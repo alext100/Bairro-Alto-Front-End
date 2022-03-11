@@ -1,0 +1,42 @@
+<template>
+  <div class="container p-3 mt-2">
+    <div v-if="methodic[0]?.body" class="features-text" v-html="methodicBody?.body"></div>
+  </div>
+</template>
+
+<script lang="ts">
+import { computed, defineComponent, onMounted } from "vue";
+import { mapActions, useStore } from "vuex";
+import getTitleAndBody from "@/utils/getTitleAndBody";
+import { Post } from "@/types/interfaces";
+
+export default defineComponent({
+  name: "Methodic",
+
+  setup() {
+    const { state, dispatch } = useStore();
+    onMounted(() => dispatch("getWebContent"));
+
+    const methodic = computed(() =>
+      state.webContent?.posts.filter((post: Post) => post.title === "Лексический подход - полное описание")
+    );
+    const methodicBody = computed(() => getTitleAndBody(methodic?.value[0].body));
+
+    return {
+      methodic,
+      methodicBody,
+    };
+  },
+
+  methods: {
+    ...mapActions(["getWebContent"]),
+  },
+});
+</script>
+
+<style>
+.features-text {
+  text-align: justify;
+  text-justify: inter-word;
+}
+</style>
