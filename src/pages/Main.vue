@@ -41,19 +41,18 @@
 
     <section class="main-page__features">
       <div class="features">
-        <router-link to="/" class="features-item">
+        <router-link to="/methodic" class="features-item">
           <h2 class="features-title">Методика</h2>
-          <div v-if="methodic[0]?.body" class="features-text features-text__db" v-html="methodicBody?.body"></div>
+          <div v-if="methodic[0]?.body" class="features-text" v-html="methodicBody?.body"></div>
           <div v-else class="features-text">
             Преподаём по лексическому подходу — то есть делаем акцент на запоминании и использовании не отдельных слов,
             а фраз и словосочетаний — так легче запоминать слова и легче научиться разговаривать.
           </div>
           <span>Подробнее...</span>
         </router-link>
-        <router-link to="/" class="features-item">
+        <router-link to="/atmosphere" class="features-item">
           <h2 class="features-title">Атмосфера</h2>
-          <div v-if="atmosphere[0]?.body" class="features-text features-text__db" v-html="atmosphereBody?.body"></div>
-          <!-- <div v-if="atmosphere[0]?.body" class="features-text features-text__db" v-html="atmosphere[0]?.body"></div> -->
+          <div v-if="atmosphere[0]?.body" class="features-text" v-html="atmosphereBody?.body"></div>
           <div v-else class="features-text">
             Школа небольшая и уютная. Аудитории школы находятся в мансарде. В перерывах пьём чай (иногда вино), едим
             печенье и листаем книги на итальянском.
@@ -70,23 +69,10 @@ import { NCard, NCarousel, NIcon } from "naive-ui";
 import { computed, defineComponent, onMounted } from "vue";
 import { mapActions, useStore } from "vuex";
 import { ArrowBack, ArrowForward } from "@vicons/ionicons5";
+import getTitleAndBody from "@/utils/getTitleAndBody";
 
 function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function getTitleAndBody(item) {
-  const data = {
-    title: "",
-    body: "",
-  };
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(item, "text/html");
-  const title = doc.getElementsByTagName("h1")[0];
-  data.title = title.innerText;
-  doc.body.removeChild(title);
-  data.body = doc.body.innerHTML;
-  return data;
 }
 
 export default defineComponent({
@@ -96,14 +82,14 @@ export default defineComponent({
   setup() {
     const { state, dispatch } = useStore();
     onMounted(() => dispatch("getWebContent"));
-    const allTeachers = computed(() => state.webContent?.posts.filter((post) => post.category === "Преподаватели"));
+    const allTeachers = computed(() => state.webContent?.posts?.filter((post) => post.category === "Преподаватели"));
     const methodic = computed(() =>
-      state.webContent?.posts.filter((post) => post.title === "Лексический подход - главная страница")
+      state.webContent?.posts?.filter((post) => post?.title === "Лексический подход - главная страница")
     );
     const methodicBody = computed(() => getTitleAndBody(methodic?.value[0].body));
 
     const atmosphere = computed(() =>
-      state.webContent?.posts.filter((post) => post.title === "Атмосфера - главная страница")
+      state.webContent?.posts?.filter((post) => post?.title === "Атмосфера - главная страница")
     );
     const atmosphereBody = computed(() => getTitleAndBody(atmosphere?.value[0].body));
 

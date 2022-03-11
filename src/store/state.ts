@@ -37,10 +37,12 @@ const state = {
   lastLoadedUser: {},
   lessons: [],
   groupLessons: [],
-  webContent: {
-    posts: [],
-    categories: [],
-  },
+  webContent: sessionStorage.getItem("webContent")
+    ? JSON.parse(sessionStorage.getItem("webContent") || "")
+    : {
+        posts: [],
+        categories: [],
+      },
 };
 
 export default state as unknown as State;
