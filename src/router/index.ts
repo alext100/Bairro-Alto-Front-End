@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
 import MainPage from "@/pages/Main.vue";
+import Methodic from "@/pages/Methodic.vue";
 import CreateLesson from "@/views/TeacherBoard/CreateLesson.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
@@ -32,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "MainPage",
     component: MainPage,
+  },
+  {
+    path: "/methodic",
+    name: "Methodic",
+    component: Methodic,
   },
   {
     path: "/register",
