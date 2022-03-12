@@ -2,6 +2,8 @@ import { createApp } from "vue";
 import BootstrapVue3 from "bootstrap-vue-3";
 import DKToast from "vue-dk-toast";
 import CKEditor from "@ckeditor/ckeditor5-vue";
+import Particles from "particles.vue3";
+import VueMobileDetection from "vue-mobile-detection";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -26,4 +28,6 @@ createApp(App)
   .use(router)
   .use(BootstrapVue3)
   .use(CKEditor)
+  .use(Particles)
+  .use(VueMobileDetection)
   .mount("#app");
