@@ -2,7 +2,7 @@
   <ul class="list-group">
     <template v-for="item in posts" :key="item">
       <li class="list-group-item" @click="setCurrentItem(item.id)" :class="{ active2: currentPost.id === item.id }">
-        <b>{{ item.title }}</b
+        <strong>{{ item.title }}</strong
         ><br />
         <span v-html="setShortDescription(item.body, 60)"></span>
       </li>
