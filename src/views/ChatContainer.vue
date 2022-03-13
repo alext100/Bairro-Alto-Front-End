@@ -584,10 +584,7 @@ export default {
       const { id } = await firestoreService.addMessage(roomId, message);
 
       if (files) {
-        for (let index = 0; index < files.length; index += 1) {
-          // eslint-disable-next-line no-await-in-loop
-          await this.uploadFile({ file: files[index], messageId: id, roomId });
-        }
+        files.forEach((file) => this.uploadFile({ file, messageId: id, roomId }));
       }
 
       firestoreService.updateRoom(roomId, { lastUpdated: new Date() });
