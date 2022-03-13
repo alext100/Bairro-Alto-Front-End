@@ -11,9 +11,8 @@
         placeholder="Add username"
         type="text"
       />
-      <!-- <input v-model="addRoomUsername" type="text" placeholder="Add username" /> -->
-      <button type="submit" :disabled="disableForm || !options">Create Room</button>
-      <button class="button-cancel" @click="addNewRoom = false">Cancel</button>
+      <button type="submit" :disabled="disableForm || !options">Создать новый чат</button>
+      <button class="button-cancel" @click="addNewRoom = false">Отменить</button>
     </form>
 
     <form v-if="inviteRoomId" @submit.prevent="addRoomUser">
@@ -27,7 +26,6 @@
         placeholder="Add username"
         type="text"
       />
-      <!-- <input v-model="invitedUsername" type="text" placeholder="Add username" /> -->
       <button type="submit" :disabled="disableForm || !options">Add User</button>
       <button class="button-cancel" @click="inviteRoomId = null">Cancel</button>
     </form>
@@ -86,8 +84,6 @@
 import * as firestoreService from "@/database/firestore";
 import * as firebaseService from "@/database/firebase";
 import * as storageService from "@/database/storage";
-
-// import ChatWindow, { Rooms } from 'vue-advanced-chat'
 import ChatWindow from "vue-advanced-chat";
 import { mapState, useStore } from "vuex";
 import { NAvatar, NSelect, NTag, NText } from "naive-ui";
@@ -132,9 +128,7 @@ export default {
       typingMessageCache: "",
       disableForm: false,
       addNewRoom: null,
-      addRoomUsername: "",
       inviteRoomId: null,
-      invitedUsername: "",
       removeRoomId: null,
       removeUserId: "",
       removeUsers: [],
@@ -673,12 +667,11 @@ export default {
     },
 
     updateFileProgress(messageId, fileUrl, progress) {
-      // eslint-disable-next-line no-shadow
-      const message = this.messages.find((message) => message._id === messageId);
+      const newMessage = this.messages.find((message) => message._id === messageId);
 
-      if (!message || !message.files) return;
+      if (!newMessage || !newMessage.files) return;
 
-      message.files.find((file) => file.url === fileUrl).progress = progress;
+      newMessage.files.find((file) => file.url === fileUrl).progress = progress;
       this.messages = [...this.messages];
     },
 
@@ -712,15 +705,15 @@ export default {
     async openUserTag({ user }) {
       let roomId;
 
-      this.rooms.forEach((room) => {
-        if (room.users.length === 2) {
-          const userId1 = room.users[0]._id;
-          const userId2 = room.users[1]._id;
+      this.rooms.forEach((oneRoom) => {
+        if (oneRoom.users.length === 2) {
+          const userId1 = oneRoom.users[0]._id;
+          const userId2 = oneRoom.users[1]._id;
           if (
             (userId1 === user._id || userId1 === this.currentUserId) &&
             (userId2 === user._id || userId2 === this.currentUserId)
           ) {
-            roomId = room.roomId;
+            roomId = oneRoom.roomId;
           }
         }
       });
@@ -866,7 +859,6 @@ export default {
       });
 
       this.addNewRoom = false;
-      this.addRoomUsername = "";
       this.fetchRooms();
     },
 
@@ -881,7 +873,6 @@ export default {
       await firestoreService.addRoomUser(this.inviteRoomId, [...this.multipleValue]);
 
       this.inviteRoomId = null;
-      this.invitedUsername = "";
       this.fetchRooms();
     },
 
@@ -921,9 +912,7 @@ export default {
     resetForms() {
       this.disableForm = false;
       this.addNewRoom = null;
-      this.addRoomUsername = "";
       this.inviteRoomId = null;
-      this.invitedUsername = "";
       this.removeRoomId = null;
       this.removeUserId = "";
     },

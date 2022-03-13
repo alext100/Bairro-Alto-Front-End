@@ -12,10 +12,10 @@
               <div class="row g-0 d-flex">
                 <div class="col-1">
                   <div>
-                    <i class="fas fa-chevron-up move-icon" @click="moveUp(item.id, i)"></i>
+                    <em class="fas fa-chevron-up move-icon" @click="moveUp(item.id, i)"></em>
                   </div>
                   <div>
-                    <i class="fas fa-chevron-down move-icon" @click="moveDown(item.id, i)"></i>
+                    <em class="fas fa-chevron-down move-icon" @click="moveDown(item.id, i)"></em>
                   </div>
                 </div>
                 <div class="col-10 text-truncate justify-content-center align-self-center">
@@ -30,7 +30,7 @@
                     :flip="true"
                   >
                     <template #activator>
-                      <i class="fas fa-trash float-end move-icon trash-icon"></i>
+                      <em class="fas fa-trash float-end move-icon trash-icon"></em>
                     </template>
                     Уверены?
                   </n-popconfirm>
