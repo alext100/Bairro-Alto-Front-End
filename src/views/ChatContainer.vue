@@ -705,15 +705,15 @@ export default {
     async openUserTag({ user }) {
       let roomId;
 
-      this.rooms.forEach((room) => {
-        if (room.users.length === 2) {
-          const userId1 = room.users[0]._id;
-          const userId2 = room.users[1]._id;
+      this.rooms.forEach((oneRoom) => {
+        if (oneRoom.users.length === 2) {
+          const userId1 = oneRoom.users[0]._id;
+          const userId2 = oneRoom.users[1]._id;
           if (
             (userId1 === user._id || userId1 === this.currentUserId) &&
             (userId2 === user._id || userId2 === this.currentUserId)
           ) {
-            roomId = room.roomId;
+            roomId = oneRoom.roomId;
           }
         }
       });
