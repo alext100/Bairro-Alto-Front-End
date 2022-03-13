@@ -11,9 +11,8 @@
         placeholder="Add username"
         type="text"
       />
-      <!-- <input v-model="addRoomUsername" type="text" placeholder="Add username" /> -->
-      <button type="submit" :disabled="disableForm || !options">Create Room</button>
-      <button class="button-cancel" @click="addNewRoom = false">Cancel</button>
+      <button type="submit" :disabled="disableForm || !options">Создать новый чат</button>
+      <button class="button-cancel" @click="addNewRoom = false">Отменить</button>
     </form>
 
     <form v-if="inviteRoomId" @submit.prevent="addRoomUser">
@@ -27,7 +26,6 @@
         placeholder="Add username"
         type="text"
       />
-      <!-- <input v-model="invitedUsername" type="text" placeholder="Add username" /> -->
       <button type="submit" :disabled="disableForm || !options">Add User</button>
       <button class="button-cancel" @click="inviteRoomId = null">Cancel</button>
     </form>
@@ -86,8 +84,6 @@
 import * as firestoreService from "@/database/firestore";
 import * as firebaseService from "@/database/firebase";
 import * as storageService from "@/database/storage";
-
-// import ChatWindow, { Rooms } from 'vue-advanced-chat'
 import ChatWindow from "vue-advanced-chat";
 import { mapState, useStore } from "vuex";
 import { NAvatar, NSelect, NTag, NText } from "naive-ui";
@@ -132,9 +128,7 @@ export default {
       typingMessageCache: "",
       disableForm: false,
       addNewRoom: null,
-      addRoomUsername: "",
       inviteRoomId: null,
-      invitedUsername: "",
       removeRoomId: null,
       removeUserId: "",
       removeUsers: [],
@@ -866,7 +860,6 @@ export default {
       });
 
       this.addNewRoom = false;
-      this.addRoomUsername = "";
       this.fetchRooms();
     },
 
@@ -881,7 +874,6 @@ export default {
       await firestoreService.addRoomUser(this.inviteRoomId, [...this.multipleValue]);
 
       this.inviteRoomId = null;
-      this.invitedUsername = "";
       this.fetchRooms();
     },
 
@@ -921,9 +913,7 @@ export default {
     resetForms() {
       this.disableForm = false;
       this.addNewRoom = null;
-      this.addRoomUsername = "";
       this.inviteRoomId = null;
-      this.invitedUsername = "";
       this.removeRoomId = null;
       this.removeUserId = "";
     },
