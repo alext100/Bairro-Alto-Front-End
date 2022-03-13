@@ -667,12 +667,11 @@ export default {
     },
 
     updateFileProgress(messageId, fileUrl, progress) {
-      // eslint-disable-next-line no-shadow
-      const message = this.messages.find((message) => message._id === messageId);
+      const newMessage = this.messages.find((message) => message._id === messageId);
 
-      if (!message || !message.files) return;
+      if (!newMessage || !newMessage.files) return;
 
-      message.files.find((file) => file.url === fileUrl).progress = progress;
+      newMessage.files.find((file) => file.url === fileUrl).progress = progress;
       this.messages = [...this.messages];
     },
 
