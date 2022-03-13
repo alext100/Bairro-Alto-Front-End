@@ -233,6 +233,8 @@ body {
 .categories {
   height: 100%;
   background-color: #333;
+  position: fixed;
+  left: 40px;
 }
 
 .categories a {
@@ -257,8 +259,14 @@ body {
 }
 
 .posts-group {
+  position: fixed;
+  left: 16.67%;
+  height: 100%;
+  overflow: hidden;
   background-color: white;
   border-right: 1px solid #ddd;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .posts-group .list-group-item {
@@ -282,11 +290,6 @@ body {
   background-color: #f8f8f8;
   width: 100.5%;
   border-left: 5px solid #656bf7;
-}
-
-.posts-group {
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 
 .form-control,
@@ -349,19 +352,6 @@ textarea {
   z-index: 999;
   width: 25%;
   border-right: 1px solid #ddd;
-}
-
-.categories {
-  position: fixed;
-  left: 40px;
-}
-
-.posts-group {
-  position: fixed;
-  left: 16.67%;
-  height: 100%;
-  overflow: hidden;
-  overflow-y: auto;
 }
 
 .posts-group .list-group:nth-child(2) .list-group-item {
