@@ -28,13 +28,13 @@ const actions = {
     dispatch("userLogedFromApi", { user, token });
     localStorage.setItem("userData", JSON.stringify({ token }));
 
-    signInAnonymously(auth)
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
+    signInAnonymously(auth);
+    /*     // eslint-disable-next-line @typescript-eslint/no-empty-function
       .then(() => {})
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-      });
+      }) */
 
     commit("stopLoading");
   },
