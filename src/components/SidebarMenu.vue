@@ -2,7 +2,7 @@
   <div class="sidebar" :class="isOpened ? 'open' : ''" :style="cssVars">
     <div class="sidebar__logo-details">
       <img v-if="menuLogo" :src="menuLogo" alt="menu-logo" class="menu-logo icon" />
-      <!-- <i v-else class="bx icon" :class="menuIcon" /> -->
+      <img v-else src="sardines32x32.png" alt="menu icon" class="m-3 icon" :class="menuIcon" />
       <div class="logo_name">
         {{ menuTitle }}
       </div>
@@ -134,7 +134,6 @@ export default {
     //! Profile details
     profileImg: {
       type: String,
-      /*  default: require("../assets/img/photo.jpg"), */
     },
     profileName: {
       type: String,
