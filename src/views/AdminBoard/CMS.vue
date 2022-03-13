@@ -6,10 +6,10 @@
         <template v-if="curCat && config.settings.allow_add_category">
           <div class="btn-group">
             <button @click="showAddCat = true" class="btn btn-outline-light">
-              <i class="fa fa-plus"></i>
+              <em class="fa fa-plus"></em>
             </button>
             <button @click="showCatSettings = true" class="btn btn-outline-light">
-              <i class="fa fa-cog"></i>
+              <em class="fa fa-cog"></em>
             </button>
           </div>
         </template>
@@ -28,8 +28,8 @@
     <div class="col-3 col2 posts-group">
       <div class="posts-group__filter">
         <div class="btn-group">
-          <a @click="addItem()" class="btn btn-outline-dark"><i class="fa fa-plus"></i></a>
-          <a @click="showPostSettings = true" class="btn btn-outline-dark"><i class="fa fa-cog"></i></a>
+          <a @click="addItem()" class="btn btn-outline-dark"><em class="fa fa-plus"></em></a>
+          <a @click="showPostSettings = true" class="btn btn-outline-dark"><em class="fa fa-cog"></em></a>
         </div>
       </div>
       <n-space vertical>
@@ -81,7 +81,7 @@
         </template>
 
         <button class="btn btn-primary mt-1" @click="save()">
-          <template v-if="saving"> <i class="fas fa-spinner fa-spin"></i> &nbsp; </template>
+          <template v-if="saving"> <em class="fas fa-spinner fa-spin"></em> &nbsp; </template>
           Save
         </button>
 
@@ -264,7 +264,6 @@ body {
 .posts-group .list-group-item {
   padding: 20px;
   border-radius: 0;
-  border-left: 0;
   border-right: 0;
   border-top: 0;
   white-space: nowrap;
