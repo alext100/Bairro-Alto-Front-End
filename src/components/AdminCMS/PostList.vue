@@ -26,13 +26,11 @@ export default defineComponent({
     },
 
     setShortDescription(text: string, max: number) {
-      if (text) {
-        // eslint-disable-next-line no-unused-expressions
-        text && text.length > max ? text.slice(0, max).split(" ").slice(0, -1).join(" ") : text;
-        const regex = /(<([^>]+)>)/gi;
-        return text.replace(regex, "");
+      if (text && text.length > max) {
+        text.slice(0, max).split(" ").slice(0, -1).join(" ");
       }
-      return "&nbsp;";
+      const regex = /(<([^>]+)>)/gi;
+      return text.replace(regex, "");
     },
   },
 });
