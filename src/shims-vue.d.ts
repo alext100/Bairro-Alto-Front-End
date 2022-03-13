@@ -11,3 +11,6 @@ declare module "@ckeditor/ckeditor5-vue" {
   export = ClassicEditorBuild;
 }
 declare module "vue-audio-visual";
+declare module "particles.vue3";
+declare module "vue-mobile-detection";
+declare module "vue-kinesis";
