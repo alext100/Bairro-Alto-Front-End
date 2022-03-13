@@ -603,12 +603,11 @@ export default {
       await firestoreService.updateMessage(roomId, messageId, newMessage);
 
       if (files) {
-        for (let index = 0; index < files.length; index += 1) {
-          if (files[index]?.blob) {
-            // eslint-disable-next-line no-await-in-loop
-            await this.uploadFile({ file: files[index], messageId, roomId });
+        files.forEach((file) => {
+          if (file?.blob) {
+            this.uploadFile({ file, messageId, roomId });
           }
-        }
+        });
       }
     },
 
