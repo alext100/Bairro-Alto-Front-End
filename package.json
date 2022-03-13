@@ -71,6 +71,7 @@
     "vue-advanced-chat": "https://github.com/antoine92190/vue-advanced-chat/tarball/next",
     "vue-class-component": "^8.0.0-rc.1",
     "vue-dk-toast": "^3.0.1",
+    "vue-kinesis": "^2.0.5",
     "vue-mobile-detection": "^2.0.1",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2",
