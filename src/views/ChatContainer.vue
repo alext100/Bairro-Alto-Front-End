@@ -766,15 +766,12 @@ export default {
     },
 
     messageSelectionActionHandler({ action, messages, roomId }) {
-      switch (action.name) {
-        case "deleteMessages":
-          return messages.forEach((message) => {
-            this.deleteMessage({ message, roomId });
-          });
-
-        default:
-          return false;
+      if (action.name === "deleteMessages") {
+        return messages.forEach((message) => {
+          this.deleteMessage({ message, roomId });
+        });
       }
+      return false;
     },
 
     async sendMessageReaction({ reaction, remove, messageId, roomId }) {
