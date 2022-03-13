@@ -8,7 +8,7 @@
         :render-label="renderLabel"
         :render-tag="renderMultipleSelectTag"
         filterable
-        placeholder="Add username"
+        placeholder="Добавить пользователей"
         type="text"
       />
       <button type="submit" :disabled="disableForm || !options">Создать новый чат</button>
@@ -23,11 +23,11 @@
         :render-label="renderLabel"
         :render-tag="renderMultipleSelectTag"
         filterable
-        placeholder="Add username"
+        placeholder="Добавить пользователей"
         type="text"
       />
-      <button type="submit" :disabled="disableForm || !options">Add User</button>
-      <button class="button-cancel" @click="inviteRoomId = null">Cancel</button>
+      <button type="submit" :disabled="disableForm || !options">Добавить пользователя</button>
+      <button class="button-cancel" @click="inviteRoomId = null">Отменить</button>
     </form>
 
     <form v-if="removeRoomId" @submit.prevent="deleteRoomUser">
@@ -37,8 +37,8 @@
           {{ user.username }}
         </option>
       </select>
-      <button type="submit" :disabled="disableForm || !removeUserId">Remove User</button>
-      <button class="button-cancel" @click="removeRoomId = null">Cancel</button>
+      <button type="submit" :disabled="disableForm || !removeUserId">Удалить пользователя</button>
+      <button class="button-cancel" @click="removeRoomId = null">Отменить</button>
     </form>
 
     <chat-window
@@ -133,14 +133,14 @@ export default {
       removeUserId: "",
       removeUsers: [],
       roomActions: [
-        { name: "inviteUser", title: "Invite User" },
-        { name: "removeUser", title: "Remove User" },
-        { name: "deleteRoom", title: "Delete Room" },
+        { name: "inviteUser", title: "Пригласить пользователя" },
+        { name: "removeUser", title: "Удалить пользователя" },
+        { name: "deleteRoom", title: "Удалить чат" },
       ],
       menuActions: [
-        { name: "inviteUser", title: "Invite User" },
-        { name: "removeUser", title: "Remove User" },
-        { name: "deleteRoom", title: "Delete Room" },
+        { name: "inviteUser", title: "Пригласить пользователя" },
+        { name: "removeUser", title: "Удалить пользователя" },
+        { name: "deleteRoom", title: "Удалить чат" },
       ],
       messageSelectionActions: [{ name: "deleteMessages", title: "Delete" }],
       styles: { container: { borderRadius: "4px" } },
@@ -203,7 +203,7 @@ export default {
               },
               [
                 h(NAvatar, {
-                  src: "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg",
+                  src: "https://storage.googleapis.com/bairro-alto.appspot.com/queima-das-fitas32x32-1647209754638.webp",
                   round: true,
                   size: 22,
                   style: {
@@ -226,7 +226,7 @@ export default {
         },
         [
           h(NAvatar, {
-            src: "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg",
+            src: "https://storage.googleapis.com/bairro-alto.appspot.com/queima-das-fitas32x32-1647209754638.webp",
             round: true,
             size: 24,
             style: {
