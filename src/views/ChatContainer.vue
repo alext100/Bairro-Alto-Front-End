@@ -591,8 +591,7 @@ export default {
     },
 
     async editMessage({ messageId, newContent, roomId, files }) {
-      const newMessage = { edited: new Date() };
-      newMessage.content = newContent;
+      const newMessage = { edited: new Date(), content: newContent, files: null };
 
       if (files) {
         newMessage.files = this.formattedFiles(files);
