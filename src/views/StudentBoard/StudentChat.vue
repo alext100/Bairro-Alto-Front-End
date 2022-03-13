@@ -10,7 +10,6 @@
 import state from "@/store/state";
 import { mapActions, mapState } from "vuex";
 import SidebarMenu from "@/components/SidebarMenu.vue";
-// import * as firestoreService from "@/database/firestore";
 import ChatContainer from "@/views/ChatContainer.vue";
 import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
