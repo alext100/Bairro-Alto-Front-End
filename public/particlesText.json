@@ -17,7 +17,7 @@
     "events": {
       "onDiv": [
         {
-          "enable": true,
+          "enable": false,
           "selectors": ".main-page__features",
           "mode": "bounce",
           "type": "rectangle"
