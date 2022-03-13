@@ -57,19 +57,13 @@ export default defineComponent({
     const addLessonToCurrentGroup = (params) => {
       const lessonId = params.data.id;
       const currentGroupLessons = store.state.currentGroup.lessons;
-      if (currentGroupLessons && currentGroupLessons.includes(lessonId)) {
-        return false;
-      }
-      return true;
+      return currentGroupLessons && !currentGroupLessons.includes(lessonId);
     };
 
     const deleteLessonFromCurrentGroup = (params) => {
       const lessonId = params.data.id;
       const currentGroupLessons = store.state.currentGroup.lessons;
-      if (currentGroupLessons && currentGroupLessons.includes(lessonId)) {
-        return true;
-      }
-      return false;
+      return currentGroupLessons && currentGroupLessons.includes(lessonId);
     };
 
     function dateFormatter(params) {
