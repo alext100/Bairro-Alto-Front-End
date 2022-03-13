@@ -563,6 +563,8 @@ export default {
         sender_id: this.currentUserId,
         content,
         timestamp: new Date(),
+        files: null,
+        replyMessage: null,
       };
 
       if (files) {
