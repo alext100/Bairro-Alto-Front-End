@@ -57,7 +57,7 @@
     <section class="main-page__features ck-content">
       <div class="features">
         <router-link to="/methodic" class="features-item">
-          <div v-motion-slide-visible-left :delay="100">
+          <div v-motion-slide-visible-left :delay="300">
             <h2 class="features-title">Методика</h2>
             <div v-if="methodic[0]?.body" class="features-text" v-html="methodicBody?.body"></div>
             <div v-else class="features-text">
@@ -68,7 +68,7 @@
           </div>
         </router-link>
         <router-link to="/atmosphere" class="features-item">
-          <div v-motion-slide-visible-right :delay="100">
+          <div v-motion-slide-visible-right :delay="300">
             <h2 class="features-title">Атмосфера</h2>
             <div v-if="atmosphere[0]?.body" class="features-text" v-html="atmosphereBody?.body"></div>
             <div v-else class="features-text">
@@ -82,7 +82,7 @@
     </section>
 
     <div class="main-page__features ck-content">
-      <div v-motion-slide-visible-bottom :delay="100">
+      <div v-motion-slide-visible-bottom :delay="200">
         <router-link to="/news" class="features-item">
           <h2 class="features-title m-0">Новости</h2>
         </router-link>
