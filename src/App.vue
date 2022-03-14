@@ -3,7 +3,9 @@
   <n-config-provider :locale="ruRU" :date-locale="dateRuRU">
     <n-message-provider>
       <router-view v-slot="{ Component }">
-        <component :is="Component" />
+        <transition name="route" mode="out-in">
+          <component :is="Component" />
+        </transition>
       </router-view>
     </n-message-provider>
   </n-config-provider>
@@ -38,7 +40,6 @@ export default defineComponent({
   font-family: Noto Sans, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
   color: #2c3e50;
 }
 :root {
@@ -48,5 +49,19 @@ export default defineComponent({
   --success-color: #21a67a;
   --success-bg-color: #e0eee4;
   --bairro-alto-logo-color: #fcb73c;
+}
+
+/* route transitions */
+.route-enter-from {
+  opacity: 0;
+}
+.route-enter-active {
+  transition: all 0.3s ease-out;
+}
+.route-leave-to {
+  opacity: 0;
+}
+.route-leave-active {
+  transition: all 0.3s ease-in;
 }
 </style>
