@@ -1,6 +1,19 @@
 <template>
   <div class="home container dflex mb-5">
-    <h1 class="main-page__title">Уютная школа португальского языка</h1>
+    <div
+      v-motion
+      :initial="{
+        opacity: 0,
+        y: 50,
+      }"
+      :enter="{
+        opacity: 1,
+        y: 0,
+      }"
+      :delay="200"
+    >
+      <h1 class="main-page__title">Уютная школа португальского языка</h1>
+    </div>
     <div class="main-page__teachers shadow">
       <h2 class="mx-5 m-1 teachers__title">Преподаватели</h2>
       <n-carousel
@@ -41,73 +54,75 @@
     <Banner v-if="!$isMobile()" />
     <div v-if="!$isMobile()" class="banner-container"></div>
 
-    <kinesis-container event="scroll" :duration="2000">
-      <kinesis-element :strength="40">
-        <section class="main-page__features ck-content">
-          <div class="features">
-            <router-link to="/methodic" class="features-item">
-              <h2 class="features-title">Методика</h2>
-              <div v-if="methodic[0]?.body" class="features-text" v-html="methodicBody?.body"></div>
-              <div v-else class="features-text">
-                Преподаём по лексическому подходу — то есть делаем акцент на запоминании и использовании не отдельных
-                слов, а фраз и словосочетаний — так легче запоминать слова и легче научиться разговаривать.
-              </div>
-              <span>Подробнее...</span>
-            </router-link>
-            <router-link to="/atmosphere" class="features-item">
-              <h2 class="features-title">Атмосфера</h2>
-              <div v-if="atmosphere[0]?.body" class="features-text" v-html="atmosphereBody?.body"></div>
-              <div v-else class="features-text">
-                Школа небольшая и уютная. Аудитории школы находятся в мансарде. В перерывах пьём чай (иногда вино), едим
-                печенье и листаем книги на итальянском.
-              </div>
-              <span>Подробнее...</span>
-            </router-link>
+    <section class="main-page__features ck-content">
+      <div class="features">
+        <router-link to="/methodic" class="features-item">
+          <div v-motion-slide-visible-left :delay="100">
+            <h2 class="features-title">Методика</h2>
+            <div v-if="methodic[0]?.body" class="features-text" v-html="methodicBody?.body"></div>
+            <div v-else class="features-text">
+              Преподаём по лексическому подходу — то есть делаем акцент на запоминании и использовании не отдельных
+              слов, а фраз и словосочетаний — так легче запоминать слова и легче научиться разговаривать.
+            </div>
+            <span>Подробнее...</span>
           </div>
-        </section>
-      </kinesis-element>
-    </kinesis-container>
+        </router-link>
+        <router-link to="/atmosphere" class="features-item">
+          <div v-motion-slide-visible-right :delay="100">
+            <h2 class="features-title">Атмосфера</h2>
+            <div v-if="atmosphere[0]?.body" class="features-text" v-html="atmosphereBody?.body"></div>
+            <div v-else class="features-text">
+              Школа небольшая и уютная. Аудитории школы находятся в мансарде. В перерывах пьём чай (иногда вино), едим
+              печенье и листаем книги на итальянском.
+            </div>
+            <span>Подробнее...</span>
+          </div>
+        </router-link>
+      </div>
+    </section>
 
     <div class="main-page__features ck-content">
-      <router-link to="/news" class="features-item">
-        <h2 class="features-title m-0">Новости</h2>
-      </router-link>
+      <div v-motion-slide-visible-bottom :delay="100">
+        <router-link to="/news" class="features-item">
+          <h2 class="features-title m-0">Новости</h2>
+        </router-link>
 
-      <n-carousel
-        draggable
-        show-arrow
-        :transition-style="{ transitionDuration: 800, transitionTimingFunction: 'cubic-bezier(.29, 1.01, 1, 0.48)' }"
-      >
-        <div v-for="news in newsBody" :key="news">
-          <n-card :bordered="false">
-            <div class="news__body p-0 mb-5 news-text" v-html="news?.body"></div>
-          </n-card>
-        </div>
-
-        <template #arrow="{ prev, next }">
-          <div class="custom-arrow">
-            <button type="button" class="custom-arrow--left" @click="prev">
-              <n-icon><ArrowBack /></n-icon>
-            </button>
-            <button type="button" class="custom-arrow--right" @click="next">
-              <n-icon><ArrowForward /></n-icon>
-            </button>
+        <n-carousel
+          draggable
+          show-arrow
+          :transition-style="{ transitionDuration: 800, transitionTimingFunction: 'cubic-bezier(.29, 1.01, 1, 0.48)' }"
+        >
+          <div v-for="news in newsBody" :key="news">
+            <n-card :bordered="false">
+              <div class="news__body p-0 mb-5 news-text" v-html="news?.body"></div>
+            </n-card>
           </div>
-        </template>
-        <template #dots="{ total, currentIndex, to }">
-          <ul class="custom-dots mb-2">
-            <li
-              v-for="index of total"
-              :key="index"
-              :class="{ ['is-active']: currentIndex === index - 1 }"
-              @click="to(index - 1)"
-            />
-          </ul>
-        </template>
-      </n-carousel>
-      <router-link to="/news" class="features-item">
-        <span>Все новости...</span>
-      </router-link>
+
+          <template #arrow="{ prev, next }">
+            <div class="custom-arrow">
+              <button type="button" class="custom-arrow--left" @click="prev">
+                <n-icon><ArrowBack /></n-icon>
+              </button>
+              <button type="button" class="custom-arrow--right" @click="next">
+                <n-icon><ArrowForward /></n-icon>
+              </button>
+            </div>
+          </template>
+          <template #dots="{ total, currentIndex, to }">
+            <ul class="custom-dots mb-2">
+              <li
+                v-for="index of total"
+                :key="index"
+                :class="{ ['is-active']: currentIndex === index - 1 }"
+                @click="to(index - 1)"
+              />
+            </ul>
+          </template>
+        </n-carousel>
+        <router-link to="/news" class="features-item">
+          <span>Все новости...</span>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
