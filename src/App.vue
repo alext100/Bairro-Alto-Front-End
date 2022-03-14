@@ -2,9 +2,11 @@
   <Header />
   <n-config-provider :locale="ruRU" :date-locale="dateRuRU">
     <n-message-provider>
-      <router-view v-slot="{ Component }">
+      <router-view v-slot="{ Component, route }">
         <transition name="route" mode="out-in">
-          <component :is="Component" />
+          <div :key="route.name">
+            <component :is="Component" />
+          </div>
         </transition>
       </router-view>
     </n-message-provider>

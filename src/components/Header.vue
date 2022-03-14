@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-xl navbar-light bg-light header-navbar ps-5">
     <div class="container-fluid">
       <router-link to="/" data-target=".navbar-collapse.show" data-toggle="collapse">
-        <img class="logo-image" src="../../public/BA_VK_Template_1_1_logo_h50_1.webp" alt="logo" />
+        <img class="logo-image" src="BA_VK_Template_1_1_logo_h50_1.webp" alt="logo" />
       </router-link>
       <button
         class="navbar-toggler"
@@ -116,7 +116,6 @@ export default defineComponent({
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 .header-navbar,
 .logout-button {
-  background: url("../../public/BA_VK_Template_1_1_header_no_logo_h50_2.webp") no-repeat top left;
   margin: 0;
   padding-bottom: 0;
   text-decoration: none;
@@ -124,6 +123,11 @@ export default defineComponent({
   font-size: 1.1rem;
   line-height: 1.1875;
   letter-spacing: 0.4em;
+}
+
+.header-navbar {
+  background-image: url("../../public/BA_VK_Template_1_1_header_no_logo_421x49.webp");
+  background-repeat: repeat-x;
 }
 .logout-button {
   padding-right: 0.5rem;
