@@ -6,7 +6,9 @@ _Proyecto en desarrollo_
 
 #### **1. Administrador**
 
-https://storage.googleapis.com/bairro-alto.appspot.com/bairo-admin-1647248841137.mov
+
+https://user-images.githubusercontent.com/83639312/158146256-81994984-9bc4-41c3-93da-d12cd809084a.mov
+
 
 El administrador tiene acceso al CMS en el que puede editar el contenido de las páginas web, añadir noticias, artículos, imágenes, etc.
 
@@ -14,7 +16,11 @@ Las páginas web se editan en el WYSIWYG editor CKEditor 5.
 
 #### **2. Profesor**
 
-https://storage.googleapis.com/bairro-alto.appspot.com/bairo-profe-1647248639021.mov
+
+
+https://user-images.githubusercontent.com/83639312/158146298-51cd349a-2692-41aa-89e4-6ffb5c917544.mov
+
+
 
 Desde el menú lateral, el profesor tiene acceso a las siguientes opciones:
 
@@ -88,7 +94,11 @@ _Firebase storage_ para guardar los archivos
 
 #### **3. Estudiante**
 
-https://storage.googleapis.com/bairro-alto.appspot.com/bairo-student-1647248723380.mov
+
+
+https://user-images.githubusercontent.com/83639312/158146336-c5c8fbf9-678b-458b-8d0e-360c8934dcd7.mov
+
+
 
 El alumno desde el menú lateral tiene acceso a las siguientes opciones:
 
