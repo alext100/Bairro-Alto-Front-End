@@ -5,6 +5,7 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 import Particles from "particles.vue3";
 import VueMobileDetection from "vue-mobile-detection";
 import VueKinesis from "vue-kinesis";
+import { MotionPlugin } from "@vueuse/motion";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -32,4 +33,5 @@ createApp(App)
   .use(Particles)
   .use(VueMobileDetection)
   .use(VueKinesis)
+  .use(MotionPlugin)
   .mount("#app");
