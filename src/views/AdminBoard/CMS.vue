@@ -227,7 +227,7 @@ export default {
 
 <style>
 body {
-  background-color: #f6f1f1;
+  background-color: #fff;
 }
 
 .categories {
