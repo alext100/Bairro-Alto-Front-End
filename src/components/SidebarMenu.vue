@@ -2,7 +2,7 @@
   <div class="sidebar" :class="isOpened ? 'open' : ''" :style="cssVars">
     <div class="sidebar__logo-details">
       <img v-if="menuLogo" :src="menuLogo" alt="menu-logo" class="menu-logo icon" />
-      <img v-else src="sardines32x32.png" alt="menu icon" class="m-3 icon" :class="menuIcon" />
+      <img v-else src="../../public/sardines32x32.png" alt="menu icon" class="m-3 icon" :class="menuIcon" />
       <div class="logo_name">
         {{ menuTitle }}
       </div>

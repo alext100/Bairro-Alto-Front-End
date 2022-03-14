@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-xl navbar-light bg-light header-navbar ps-5">
     <div class="container-fluid">
       <router-link to="/" data-target=".navbar-collapse.show" data-toggle="collapse">
-        <img class="logo-image" src="BA_VK_Template_1_1_logo_h50_1.webp" alt="logo" />
+        <img class="logo-image" src="../../public/BA_VK_Template_1_1_logo_h50_1.webp" alt="logo" />
       </router-link>
       <button
         class="navbar-toggler"

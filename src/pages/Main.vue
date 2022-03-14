@@ -186,13 +186,15 @@ export default defineComponent({
 </script>
 
 <style>
+body {
+  background-color: #fff;
+}
 .main-page__title {
   margin-top: 0;
   margin-bottom: 2rem;
   font-size: 2.5rem;
   line-height: 1.4;
   font-weight: 400;
-  background-color: white;
 }
 .teachers__title {
   color: var(--bairro-alto-logo-color);
@@ -222,7 +224,6 @@ export default defineComponent({
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
   text-decoration: none;
-  background-color: white;
   margin-bottom: 30px;
 }
 .features-text {
@@ -230,11 +231,8 @@ export default defineComponent({
   text-align: justify;
   text-justify: inter-word;
   z-index: 1;
-  background-color: white;
 }
-.features-title {
-  background-color: white;
-}
+
 .news-text {
   color: #000;
   text-align: justify;
