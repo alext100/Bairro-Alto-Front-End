@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { Post } from "@/types/interfaces";
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import FullCard from "@/components/FullCard.vue";
 
@@ -31,6 +31,13 @@ export default defineComponent({
   name: "News",
   components: { FullCard },
   setup() {
+    onMounted(() => {
+      document.body.style.backgroundColor = "white";
+    });
+    onUnmounted(() => {
+      document.body.style.backgroundColor = "";
+    });
+
     const { state } = useStore();
     const news = computed(() => state.webContent?.posts?.filter((post: Post) => post?.category === "Новости"));
 
