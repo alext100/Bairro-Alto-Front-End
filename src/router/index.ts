@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
 import MainPage from "@/pages/Main.vue";
+import News from "@/pages/News.vue";
 import Methodic from "@/pages/Methodic.vue";
 import Atmosphere from "@/pages/Atmosphere.vue";
 import CreateLesson from "@/views/TeacherBoard/CreateLesson.vue";
@@ -44,6 +45,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/atmosphere",
     name: "Atmosphere",
     component: Atmosphere,
+  },
+  {
+    path: "/news",
+    name: "News",
+    component: News,
   },
   {
     path: "/register",
