@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onMounted, onUnmounted } from "vue";
 import { mapActions, useStore } from "vuex";
 import getTitleAndBody from "@/utils/getTitleAndBody";
 import { Post } from "@/types/interfaces";
@@ -15,7 +15,13 @@ export default defineComponent({
 
   setup() {
     const { state, dispatch } = useStore();
-    onMounted(() => dispatch("getWebContent"));
+    onMounted(() => {
+      dispatch("getWebContent");
+      document.body.style.backgroundColor = "white";
+    });
+    onUnmounted(() => {
+      document.body.style.backgroundColor = "";
+    });
 
     const atmosphere = computed(() =>
       state.webContent?.posts.filter((post: Post) => post.title === "Атмосфера - полное описание")

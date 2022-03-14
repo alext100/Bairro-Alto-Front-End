@@ -129,7 +129,7 @@
 
 <script>
 import { NCard, NCarousel, NIcon } from "naive-ui";
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onMounted, onUnmounted } from "vue";
 import { mapActions, useStore } from "vuex";
 import { ArrowBack, ArrowForward } from "@vicons/ionicons5";
 import getTitleAndBody from "@/utils/getTitleAndBody";
@@ -144,6 +144,13 @@ export default defineComponent({
 
   components: { NCard, NCarousel, ArrowBack, ArrowForward, NIcon, Banner },
   setup() {
+    onMounted(() => {
+      document.body.style.backgroundColor = "white";
+    });
+    onUnmounted(() => {
+      document.body.style.backgroundColor = "";
+    });
+
     const { state, dispatch } = useStore();
     onMounted(() => dispatch("getWebContent"));
     const allTeachers = computed(() => state.webContent?.posts?.filter((post) => post.category === "Преподаватели"));
