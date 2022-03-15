@@ -129,7 +129,7 @@
 
 <script>
 import { NCard, NCarousel, NIcon } from "naive-ui";
-import { computed, defineComponent, onMounted, onUnmounted } from "vue";
+import { computed, defineComponent, onMounted } from "vue";
 import { mapActions, useStore } from "vuex";
 import { ArrowBack, ArrowForward } from "@vicons/ionicons5";
 import getTitleAndBody from "@/utils/getTitleAndBody";
@@ -146,9 +146,6 @@ export default defineComponent({
   setup() {
     onMounted(() => {
       document.body.style.backgroundColor = "white";
-    });
-    onUnmounted(() => {
-      document.body.style.backgroundColor = "";
     });
 
     const { state, dispatch } = useStore();
