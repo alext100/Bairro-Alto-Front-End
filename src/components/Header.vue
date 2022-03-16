@@ -18,10 +18,10 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
-            <a class="nav-link" href="#">Мероприятия</a>
+            <router-link class="nav-link" to="/events">Мероприятия</router-link>
           </li>
           <li class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
-            <a class="nav-link" href="#">Спецкурсы</a>
+            <router-link class="nav-link" to="/special-courses">Спецкурсы</router-link>
           </li>
           <li class="nav-item dropdown">
             <a
@@ -50,7 +50,7 @@
             </ul>
           </li>
           <li class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
-            <a class="nav-link" href="#">Материалы</a>
+            <router-link class="nav-link" to="/materials">Материалы</router-link>
           </li>
 
           <li v-if="!isUserAuthenticated" class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">

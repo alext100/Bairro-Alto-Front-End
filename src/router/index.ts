@@ -5,7 +5,11 @@ import MainPage from "@/pages/Main.vue";
 import News from "@/pages/News.vue";
 import Methodic from "@/pages/Methodic.vue";
 import Atmosphere from "@/pages/Atmosphere.vue";
+import Events from "@/pages/Events.vue";
+import Materials from "@/pages/Materials.vue";
+import SpecialCourses from "@/pages/SpecialCourses.vue";
 import CreateLesson from "@/views/TeacherBoard/CreateLesson.vue";
+import MaterialsPost from "@/pages/MaterialsPost.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
 const AdminBoard = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AdminBoard.vue");
@@ -50,6 +54,26 @@ const routes: Array<RouteRecordRaw> = [
     path: "/news",
     name: "News",
     component: News,
+  },
+  {
+    path: "/events",
+    name: "Events",
+    component: Events,
+  },
+  {
+    path: "/materials",
+    name: "Materials",
+    component: Materials,
+  },
+  {
+    path: "/materials/:id",
+    name: "MaterialsPost",
+    component: MaterialsPost,
+  },
+  {
+    path: "/special-courses",
+    name: "pecialCourses",
+    component: SpecialCourses,
   },
   {
     path: "/register",

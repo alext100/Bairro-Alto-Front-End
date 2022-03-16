@@ -124,6 +124,13 @@ import { NSkeleton, NSpace } from "naive-ui";
 import state from "@/store/state";
 import sideBarAdminMenuItems from "./sideBarAdminMenuItems";
 
+function getImage(item) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(item, "text/html");
+  const image = doc.getElementsByTagName("img")[0];
+  return image || undefined;
+}
+
 export default {
   name: "CMS",
   components: {
@@ -142,7 +149,13 @@ export default {
       profileName: state.currentUser.firstName,
       curCat: false,
       catItems: false,
-      curItem: false,
+      curItem: {
+        title: "",
+        body: "",
+        category: "",
+        image: "",
+        id: "",
+      },
       saving: false,
       showAddCat: false,
       showPostSettings: false,
@@ -219,6 +232,12 @@ export default {
       this.catItems = this.webContent.posts.filter((x) => x.category === cat);
     },
     async save() {
+      let image;
+      if (getImage(this.curItem.body) !== undefined) {
+        // eslint-disable-next-line prefer-destructuring
+        image = getImage(this.curItem.body).srcset.split(" ")[0];
+      } else image = undefined;
+      this.curItem = { ...this.curItem, image };
       await this.updatePostById(this.curItem);
     },
   },
