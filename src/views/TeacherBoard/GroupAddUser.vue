@@ -16,7 +16,7 @@
         paginationAutoPageSize="true"
         @grid-ready="onGridReady"
         :animateRows="true"
-        :getRowNodeId="getRowNodeId"
+        :getRowId="getRowNodeId"
         :rowSelection="rowSelection"
         @row-selected="onRowSelected"
       >
@@ -144,7 +144,7 @@ export default defineComponent({
       this.gridColumnApi = params.columnApi;
     },
 
-    getRowNodeId(data) {
+    getRowNodeId({ data }) {
       return data.id;
     },
     onRowSelected(event) {

@@ -17,7 +17,7 @@
           @grid-ready="onGridReady"
           :animateRows="true"
           :editType="editType"
-          :getRowNodeId="getRowNodeId"
+          :getRowId="getRowNodeId"
           :rowSelection="rowSelection"
           @row-selected="onRowSelected"
         >
@@ -131,7 +131,7 @@ export default defineComponent({
       this.gridColumnApi = params.columnApi;
     },
 
-    getRowNodeId(data) {
+    getRowNodeId({ data }) {
       return data.id;
     },
     onRowSelected(event) {
