@@ -202,8 +202,10 @@ export default defineComponent({
       this.isEdited = true;
       this.lessonId = lesson.id;
       this.lessonAudios = lesson.audios;
-      // eslint-disable-next-line prefer-destructuring
-      this.fileNameAndSize = this.lessonAudios[0].split("/").filter(Boolean).pop();
+      if (this.lessonAudios.length !== 0) {
+        // eslint-disable-next-line prefer-destructuring
+        this.fileNameAndSize = this.lessonAudios[0].split("/").filter(Boolean).pop();
+      }
     },
 
     async chooseFile() {
