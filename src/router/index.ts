@@ -10,6 +10,11 @@ import Materials from "@/pages/Materials.vue";
 import SpecialCourses from "@/pages/SpecialCourses.vue";
 import CreateLesson from "@/views/TeacherBoard/CreateLesson.vue";
 import MaterialsPost from "@/pages/MaterialsPost.vue";
+import CoursesNewSchool from "@/pages/CoursesNewSchool.vue";
+import CoursesNewOnline from "@/pages/CoursesNewOnline.vue";
+import CoursesContSchool from "@/pages/CoursesContSchool.vue";
+import Courses from "@/pages/Courses.vue";
+import CoursesContOnline from "@/pages/CoursesContOnline.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
 const AdminBoard = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AdminBoard.vue");
@@ -72,8 +77,33 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/special-courses",
-    name: "pecialCourses",
+    name: "SpecialCourses",
     component: SpecialCourses,
+  },
+  {
+    path: "/courses/new-school",
+    name: "CoursesNewSchool",
+    component: CoursesNewSchool,
+  },
+  {
+    path: "/courses/new-online",
+    name: "CoursesNewOnline",
+    component: CoursesNewOnline,
+  },
+  {
+    path: "/courses/cont-school",
+    name: "CoursesContSchool",
+    component: CoursesContSchool,
+  },
+  {
+    path: "/courses/cont-online",
+    name: "CoursesContOnline",
+    component: CoursesContOnline,
+  },
+  {
+    path: "/courses",
+    name: "Courses",
+    component: Courses,
   },
   {
     path: "/register",
