@@ -44,7 +44,18 @@
     <div class="col-7 p-2 col3 richtext-editor">
       <template v-if="curItem">
         <template v-for="key in Object.keys(config.fields.posts)" :key="key">
-          <template v-if="config.fields.posts[key] === 'text'">
+          <template v-if="config.fields.posts[key] === 'text' && curItem[key].includes('text-disabled')">
+            <label>{{ key }}</label>
+            <n-space vertical>
+              <n-skeleton v-if="isLoading" height="40px" width="33%" />
+              <n-skeleton v-if="isLoading" height="40px" width="66%" :sharp="false" />
+              <n-skeleton v-if="isLoading" height="40px" round />
+              <n-skeleton v-if="isLoading" height="40px" circle />
+            </n-space>
+            <input type="text" class="form-control" v-model="curItem[key]" disabled />
+          </template>
+
+          <template v-else-if="config.fields.posts[key] === 'text'">
             <label>{{ key }}</label>
             <n-space vertical>
               <n-skeleton v-if="isLoading" height="40px" width="33%" />
