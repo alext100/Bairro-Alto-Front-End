@@ -1,11 +1,11 @@
 <template>
   <div class="particles-container">
     <Particles
-      id="tsparticles"
+      :id="id"
       class="tsparticles"
       :particlesInit="particlesInit"
       :particlesLoaded="particlesLoaded"
-      url="/particlesText.json"
+      :url="url"
     />
   </div>
 </template>
@@ -14,6 +14,16 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  props: {
+    url: {
+      type: String,
+      required: true,
+    },
+    id: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       loaded: false,
@@ -29,6 +39,12 @@ export default defineComponent({
   position: absolute;
   width: 100%;
   height: 500px;
+}
+
+#tsparticles-materials {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
 }
 .particles-container {
   justify-content: center;
