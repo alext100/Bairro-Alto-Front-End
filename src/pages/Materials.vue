@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Banner id="tsparticles-materials" url="/particlesImages.json" v-if="!$isMobile()" />
     <div class="materials-page__features ck-content">
       <h1 class="features-title features-item m-0">Материалы</h1>
       <div class="container cards-container">
@@ -20,15 +21,15 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { computed, defineComponent, onMounted } from "vue";
 import { mapActions, useStore } from "vuex";
-import { Post } from "@/types/interfaces";
 import { NCard } from "naive-ui";
+import Banner from "@/components/Banner.vue";
 
 export default defineComponent({
   name: "Materials",
-  components: { NCard },
+  components: { NCard, Banner },
 
   setup() {
     const { state, dispatch } = useStore();
@@ -37,7 +38,7 @@ export default defineComponent({
       document.body.style.backgroundColor = "white";
     });
 
-    const materials = computed(() => state.webContent?.posts?.filter((post: Post) => post?.category === "Материалы"));
+    const materials = computed(() => state.webContent?.posts?.filter((post) => post?.category === "Материалы"));
 
     return {
       materials,
