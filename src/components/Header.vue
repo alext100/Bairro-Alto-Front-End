@@ -36,16 +36,23 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li data-target=".navbar-collapse.show" data-toggle="collapse">
-                <a class="dropdown-item" href="#">Хочу изучать с нуля в школе</a>
+                <router-link class="dropdown-item" to="/courses/new-school">Хочу изучать с нуля в школе</router-link>
               </li>
               <li data-target=".navbar-collapse.show" data-toggle="collapse">
-                <a class="dropdown-item" href="#">Хочу изучать с нуля в онлайн</a>
+                <router-link class="dropdown-item" to="/courses/new-online">Хочу изучать с нуля в онлайн</router-link>
               </li>
               <li data-target=".navbar-collapse.show" data-toggle="collapse">
-                <a class="dropdown-item" href="#">Хочу продолжить обучение в школе</a>
+                <router-link class="dropdown-item" to="/courses/cont-school"
+                  >Хочу продолжить обучение в школе</router-link
+                >
               </li>
               <li data-target=".navbar-collapse.show" data-toggle="collapse">
-                <a class="dropdown-item" href="#">Хочу продолжить обучение онлайн</a>
+                <router-link class="dropdown-item" to="/courses/cont-online"
+                  >Хочу продолжить обучение онлайн</router-link
+                >
+              </li>
+              <li data-target=".navbar-collapse.show" data-toggle="collapse">
+                <router-link class="dropdown-item" to="/courses">Расписание и информация об уровнях</router-link>
               </li>
             </ul>
           </li>
