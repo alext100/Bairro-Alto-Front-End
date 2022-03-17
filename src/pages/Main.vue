@@ -51,7 +51,7 @@
         </template>
       </n-carousel>
     </div>
-    <Banner v-if="!$isMobile()" />
+    <Banner url="/particlesText.json" id="tsparticles" v-if="!$isMobile()" />
     <div v-if="!$isMobile()" class="banner-container"></div>
 
     <section class="main-page__features ck-content">
@@ -189,7 +189,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 body {
   background-color: #fff;
 }
