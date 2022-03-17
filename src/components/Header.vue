@@ -70,7 +70,7 @@
             data-target=".navbar-collapse.show"
             data-toggle="collapse"
           >
-            <router-link class="nav-link" to="/admin">{{ "Администраторская" }} </router-link>
+            <router-link class="nav-link" to="/cms">{{ "Администраторская" }} </router-link>
           </li>
           <li
             v-if="currentUser.teacherAccess"
