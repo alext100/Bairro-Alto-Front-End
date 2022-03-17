@@ -41,6 +41,7 @@
     "@ckeditor/ckeditor5-table": "^32.0.0",
     "@ckeditor/ckeditor5-theme-lark": "^32.0.0",
     "@ckeditor/ckeditor5-typing": "^32.0.0",
+    "@ckeditor/ckeditor5-ui": "^32.0.0",
     "@ckeditor/ckeditor5-vue": "^2.0.1",
     "@ckeditor/ckeditor5-watchdog": "^32.0.0",
     "@ckeditor/ckeditor5-widget": "^32.0.0",

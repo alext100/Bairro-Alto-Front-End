@@ -38,7 +38,7 @@
 <script>
 import state from "@/store/state";
 import UploadAdapter from "@/utils/uploadAdapter";
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { mapActions, mapState } from "vuex";
 import CkEditor from "@/components/CkEditorCustom.vue";
 import GroupMessages from "@/views/TeacherBoard/GroupMessages.vue";
@@ -52,6 +52,9 @@ export default defineComponent({
 
   setup() {
     const editorData = ref("");
+    onMounted(() => {
+      document.body.style.backgroundColor = "white";
+    });
     return {
       editorData,
     };

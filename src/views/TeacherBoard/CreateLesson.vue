@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { mapActions, mapState } from "vuex";
 import CkEditor from "@/components/CkEditorCustom.vue";
 import state from "@/store/state";
@@ -89,6 +89,9 @@ export default defineComponent({
       { text: "B1", value: "B1" },
       { text: "B2", value: "B2" },
     ];
+    onMounted(() => {
+      document.body.style.backgroundColor = "white";
+    });
 
     return {
       editorData,
@@ -202,8 +205,10 @@ export default defineComponent({
       this.isEdited = true;
       this.lessonId = lesson.id;
       this.lessonAudios = lesson.audios;
-      // eslint-disable-next-line prefer-destructuring
-      this.fileNameAndSize = this.lessonAudios[0].split("/").filter(Boolean).pop();
+      if (this.lessonAudios.length !== 0) {
+        // eslint-disable-next-line prefer-destructuring
+        this.fileNameAndSize = this.lessonAudios[0].split("/").filter(Boolean).pop();
+      }
     },
 
     async chooseFile() {
