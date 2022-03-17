@@ -42,6 +42,7 @@ import { defineComponent, onMounted, ref } from "vue";
 import { mapActions, mapState } from "vuex";
 import CkEditor from "@/components/CkEditorCustom.vue";
 import GroupMessages from "@/views/TeacherBoard/GroupMessages.vue";
+import getTitleAndBody from "@/utils/getTitleAndBody";
 
 export default defineComponent({
   name: "GroupInputMessage",
@@ -88,24 +89,10 @@ export default defineComponent({
       });
     },
 
-    getTitleAndBody() {
-      const data = {
-        title: "",
-        body: "",
-      };
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(this.editorData, "text/html");
-      const title = doc.getElementsByTagName("h1")[0];
-      data.title = title.innerText;
-      doc.body.removeChild(title);
-      data.body = doc.body.innerHTML;
-      return data;
-    },
-
     async handleCKeditor() {
       this.errorAlert = "";
       if (this.editorData !== "") {
-        const data = this.getTitleAndBody();
+        const data = getTitleAndBody(this.editorData);
         const groupToUpdate = {
           homeworkToDo: [
             ...state.currentGroup.homeworkToDo.filter((homework) => homework.time !== this.homeworkTimeCreated),

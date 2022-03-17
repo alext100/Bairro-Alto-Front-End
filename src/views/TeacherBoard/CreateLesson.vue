@@ -71,6 +71,7 @@ import state from "@/store/state";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import Lessons from "@/views/TeacherBoard/Lessons.vue";
 import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
+import getTitleAndBody from "@/utils/getTitleAndBody";
 
 export default defineComponent({
   name: "GroupInputMessage",
@@ -136,25 +137,11 @@ export default defineComponent({
       });
     },
 
-    getTitleAndBody() {
-      const data = {
-        title: "",
-        body: "",
-      };
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(this.editorData, "text/html");
-      const title = doc.getElementsByTagName("h1")[0];
-      data.title = title.innerText;
-      doc.body.removeChild(title);
-      data.body = doc.body.innerHTML;
-      return data;
-    },
-
     async handleCKeditor() {
       this.noType = true;
 
       if (this.isEdited && this.editorData !== "") {
-        const data = this.getTitleAndBody();
+        const data = getTitleAndBody(this.editorData);
         const lesson = {
           title: data.title,
           body: data.body,
@@ -175,7 +162,7 @@ export default defineComponent({
         }, 1100);
       } else if (this.editorData !== "" && this.mixedGroupedSelected !== undefined) {
         this.errorAlert = "";
-        const data = this.getTitleAndBody();
+        const data = getTitleAndBody(this.editorData);
         const lesson = {
           title: data.title,
           body: data.body,
