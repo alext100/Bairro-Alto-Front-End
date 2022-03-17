@@ -24,7 +24,7 @@ export default defineComponent({
     });
 
     const atmosphere = computed(() =>
-      state.webContent?.posts.filter((post: Post) => post.title === "Атмосфера - полное описание")
+      state.webContent?.posts.filter((post: Post) => post?.title?.match("Атмосфера - полное описание"))
     );
     const atmosphereBody = computed(() => getTitleAndBody(atmosphere?.value[0].body));
 
