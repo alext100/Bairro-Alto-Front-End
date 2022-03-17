@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { mapActions, mapState } from "vuex";
 import CkEditor from "@/components/CkEditorCustom.vue";
 import state from "@/store/state";
@@ -89,6 +89,9 @@ export default defineComponent({
       { text: "B1", value: "B1" },
       { text: "B2", value: "B2" },
     ];
+    onMounted(() => {
+      document.body.style.backgroundColor = "white";
+    });
 
     return {
       editorData,

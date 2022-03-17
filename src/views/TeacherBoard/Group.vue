@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { mapState } from "vuex";
 import GroupMembersVue from "@/views/TeacherBoard/GroupMembers.vue";
 import GroupInputMessageVue from "@/views/TeacherBoard/GroupInputMessage.vue";
@@ -36,6 +36,12 @@ export default defineComponent({
     OnlineLessonVue,
     StudentErrorsVue,
     GroupAddDeleteLesson,
+  },
+
+  setup() {
+    onMounted(() => {
+      document.body.style.backgroundColor = "white";
+    });
   },
   computed: {
     ...mapState(["currentGroup", "loadedUsersFromGroup"]),
