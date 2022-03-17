@@ -152,12 +152,12 @@ export default defineComponent({
     onMounted(() => dispatch("getWebContent"));
     const allTeachers = computed(() => state.webContent?.posts?.filter((post) => post.category === "Преподаватели"));
     const methodic = computed(() =>
-      state.webContent?.posts?.filter((post) => post?.title === "Лексический подход - главная страница")
+      state.webContent?.posts?.filter((post) => post?.title.match("Лексический подход - главная страница"))
     );
     const methodicBody = computed(() => getTitleAndBody(methodic?.value[0].body));
 
     const atmosphere = computed(() =>
-      state.webContent?.posts?.filter((post) => post?.title === "Атмосфера - главная страница")
+      state.webContent?.posts?.filter((post) => post?.title.match("Атмосфера - главная страница"))
     );
     const atmosphereBody = computed(() => getTitleAndBody(atmosphere?.value[0].body));
 

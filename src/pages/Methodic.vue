@@ -24,7 +24,7 @@ export default defineComponent({
     });
 
     const methodic = computed(() =>
-      state.webContent?.posts.filter((post: Post) => post.title === "Лексический подход - полное описание")
+      state.webContent?.posts.filter((post: Post) => post?.title?.match("Лексический подход - полное описание"))
     );
     const methodicBody = computed(() => getTitleAndBody(methodic?.value[0].body));
 
