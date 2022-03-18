@@ -8,6 +8,7 @@ import Atmosphere from "@/pages/Atmosphere.vue";
 import Events from "@/pages/Events.vue";
 import Materials from "@/pages/Materials.vue";
 import SpecialCourses from "@/pages/SpecialCourses.vue";
+import SpecialCourse from "@/pages/SpecialCourse.vue";
 import CreateLesson from "@/views/TeacherBoard/CreateLesson.vue";
 import MaterialsPost from "@/pages/MaterialsPost.vue";
 import CoursesNewSchool from "@/pages/CoursesNewSchool.vue";
@@ -79,6 +80,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/special-courses",
     name: "SpecialCourses",
     component: SpecialCourses,
+  },
+  {
+    path: "/special-course/:id",
+    name: "SpecialCourse",
+    component: SpecialCourse,
   },
   {
     path: "/courses/new-school",

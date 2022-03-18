@@ -16,7 +16,9 @@
       </div>
 
       <template v-for="cat in this.webContent.categories" :key="cat.title">
-        <a v-if="!isLoading" @click="setCurCat(cat.slug)" :class="{ active: curCat == cat.slug }"> {{ cat.title }}</a>
+        <a v-if="!isLoading" @click="setCurCat(cat.slug)" :class="{ activeCat: curCat == cat.slug }">
+          {{ cat.title }}</a
+        >
       </template>
       <n-space vertical>
         <n-skeleton v-if="isLoading" height="40px" width="33%" />
@@ -125,6 +127,7 @@
 </template>
 
 <script>
+/* eslint-disable prefer-destructuring */
 import SortableList from "@/components/AdminCMS/SortableList.vue";
 import PostList from "@/components/AdminCMS/PostList.vue";
 import AddCategory from "@/components/AdminCMS/AddCategory.vue";
@@ -244,10 +247,12 @@ export default {
     },
     async save() {
       let image;
-      if (getImage(this.curItem.body) !== undefined) {
-        // eslint-disable-next-line prefer-destructuring
-        image = getImage(this.curItem.body).srcset.split(" ")[0];
-      } else image = undefined;
+      const imageFromCurItemBody = getImage(this.curItem.body);
+      if (imageFromCurItemBody !== undefined && imageFromCurItemBody.srcset !== "") {
+        image = imageFromCurItemBody.srcset.split(" ")[0];
+      } else if (imageFromCurItemBody !== undefined && imageFromCurItemBody.src !== "") {
+        image = imageFromCurItemBody.src;
+      } else image = "";
       this.curItem = { ...this.curItem, image };
       await this.updatePostById(this.curItem);
     },
@@ -284,7 +289,7 @@ body {
   cursor: pointer;
 }
 
-.active {
+.activeCat {
   background-color: #656bf7;
 }
 
