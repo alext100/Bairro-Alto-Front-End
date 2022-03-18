@@ -125,6 +125,7 @@
 </template>
 
 <script>
+/* eslint-disable prefer-destructuring */
 import SortableList from "@/components/AdminCMS/SortableList.vue";
 import PostList from "@/components/AdminCMS/PostList.vue";
 import AddCategory from "@/components/AdminCMS/AddCategory.vue";
@@ -244,10 +245,12 @@ export default {
     },
     async save() {
       let image;
-      if (getImage(this.curItem.body) !== undefined) {
-        // eslint-disable-next-line prefer-destructuring
-        image = getImage(this.curItem.body).srcset.split(" ")[0];
-      } else image = undefined;
+      const imageFromCurItemBody = getImage(this.curItem.body);
+      if (imageFromCurItemBody !== undefined && imageFromCurItemBody.srcset !== "") {
+        image = imageFromCurItemBody.srcset.split(" ")[0];
+      } else if (imageFromCurItemBody !== undefined && imageFromCurItemBody.src !== "") {
+        image = imageFromCurItemBody.src;
+      } else image = "";
       this.curItem = { ...this.curItem, image };
       await this.updatePostById(this.curItem);
     },
