@@ -16,7 +16,9 @@
       </div>
 
       <template v-for="cat in this.webContent.categories" :key="cat.title">
-        <a v-if="!isLoading" @click="setCurCat(cat.slug)" :class="{ active: curCat == cat.slug }"> {{ cat.title }}</a>
+        <a v-if="!isLoading" @click="setCurCat(cat.slug)" :class="{ activeCat: curCat == cat.slug }">
+          {{ cat.title }}</a
+        >
       </template>
       <n-space vertical>
         <n-skeleton v-if="isLoading" height="40px" width="33%" />
@@ -287,7 +289,7 @@ body {
   cursor: pointer;
 }
 
-.active {
+.activeCat {
   background-color: #656bf7;
 }
 
