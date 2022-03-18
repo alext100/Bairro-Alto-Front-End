@@ -16,6 +16,7 @@ import CoursesNewOnline from "@/pages/CoursesNewOnline.vue";
 import CoursesContSchool from "@/pages/CoursesContSchool.vue";
 import Courses from "@/pages/Courses.vue";
 import CoursesContOnline from "@/pages/CoursesContOnline.vue";
+import Payment from "@/pages/Payment.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
 const AdminBoard = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AdminBoard.vue");
@@ -110,6 +111,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/courses",
     name: "Courses",
     component: Courses,
+  },
+  {
+    path: "/payment",
+    name: "Payment",
+    component: Payment,
   },
   {
     path: "/register",

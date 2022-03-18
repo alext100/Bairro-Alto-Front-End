@@ -146,6 +146,13 @@ interface State {
   groupLessons: Array<Lesson>;
   webContent: WebContent;
 }
+interface UserPaymentData {
+  courseName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  price: number;
+}
 
 export {
   UserModel,
@@ -160,4 +167,5 @@ export {
   InfoModel,
   WebContent,
   Post,
+  UserPaymentData,
 };

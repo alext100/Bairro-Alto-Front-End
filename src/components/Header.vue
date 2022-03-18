@@ -59,6 +59,9 @@
           <li class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
             <router-link class="nav-link" to="/materials">Материалы</router-link>
           </li>
+          <li class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
+            <router-link class="nav-link" to="/payment">Оплатить</router-link>
+          </li>
 
           <li v-if="!isUserAuthenticated" class="nav-item" data-target=".navbar-collapse.show" data-toggle="collapse">
             <router-link class="nav-link" to="/login">{{ "Войти" }} </router-link>
