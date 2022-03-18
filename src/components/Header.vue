@@ -147,7 +147,7 @@ export default defineComponent({
 }
 a,
 .logout-button {
-  color: #d59758 !important;
+  color: var(--hover-color) !important;
   font-family: Noto Sans, Arial, sans-serif;
 }
 

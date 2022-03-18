@@ -267,8 +267,8 @@ form {
   letter-spacing: 0.5em;
   text-decoration: none;
   padding: 1rem 1.6rem 1rem 2.5rem;
-  color: #d59758;
-  border: 1px solid #d59758;
+  color: var(--hover-color);
+  border: 1px solid var(--hover-color);
   border-radius: 1.2rem;
   -webkit-transition: border-color 0.2s;
   cursor: pointer;

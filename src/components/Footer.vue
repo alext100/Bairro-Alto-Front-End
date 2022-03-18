@@ -58,7 +58,7 @@ export default defineComponent({
 }
 a {
   text-decoration: none;
-  color: #d59758;
+  color: var(--hover-color);
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
 }
@@ -87,6 +87,6 @@ ul {
 .pageFooter {
   margin-top: 30px;
   margin-bottom: 30px;
-  border-top: 1px solid #d59758;
+  border-top: 1px solid var(--hover-color);
 }
 </style>

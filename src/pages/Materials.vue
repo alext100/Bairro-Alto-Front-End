@@ -70,7 +70,7 @@ export default defineComponent({
   text-decoration: none;
 }
 .features-title {
-  color: #d59758;
+  color: var(--hover-color);
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
   text-decoration: none;
