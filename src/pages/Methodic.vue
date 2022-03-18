@@ -2,6 +2,7 @@
   <div class="container p-3 mt-2">
     <div v-if="methodic[0]?.body" class="features-text" v-html="methodicBody?.body"></div>
   </div>
+  <Footer />
 </template>
 
 <script lang="ts">
@@ -9,9 +10,11 @@ import { computed, defineComponent, onMounted, onUnmounted } from "vue";
 import { mapActions, useStore } from "vuex";
 import getTitleAndBody from "@/utils/getTitleAndBody";
 import { Post } from "@/types/interfaces";
+import Footer from "@/components/Footer.vue";
 
 export default defineComponent({
   name: "Methodic",
+  components: { Footer },
 
   setup() {
     const { state, dispatch } = useStore();

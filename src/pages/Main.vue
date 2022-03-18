@@ -81,7 +81,7 @@
       </div>
     </section>
 
-    <div class="main-page__features ck-content">
+    <div class="main-page__features-news ck-content">
       <div v-motion-slide-visible-bottom :delay="200">
         <router-link to="/news" class="features-item">
           <h2 class="features-title m-0">Новости</h2>
@@ -125,6 +125,7 @@
       </div>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script>
@@ -134,6 +135,7 @@ import { mapActions, useStore } from "vuex";
 import { ArrowBack, ArrowForward } from "@vicons/ionicons5";
 import getTitleAndBody from "@/utils/getTitleAndBody";
 import Banner from "@/components/Banner.vue";
+import Footer from "@/components/Footer.vue";
 
 function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -142,7 +144,7 @@ function getRandomInteger(min, max) {
 export default defineComponent({
   name: "MainPage",
 
-  components: { NCard, NCarousel, ArrowBack, ArrowForward, NIcon, Banner },
+  components: { NCard, NCarousel, ArrowBack, ArrowForward, NIcon, Banner, Footer },
   setup() {
     onMounted(() => {
       document.body.style.backgroundColor = "white";
@@ -211,6 +213,11 @@ body {
   padding-top: 3rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #d59758;
+  z-index: 2;
+}
+.main-page__features-news {
+  padding-top: 3rem;
+  padding-bottom: 1rem;
   z-index: 2;
 }
 

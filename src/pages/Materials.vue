@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <Banner id="tsparticles-materials" url="/particlesImages.json" v-if="!$isMobile()" />
-    <div class="materials-page__features ck-content">
-      <h1 class="features-title features-item m-0">Материалы</h1>
+    <div class="ck-content">
+      <h1 class="features-title m-3">Материалы</h1>
       <div class="container cards-container">
         <n-card hoverable v-for="material in materials || []" :key="material" footer-style="font-size:18px">
           <template #cover>
@@ -19,6 +19,7 @@
       </div>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script>
@@ -26,10 +27,11 @@ import { computed, defineComponent, onMounted } from "vue";
 import { mapActions, useStore } from "vuex";
 import { NCard } from "naive-ui";
 import Banner from "@/components/Banner.vue";
+import Footer from "@/components/Footer.vue";
 
 export default defineComponent({
   name: "Materials",
-  components: { NCard, Banner },
+  components: { NCard, Banner, Footer },
 
   setup() {
     const { state, dispatch } = useStore();
@@ -66,5 +68,12 @@ export default defineComponent({
 .materials-page__router-link {
   color: black;
   text-decoration: none;
+}
+.features-title {
+  color: #d59758;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+  text-decoration: none;
+  margin-bottom: 30px;
 }
 </style>
