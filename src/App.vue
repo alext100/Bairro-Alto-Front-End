@@ -51,6 +51,7 @@ export default defineComponent({
   --success-color: #21a67a;
   --success-bg-color: #e0eee4;
   --bairro-alto-logo-color: #fcb73c;
+  --hover-color: #d59758;
 }
 
 /* route transitions */
