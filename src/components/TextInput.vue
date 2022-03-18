@@ -5,6 +5,9 @@
       :name="name"
       :id="name"
       :type="type"
+      :step="step"
+      :min="min"
+      :max="max"
       :v-model="inputValueVmodel"
       :value="inputValue"
       :placeholder="placeholder"
@@ -26,6 +29,21 @@ export default {
     type: {
       type: String,
       default: "text",
+    },
+    step: {
+      type: String,
+      default: "100",
+      required: false,
+    },
+    min: {
+      type: String,
+      default: "0",
+      required: false,
+    },
+    max: {
+      type: String,
+      default: "100000",
+      required: false,
     },
     value: {
       type: String,
@@ -98,7 +116,7 @@ input {
 }
 
 input:focus {
-  border-color: var(--primary-color);
+  border-color: var(--hover-color);
 }
 
 .help-message {
