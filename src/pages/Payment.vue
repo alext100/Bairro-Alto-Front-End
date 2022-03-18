@@ -209,66 +209,14 @@ form {
   min-width: 350px;
 }
 
-@media (max-width: 899px) {
-  form {
-    width: 800px;
-  }
-}
-@media (max-width: 799px) {
-  form {
-    width: 700px;
-  }
-}
-@media (max-width: 699px) {
-  form {
-    width: 600px;
-  }
-}
-@media (max-width: 599px) {
-  form {
-    width: 500px;
-  }
-  .textInput {
-    max-width: 500px;
-  }
-  .container {
-    padding: 5px;
-  }
-  form {
-    padding: 10px;
-  }
-}
-@media (max-width: 499px) {
-  form {
-    width: 450px;
-  }
-  .textInput {
-    max-width: 400px;
-  }
-  .container {
-    padding: 0;
-  }
-  form {
-    padding: 10px;
-  }
-}
-@media (max-width: 399px) {
-  form {
-    width: 390px;
-  }
-  .textInput {
-    max-width: 380px;
-  }
-}
-
 .submit-btn {
   display: inline-block;
   text-transform: uppercase;
   letter-spacing: 0.5em;
   text-decoration: none;
   padding: 1rem 1.6rem 1rem 2.5rem;
-  color: #d59758;
-  border: 1px solid #d59758;
+  color: var(--hover-color);
+  border: 1px solid var(--hover-color);
   border-radius: 1.2rem;
   -webkit-transition: border-color 0.2s;
   cursor: pointer;
@@ -317,11 +265,58 @@ form {
     transform: translate(1px, -2px);
   }
 }
-
 .submit-btn:hover {
   transform: scale(1.1);
 }
 .isCheckedErrorMessage {
   color: var(--error-color);
+}
+
+@media (max-width: 899px) {
+  form {
+    width: 800px;
+  }
+}
+@media (max-width: 799px) {
+  form {
+    width: 700px;
+  }
+}
+@media (max-width: 699px) {
+  form {
+    width: 600px;
+  }
+}
+@media (max-width: 599px) {
+  form {
+    width: 500px;
+    padding: 10px;
+  }
+  .textInput {
+    max-width: 500px;
+  }
+  .container {
+    padding: 5px;
+  }
+}
+@media (max-width: 499px) {
+  form {
+    width: 450px;
+    padding: 10px;
+  }
+  .textInput {
+    max-width: 400px;
+  }
+  .container {
+    padding: 0;
+  }
+}
+@media (max-width: 399px) {
+  form {
+    width: 390px;
+  }
+  .textInput {
+    max-width: 380px;
+  }
 }
 </style>

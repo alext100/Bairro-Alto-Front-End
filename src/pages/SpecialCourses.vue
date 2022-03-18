@@ -7,7 +7,7 @@
         <n-card hoverable v-for="course in specialCourses || []" :key="course" footer-style="font-size: 18px">
           <template #cover>
             <router-link :to="{ name: 'SpecialCourse', params: { id: course.id } }">
-              <img :src="course.image" />
+              <img :src="course.image" alt="Course cover" />
             </router-link>
           </template>
           <template #footer>
@@ -51,7 +51,7 @@ export default defineComponent({
 
 <style scoped>
 .features-item {
-  color: #d59758;
+  color: var(--hover-color);
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
   text-decoration: none;

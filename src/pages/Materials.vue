@@ -7,7 +7,7 @@
         <n-card hoverable v-for="material in materials || []" :key="material" footer-style="font-size:18px">
           <template #cover>
             <router-link :to="{ name: 'MaterialsPost', params: { id: material.id } }">
-              <img :src="material.image" />
+              <img :src="material.image" alt="Post cover" />
             </router-link>
           </template>
           <template #footer>
@@ -70,7 +70,7 @@ export default defineComponent({
   text-decoration: none;
 }
 .features-title {
-  color: #d59758;
+  color: var(--hover-color);
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
   text-decoration: none;

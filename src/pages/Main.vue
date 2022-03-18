@@ -212,7 +212,7 @@ body {
 .main-page__features {
   padding-top: 3rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #d59758;
+  border-bottom: 1px solid var(--hover-color);
   z-index: 2;
 }
 .main-page__features-news {
@@ -222,7 +222,7 @@ body {
 }
 
 .main-page__teachers {
-  border-bottom: 1px solid #d59758;
+  border-bottom: 1px solid var(--hover-color);
 }
 
 .features {
@@ -231,7 +231,7 @@ body {
 }
 
 .features-item {
-  color: #d59758;
+  color: var(--hover-color);
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
   text-decoration: none;
