@@ -322,11 +322,7 @@ export default defineComponent({
 }
 
 .ck-editor__top {
-  height: 1px;
   overflow: hidden;
-}
-
-.ck-editor__top {
   display: block;
   height: 38.67px;
   .ck-sticky-panel__placeholder {
