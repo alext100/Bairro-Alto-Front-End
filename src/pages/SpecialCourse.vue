@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div class="materials-page__features ck-content">
-      <h1 class="features-title features-item m-0">Спецкурсы</h1>
+    <div class="ck-content">
+      <h1 class="features-item m-3">Спецкурсы</h1>
       <div class="container cards-container">
         <n-card :bordered="false" hoverable header-style="font-size: 30px" footer-style="font-size: 18px">
           <template #header>{{ postToShow[0].title }}</template>
@@ -14,6 +14,7 @@
       </div>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script lang="ts">
@@ -22,10 +23,11 @@ import { useStore } from "vuex";
 import { Post } from "@/types/interfaces";
 import { NCard } from "naive-ui";
 import { useRoute } from "vue-router";
+import Footer from "@/components/Footer.vue";
 
 export default defineComponent({
   name: "SpecialCourse",
-  components: { NCard },
+  components: { NCard, Footer },
 
   setup() {
     const route = useRoute();

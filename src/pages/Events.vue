@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div class="event-page__features ck-content">
-      <h1 class="features-title features-item m-0">Мероприятия</h1>
+    <div class="ck-content">
+      <h1 class="features-title m-3">Мероприятия</h1>
       <full-card
         v-for="event in events || []"
         :key="event"
@@ -18,6 +18,7 @@
       </full-card>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script lang="ts">
@@ -25,10 +26,11 @@ import { computed, defineComponent, onMounted } from "vue";
 import { mapActions, useStore } from "vuex";
 import { Post } from "@/types/interfaces";
 import FullCard from "@/components/FullCard.vue";
+import Footer from "@/components/Footer.vue";
 
 export default defineComponent({
   name: "Events",
-  components: { FullCard },
+  components: { FullCard, Footer },
 
   setup() {
     const { state, dispatch } = useStore();
@@ -49,3 +51,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.features-title {
+  color: #d59758;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+  text-decoration: none;
+  margin-bottom: 30px;
+}
+</style>

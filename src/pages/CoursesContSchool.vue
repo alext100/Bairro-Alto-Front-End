@@ -4,6 +4,7 @@
       <div v-html="coursesSchool[0].body"></div>
     </n-card>
   </div>
+  <Footer />
 </template>
 
 <script lang="ts">
@@ -11,10 +12,11 @@ import { Post } from "@/types/interfaces";
 import { computed, defineComponent, onMounted } from "vue";
 import { useStore } from "vuex";
 import { NCard } from "naive-ui";
+import Footer from "@/components/Footer.vue";
 
 export default defineComponent({
   name: "CoursesContSchool",
-  components: { NCard },
+  components: { NCard, Footer },
 
   setup() {
     const { state, dispatch } = useStore();
