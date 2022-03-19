@@ -78,7 +78,7 @@
 import { Form } from "vee-validate";
 import * as Yup from "yup";
 import TextInput from "@/components/TextInput.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 import { UserPaymentData } from "@/types/interfaces";
 import { computed, defineComponent, ref } from "vue";
 import Footer from "@/components/Footer.vue";
@@ -161,7 +161,6 @@ export default defineComponent({
 
   methods: {
     ...mapActions(["payment"]),
-    ...mapState(["isRegistered", "isWrongEmailOnRegister"]),
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async handlePayment({ courseName, firstName, lastName, email, price }: Record<string, any>) {
@@ -176,6 +175,7 @@ export default defineComponent({
           lastName,
           email,
           price,
+          date: Date.now(),
         };
 
         try {
