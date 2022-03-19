@@ -152,6 +152,7 @@ interface UserPaymentData {
   lastName: string;
   email: string;
   price: number;
+  date: number;
 }
 
 export {
