@@ -425,4 +425,9 @@ textarea {
 .clear {
   clear: both;
 }
+@media (max-width: 599px) {
+  .categories {
+    left: 0;
+  }
+}
 </style>
