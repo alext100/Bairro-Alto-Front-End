@@ -261,6 +261,25 @@ body {
   z-index: 99;
   transition: all 0.5s ease;
 }
+@media (max-width: 599px) {
+  .sidebar {
+    height: 5%;
+  }
+  .sidebar__body-profile_open {
+    display: flex;
+  }
+  .sidebar .sidebar__logo-details #btn {
+    top: 32% !important;
+  }
+  .sidebar.open {
+    width: 200px;
+    height: 100%;
+    opacity: 0.8;
+  }
+  .profile {
+    display: none;
+  }
+}
 .sidebar.open {
   width: 200px;
   opacity: 0.8;

@@ -1,7 +1,8 @@
 <template>
   <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
   <div class="container">
-    <b-card border-variant="light" class="m-4 teacher-card" style="min-width: 300px">
+    <h1 class="m-2">Мои группы</h1>
+    <b-card border-variant="white" class="teacher-card" style="min-width: 300px">
       <b-card-text
         >В этом разделе можно найти все группы школы и добавить группы в твой список или удалить их оттуда. Перейдя в
         конкретную группу можно добавить или удалить студентов из группы. Назначить им домашнее задание. Или делать
@@ -9,7 +10,6 @@
       >
     </b-card>
     <div class="container">
-      <h2>Мои группы:</h2>
       <ul class="list-group-item-success">
         <li v-for="group in userGroups || []" :key="group" class="d-flex flex-column items-list">
           <b-card>
