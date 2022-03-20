@@ -7,7 +7,7 @@
         <n-card hoverable v-for="course in specialCourses || []" :key="course" footer-style="font-size: 18px">
           <template #cover>
             <router-link :to="{ name: 'SpecialCourse', params: { id: course.id } }">
-              <img :src="course.image" alt="Course cover" />
+              <img v-if="course.image && course.image !== ''" :src="course.image" alt="Course cover" />
             </router-link>
           </template>
           <template #footer>

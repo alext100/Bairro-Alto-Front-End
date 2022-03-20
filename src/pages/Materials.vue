@@ -7,7 +7,7 @@
         <n-card hoverable v-for="material in materials || []" :key="material" footer-style="font-size:18px">
           <template #cover>
             <router-link :to="{ name: 'MaterialsPost', params: { id: material.id } }">
-              <img :src="material.image" alt="Post cover" />
+              <img v-if="material.image && material.image !== ''" :src="material.image" alt="Post cover" />
             </router-link>
           </template>
           <template #footer>
