@@ -76,6 +76,7 @@
     "vue-dk-toast": "^3.0.1",
     "vue-kinesis": "^2.0.5",
     "vue-mobile-detection": "^2.0.1",
+    "vue-next-select": "^2.10.3",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.1.0",
