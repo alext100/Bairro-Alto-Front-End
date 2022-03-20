@@ -9,6 +9,7 @@ import {
   UserLoggedIn,
   UserLoginData,
   UserModel,
+  UserPaymentData,
   WebContent,
 } from "@/types/interfaces";
 import axios from "axios";
@@ -432,6 +433,17 @@ const actions = {
       data: { collectionId },
     });
     commit("deleteOneCategory", categoryId);
+    commit("stopLoading");
+  },
+
+  async payment({ commit }: ActionContext<State, State>, userData: UserPaymentData): Promise<void> {
+    commit("startLoading");
+    const paymentResponse = await axios({
+      method: "POST",
+      url: `${process.env.VUE_APP_URL}/payment`,
+      data: userData,
+    });
+    commit("paymentResponse", paymentResponse);
     commit("stopLoading");
   },
 };
