@@ -60,8 +60,11 @@ export default defineComponent({
 
 .n-card {
   width: 300px;
-  height: 370px;
+  height: 380px;
   margin: 10px 3px 10px 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .cards-container {
   display: flex;

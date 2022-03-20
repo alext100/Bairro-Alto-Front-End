@@ -4,7 +4,7 @@
     <div class="ck-content">
       <h1 class="features-title m-3">Материалы</h1>
       <div class="container cards-container">
-        <n-card hoverable v-for="material in materials || []" :key="material" footer-style="font-size:18px">
+        <n-card hoverable v-for="material in materials || []" :key="material" footer-style="font-size:18px;">
           <template #cover>
             <router-link :to="{ name: 'MaterialsPost', params: { id: material.id } }">
               <img v-if="material.image && material.image !== ''" :src="material.image" alt="Post cover" />
@@ -56,8 +56,11 @@ export default defineComponent({
 <style scoped>
 .n-card {
   width: 300px;
-  height: 400px;
+  height: 380px;
   margin: 10px 3px 10px 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .cards-container {
   display: flex;
