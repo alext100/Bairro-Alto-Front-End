@@ -8,6 +8,7 @@
           <template #cover>
             <router-link :to="{ name: 'MaterialsPost', params: { id: material.id } }">
               <img v-if="material.image && material.image !== ''" :src="material.image" alt="Post cover" />
+              <em v-else class="bx bxs-image bx-border no-image-icon"></em>
             </router-link>
           </template>
           <template #footer>
@@ -78,5 +79,9 @@ export default defineComponent({
   transition: color 0.2s;
   text-decoration: none;
   margin-bottom: 30px;
+}
+.no-image-icon {
+  font-size: 182px;
+  color: #8080804d;
 }
 </style>

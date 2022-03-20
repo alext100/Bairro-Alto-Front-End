@@ -8,6 +8,7 @@
           <template #cover>
             <router-link :to="{ name: 'SpecialCourse', params: { id: course.id } }">
               <img v-if="course.image && course.image !== ''" :src="course.image" alt="Course cover" />
+              <em v-else class="bx bxs-image bx-border no-image-icon"></em>
             </router-link>
           </template>
           <template #footer>
@@ -75,5 +76,9 @@ export default defineComponent({
 .materials-page__router-link {
   color: black;
   text-decoration: none;
+}
+.no-image-icon {
+  font-size: 182px;
+  color: #8080804d;
 }
 </style>
