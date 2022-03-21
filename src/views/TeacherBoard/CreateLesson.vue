@@ -25,41 +25,61 @@
         </div>
       </div>
     </form>
-    <b-card>
-      <b-form-group
-        label-class="fw-bold pt-0"
-        class="mb-0 text-nowrap"
-        label-size="lg"
-        label="Уровень:"
-        label-cols-sm="2"
-        label-align-sm="start"
-        v-slot="{ ariaDescribedby }"
-      >
-        <b-form-radio-group
-          buttons
-          button-variant="outline-secondary"
-          size="md"
-          class="pt-3 flex-wrap justify-content-around"
-          v-model="mixedGroupedSelected"
-          :options="mixedGroupedOptions"
-          :aria-describedby="ariaDescribedby"
-        ></b-form-radio-group>
-        <p v-if="noType" class="no-error-type-alert m-1">Выберите уровень урока</p>
-      </b-form-group>
-    </b-card>
-    <b-button
-      v-if="!isLoading"
-      class="input-form--submit-button mb-3 mt-1"
-      @click="handleCKeditor"
-      type="submit"
-      pill
-      >{{ !isEdited || editorData === "" ? "Отправить" : "Отредактировать" }}</b-button
+    <Form
+      @submit="handleCKeditor"
+      v-slot="{ isSubmitting }"
+      :validation-schema="schema"
+      @invalid-submit="onInvalidSubmit"
+      :initial-values="formValues"
+      ref="courseNameForm"
     >
-    <button v-if="isLoading" class="btn input-form__submit-button__spinner submit-btn" type="submit" disabled>
-      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      Загружается...
-    </button>
-    <Lessons @update-lesson="handleUpdate" />
+      <b-card>
+        <b-form-group
+          label-class="fw-bold pt-0"
+          class="mb-0 text-nowrap"
+          label-size="lg"
+          label="Уровень:"
+          label-cols-sm="2"
+          label-align-sm="start"
+          v-slot="{ ariaDescribedby }"
+        >
+          <b-form-radio-group
+            buttons
+            button-variant="outline-secondary"
+            size="md"
+            class="pt-3 flex-wrap justify-content-around"
+            v-model="mixedGroupedSelected"
+            :options="mixedGroupedOptions"
+            :aria-describedby="ariaDescribedby"
+          ></b-form-radio-group>
+          <p v-if="noType" class="no-error-type-alert m-1">Выберите уровень урока</p>
+        </b-form-group>
+
+        <TextInput
+          :value="courseName"
+          name="name"
+          type="text"
+          label="Курс"
+          placeholder="Название курса"
+          success-message="Ok!"
+        />
+      </b-card>
+      <b-button
+        v-if="!isLoading"
+        :disabled="isSubmitting"
+        :class="{ submitting: isSubmitting }"
+        class="input-form--submit-button mb-3 mt-1"
+        pill
+        type="submit"
+      >
+        {{ !isEdited || editorData === "" ? "Отправить" : "Отредактировать" }}
+      </b-button>
+      <button v-if="isLoading" class="btn input-form__submit-button__spinner submit-btn" type="submit" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Загружается...
+      </button>
+      <Lessons @update-lesson="handleUpdate" />
+    </Form>
   </div>
 </template>
 
@@ -72,6 +92,10 @@ import SidebarMenu from "@/components/SidebarMenu.vue";
 import Lessons from "@/views/TeacherBoard/Lessons.vue";
 import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
 import getTitleAndBody from "@/utils/getTitleAndBody";
+import VueSelect from "vue-next-select";
+import TextInput from "@/components/TextInput.vue";
+import { Form } from "vee-validate";
+import * as Yup from "yup";
 
 export default defineComponent({
   name: "GroupInputMessage",
@@ -79,6 +103,9 @@ export default defineComponent({
     CkEditor,
     SidebarMenu,
     Lessons,
+    VueSelect,
+    TextInput,
+    Form,
   },
 
   setup() {
@@ -94,7 +121,21 @@ export default defineComponent({
       document.body.style.backgroundColor = "white";
     });
 
+    function onInvalidSubmit() {
+      const submitBtn = document.querySelector(".input-form--submit-button");
+      submitBtn.classList.add("invalid");
+      setTimeout(() => {
+        submitBtn.classList.remove("invalid");
+      }, 1000);
+    }
+
+    const schema = Yup.object().shape({
+      name: Yup.string().min(6).max(70),
+    });
+
     return {
+      onInvalidSubmit,
+      schema,
       editorData,
       mixedGroupedSelected,
       mixedGroupedOptions,
@@ -103,9 +144,6 @@ export default defineComponent({
 
   data() {
     return {
-      realTimeData: {
-        customers: 3,
-      },
       noType: false,
       editor: CkEditor,
       profileName: state.currentUser.firstName,
@@ -119,6 +157,10 @@ export default defineComponent({
       fileNameAndSize: "",
       errorAlert: "",
       menuItems: sidebarTeacherMenuItems(),
+      courseName: "",
+      formValues: {
+        courseName: "",
+      },
     };
   },
   methods: {
@@ -137,11 +179,14 @@ export default defineComponent({
       });
     },
 
-    async handleCKeditor() {
+    async handleCKeditor(values, { resetForm }) {
       this.noType = true;
 
       if (this.isEdited && this.editorData !== "") {
         const data = getTitleAndBody(this.editorData);
+        const courseData = {
+          courseName: values.name,
+        };
         const lesson = {
           title: data.title,
           body: data.body,
@@ -149,20 +194,24 @@ export default defineComponent({
           level: this.mixedGroupedSelected,
           date: new Date(),
           audios: this.audio.data === undefined ? undefined : [...this.lessonAudios, this.audio.data[0]],
+          lessonDescription: courseData.courseName,
         };
-
         const { lessonId } = this;
 
         await this.updateLessonById({ lessonId, lesson });
         this.noType = false;
         this.editorData = "";
         this.isEdited = false;
+        resetForm();
         setTimeout(() => {
           this.iframelyOembedConvert();
         }, 1100);
       } else if (this.editorData !== "" && this.mixedGroupedSelected !== undefined) {
         this.errorAlert = "";
         const data = getTitleAndBody(this.editorData);
+        const courseData = {
+          courseName: values.name,
+        };
         const lesson = {
           title: data.title,
           body: data.body,
@@ -170,11 +219,15 @@ export default defineComponent({
           level: this.mixedGroupedSelected,
           date: new Date(),
           audios: this.audio.data === undefined ? undefined : [...this.lessonAudios, this.audio.data[0]],
+          lessonDescription: courseData.courseName,
         };
 
         await this.createLesson(lesson);
         this.noType = false;
+
+        resetForm();
         this.editorData = "";
+
         setTimeout(() => {
           this.iframelyOembedConvert();
         }, 1100);
@@ -192,6 +245,10 @@ export default defineComponent({
       this.isEdited = true;
       this.lessonId = lesson.id;
       this.lessonAudios = lesson.audios;
+
+      this.$refs.courseNameForm.setFieldValue("name", lesson.lessonDescription);
+
+      this.courseName = lesson.lessonDescription;
       if (this.lessonAudios.length !== 0) {
         // eslint-disable-next-line prefer-destructuring
         this.fileNameAndSize = this.lessonAudios[0].split("/").filter(Boolean).pop();
