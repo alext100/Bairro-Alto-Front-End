@@ -90,6 +90,7 @@ interface Lesson {
   date?: string;
   info?: Record<string, unknown>;
   id?: string;
+  courseName?: string;
 }
 
 interface GroupError {
@@ -118,6 +119,10 @@ interface WebContent {
   posts: Array<Post>;
   categories: Array<Category>;
 }
+interface CourseNames {
+  id?: string;
+  courseName?: string;
+}
 interface State {
   user: UserModel;
   userId: string;
@@ -145,6 +150,7 @@ interface State {
   teacherGroups: Array<string>;
   groupLessons: Array<Lesson>;
   webContent: WebContent;
+  courseNames: Array<CourseNames>;
 }
 interface UserPaymentData {
   courseName: string;
