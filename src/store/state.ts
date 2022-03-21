@@ -43,6 +43,7 @@ const state = {
         posts: [],
         categories: [],
       },
+  courseNames: [],
 };
 
 export default state as unknown as State;
