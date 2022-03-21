@@ -28,8 +28,10 @@
         </div>
         <template v-slot:footer>
           <span class="text-nowrap text-muted footer"
-            >Создано {{ new Date(lesson.date).toLocaleString() }}.<span class="font-weight-bold"></span> Уровень
-            {{ lesson.level
+            >Создано {{ new Date(lesson.date).toLocaleString() }}.<span class="font-weight-bold">{{
+              lesson.lessonDescription
+            }}</span>
+            Уровень {{ lesson.level
             }}<b-button pill class="button-edit btn-light" @click="handleEditLesson(lesson)"
               ><em class="far fa-edit"></em> </b-button
             ><b-button
