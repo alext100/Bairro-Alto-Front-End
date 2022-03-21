@@ -105,6 +105,10 @@ const mutations = {
     state.lessons = payload;
   },
 
+  loadCourseNames(state: State, payload: Array<Lesson>) {
+    state.courseNames = payload;
+  },
+
   pushNewLessonToLessons(state: State, payload: Lesson) {
     state.lessons.push(payload);
   },
