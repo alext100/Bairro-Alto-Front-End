@@ -13,7 +13,7 @@
           </template>
           <template #footer>
             <router-link
-              v-tippy="'Читать статью'"
+              v-tippy="'Узнать подробности'"
               class="materials-page__router-link"
               :to="{ name: 'SpecialCourse', params: { id: course.id } }"
             >

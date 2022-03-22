@@ -12,7 +12,11 @@
             </router-link>
           </template>
           <template #footer>
-            <router-link class="materials-page__router-link" :to="'/materials/' + material.id">
+            <router-link
+              v-tippy="'Читать статью'"
+              class="materials-page__router-link"
+              :to="'/materials/' + material.id"
+            >
               {{ material.title }}
             </router-link>
           </template>
