@@ -43,7 +43,11 @@ const state = {
         posts: [],
         categories: [],
       },
-  courseNames: [],
+  courseNames: sessionStorage.getItem("courseNames")
+    ? JSON.parse(sessionStorage.getItem("courseNames") || "")
+    : {
+        courseNames: [],
+      },
 };
 
 export default state as unknown as State;
