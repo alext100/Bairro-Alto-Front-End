@@ -31,10 +31,10 @@
 
         <template #arrow="{ prev, next }">
           <div class="custom-arrow">
-            <button type="button" class="custom-arrow--left" @click="prev">
+            <button v-tippy="'Предыдущая'" type="button" class="custom-arrow--left" @click="prev">
               <n-icon><ArrowBack /></n-icon>
             </button>
-            <button type="button" class="custom-arrow--right" @click="next">
+            <button v-tippy="'Следующая'" type="button" class="custom-arrow--right" @click="next">
               <n-icon><ArrowForward /></n-icon>
             </button>
           </div>
@@ -100,10 +100,10 @@
 
           <template #arrow="{ prev, next }">
             <div class="custom-arrow">
-              <button type="button" class="custom-arrow--left" @click="prev">
+              <button v-tippy="'Предыдущая'" type="button" class="custom-arrow--left" @click="prev">
                 <n-icon><ArrowBack /></n-icon>
               </button>
-              <button type="button" class="custom-arrow--right" @click="next">
+              <button v-tippy="'Следующая'" type="button" class="custom-arrow--right" @click="next">
                 <n-icon><ArrowForward /></n-icon>
               </button>
             </div>
