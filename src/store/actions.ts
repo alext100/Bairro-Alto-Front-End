@@ -302,6 +302,17 @@ const actions = {
     commit("stopLoading");
   },
 
+  async getAllCourseNames({ commit }: ActionContext<State, State>): Promise<void> {
+    commit("startLoading");
+    const { data } = await axios({
+      method: "GET",
+      url: `${process.env.VUE_APP_URL}/lesson/get-all-course-names`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+    });
+    commit("loadCourseNames", data);
+    commit("stopLoading");
+  },
+
   async deleteLessonById({ commit }: ActionContext<State, State>, lessonId: string): Promise<void> {
     commit("startLoading");
     await axios({

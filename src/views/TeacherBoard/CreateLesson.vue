@@ -1,77 +1,124 @@
 <template>
   <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
   <div class="container-sm d-flex flex-column mt-5">
-    <CkEditor v-model="editorData" />
-    <form class="row g-3" @submit.prevent="handleAudio">
-      <div class="col-auto">
-        <div class="input-group">
-          <label for="inputGroupFile" class="form-label"
-            ><em class="bi bi-file-earmark-music inputfile-icon">
-              <span class="inputfile-description">{{ this.fileNameAndSize }}</span>
-            </em>
-            <p class="inputfile-alert" v-if="errorAlert !== ''">{{ errorAlert }}</p></label
+    <h1>Создать урок</h1>
+    <Form
+      @submit="handleCKeditor"
+      v-slot="{ isSubmitting }"
+      :validation-schema="schema"
+      @invalid-submit="onInvalidSubmit"
+      :initial-values="formValues"
+      ref="courseNameForm"
+    >
+      <b-card>
+        <b-form-group
+          label-class="fw-bold pt-0"
+          class="mb-0 text-nowrap"
+          label-size="lg"
+          label="Уровень:"
+          label-cols-sm="2"
+          label-align-sm="start"
+          v-slot="{ ariaDescribedby }"
+        >
+          <p v-if="noType" class="no-error-type-alert m-1">Выберите уровень урока</p>
+          <b-form-radio-group
+            buttons
+            button-variant="outline-secondary"
+            size="md"
+            class="pt-3 flex-wrap justify-content-around"
+            v-model="mixedGroupedSelected"
+            :options="mixedGroupedOptions"
+            :aria-describedby="ariaDescribedby"
+          ></b-form-radio-group>
+        </b-form-group>
+        <label for="courses">Выберите название курса</label>
+        <div class="container inputs-container">
+          <vue-select
+            name="courses"
+            placeholder="Курсы:"
+            :modelValue="selectCourseNamesOptions"
+            :options="selectCourseNamesOptions"
+            v-model="selectedCourse"
+            close-on-select
+            searchable
+            clear-on-select
+            clear-on-close
+            search-placeholder="Поиск"
+            @update:modelValue="updateModelValue"
+            :empty-model-value="''"
           >
-          <input
-            data-input="false"
-            iconName="bi bi-file-earmark-music"
-            type="file"
-            ref="fileInput"
-            @input="chooseFile"
-            class="form-control inputfile"
-            id="inputGroupFile"
-            aria-describedby="inputGroupFileAddon"
-            aria-label="Upload"
+          </vue-select>
+
+          <TextInput
+            :value="courseName"
+            name="name"
+            type="text"
+            label="Новый курс:"
+            placeholder="Название курса"
+            success-message="Ok!"
+            class="mt-3 mb-5 course-name-field"
           />
         </div>
-      </div>
-    </form>
-    <b-card>
-      <b-form-group
-        label-class="fw-bold pt-0"
-        class="mb-0 text-nowrap"
-        label-size="lg"
-        label="Уровень:"
-        label-cols-sm="2"
-        label-align-sm="start"
-        v-slot="{ ariaDescribedby }"
+
+        <form class="row g-3" @submit.prevent="handleAudio">
+          <div class="col-auto">
+            <div class="input-group">
+              <label for="inputGroupFile" class="form-label"
+                ><em class="bi bi-file-earmark-music inputfile-icon">
+                  Прикрепить аудио
+                  <span class="inputfile-description">{{ this.fileNameAndSize }}</span>
+                </em>
+                <p class="inputfile-alert" v-if="errorAlert !== ''">{{ errorAlert }}</p></label
+              >
+              <input
+                data-input="false"
+                iconName="bi bi-file-earmark-music"
+                type="file"
+                ref="fileInput"
+                @input="chooseFile"
+                class="form-control inputfile"
+                id="inputGroupFile"
+                aria-describedby="inputGroupFileAddon"
+                aria-label="Upload"
+              />
+            </div>
+          </div>
+        </form>
+      </b-card>
+      <CkEditor v-model="editorData" />
+      <b-button
+        v-if="!isLoading"
+        :disabled="isSubmitting"
+        :class="{ submitting: isSubmitting }"
+        class="input-form--submit-button mb-3 mt-1"
+        pill
+        type="submit"
       >
-        <b-form-radio-group
-          buttons
-          button-variant="outline-secondary"
-          size="md"
-          class="pt-3 flex-wrap justify-content-around"
-          v-model="mixedGroupedSelected"
-          :options="mixedGroupedOptions"
-          :aria-describedby="ariaDescribedby"
-        ></b-form-radio-group>
-        <p v-if="noType" class="no-error-type-alert m-1">Выберите уровень урока</p>
-      </b-form-group>
-    </b-card>
-    <b-button
-      v-if="!isLoading"
-      class="input-form--submit-button mb-3 mt-1"
-      @click="handleCKeditor"
-      type="submit"
-      pill
-      >{{ !isEdited || editorData === "" ? "Отправить" : "Отредактировать" }}</b-button
-    >
-    <button v-if="isLoading" class="btn input-form__submit-button__spinner submit-btn" type="submit" disabled>
-      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      Загружается...
-    </button>
+        {{ !isEdited || editorData === "" ? "Отправить" : "Отредактировать" }}
+      </b-button>
+      <button v-if="isLoading" class="btn input-form__submit-button__spinner submit-btn" type="submit" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Загружается...
+      </button>
+    </Form>
+
     <Lessons @update-lesson="handleUpdate" />
   </div>
 </template>
 
 <script>
 import { defineComponent, onMounted, ref } from "vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, useStore } from "vuex";
 import CkEditor from "@/components/CkEditorCustom.vue";
 import state from "@/store/state";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import Lessons from "@/views/TeacherBoard/Lessons.vue";
 import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
 import getTitleAndBody from "@/utils/getTitleAndBody";
+import VueSelect from "vue-next-select";
+import TextInput from "@/components/TextInput.vue";
+import { Form } from "vee-validate";
+import * as Yup from "yup";
 
 export default defineComponent({
   name: "GroupInputMessage",
@@ -79,10 +126,15 @@ export default defineComponent({
     CkEditor,
     SidebarMenu,
     Lessons,
+    VueSelect,
+    TextInput,
+    Form,
   },
 
   setup() {
+    const { dispatch } = useStore();
     const editorData = ref("");
+    const selectedCourse = ref(null);
     const mixedGroupedSelected = ref();
     const mixedGroupedOptions = [
       { text: "A1", value: "A1" },
@@ -90,22 +142,36 @@ export default defineComponent({
       { text: "B1", value: "B1" },
       { text: "B2", value: "B2" },
     ];
+
     onMounted(() => {
+      dispatch("getAllCourseNames");
       document.body.style.backgroundColor = "white";
     });
 
+    function onInvalidSubmit() {
+      const submitBtn = document.querySelector(".input-form--submit-button");
+      submitBtn.classList.add("invalid");
+      setTimeout(() => {
+        submitBtn.classList.remove("invalid");
+      }, 1000);
+    }
+
+    const schema = Yup.object().shape({
+      name: Yup.string().min(6).max(80),
+    });
+
     return {
+      schema,
       editorData,
-      mixedGroupedSelected,
+      selectedCourse,
+      onInvalidSubmit,
       mixedGroupedOptions,
+      mixedGroupedSelected,
     };
   },
 
   data() {
     return {
-      realTimeData: {
-        customers: 3,
-      },
       noType: false,
       editor: CkEditor,
       profileName: state.currentUser.firstName,
@@ -119,10 +185,14 @@ export default defineComponent({
       fileNameAndSize: "",
       errorAlert: "",
       menuItems: sidebarTeacherMenuItems(),
+      courseName: "",
+      formValues: {
+        courseName: "",
+      },
     };
   },
   methods: {
-    ...mapActions(["createLesson", "updateLessonById", "uploadAudio"]),
+    ...mapActions(["createLesson", "updateLessonById", "uploadAudio", "getAllCourseNames"]),
     ...mapState(["currentUser"]),
     onReady(editor) {
       editor.ui
@@ -137,11 +207,14 @@ export default defineComponent({
       });
     },
 
-    async handleCKeditor() {
+    async handleCKeditor(values, { resetForm }) {
       this.noType = true;
 
       if (this.isEdited && this.editorData !== "") {
         const data = getTitleAndBody(this.editorData);
+        const courseData = {
+          courseName: values.name,
+        };
         const lesson = {
           title: data.title,
           body: data.body,
@@ -149,20 +222,24 @@ export default defineComponent({
           level: this.mixedGroupedSelected,
           date: new Date(),
           audios: this.audio.data === undefined ? undefined : [...this.lessonAudios, this.audio.data[0]],
+          courseName: courseData.courseName,
         };
-
         const { lessonId } = this;
 
         await this.updateLessonById({ lessonId, lesson });
         this.noType = false;
         this.editorData = "";
         this.isEdited = false;
+        resetForm();
         setTimeout(() => {
           this.iframelyOembedConvert();
         }, 1100);
       } else if (this.editorData !== "" && this.mixedGroupedSelected !== undefined) {
         this.errorAlert = "";
         const data = getTitleAndBody(this.editorData);
+        const courseData = {
+          courseName: values.name,
+        };
         const lesson = {
           title: data.title,
           body: data.body,
@@ -170,11 +247,15 @@ export default defineComponent({
           level: this.mixedGroupedSelected,
           date: new Date(),
           audios: this.audio.data === undefined ? undefined : [...this.lessonAudios, this.audio.data[0]],
+          courseName: courseData.courseName,
         };
 
         await this.createLesson(lesson);
         this.noType = false;
+        await this.getAllCourseNames();
+        resetForm();
         this.editorData = "";
+        this.selectedCourse = null;
         setTimeout(() => {
           this.iframelyOembedConvert();
         }, 1100);
@@ -192,6 +273,8 @@ export default defineComponent({
       this.isEdited = true;
       this.lessonId = lesson.id;
       this.lessonAudios = lesson.audios;
+      this.$refs.courseNameForm.setFieldValue("name", lesson.courseName);
+      this.courseName = lesson.courseName;
       if (this.lessonAudios.length !== 0) {
         // eslint-disable-next-line prefer-destructuring
         this.fileNameAndSize = this.lessonAudios[0].split("/").filter(Boolean).pop();
@@ -216,9 +299,20 @@ export default defineComponent({
         this.audio = await this.uploadAudio(file);
       }
     },
+
+    updateModelValue() {
+      this.$refs.courseNameForm.setFieldValue("name", this.selectedCourse);
+    },
   },
   computed: {
-    ...mapState(["isLoading"]),
+    ...mapState(["isLoading", "courseNames"]),
+    selectCourseNamesOptions() {
+      const courses = this.courseNames.courseNames
+        .filter((course) => course.courseName)
+        .map((course) => course.courseName);
+      const uniqueCourses = [...new Set(courses)];
+      return uniqueCourses;
+    },
   },
 
   mounted() {
@@ -239,7 +333,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style lang="scss" scoped>
 button.input-form--submit-button {
   width: 150px;
   background-color: #fd8904;
@@ -262,12 +356,11 @@ button.input-form__submit-button__spinner {
   z-index: -1;
 }
 .inputfile-icon {
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: 700;
   display: inline-block;
   cursor: pointer;
 }
-
 .inputfile-icon:hover {
   color: blue;
 }
@@ -301,6 +394,35 @@ audio::-webkit-media-controls-volume-control-container.closed {
 audio::-webkit-media-controls-volume-control-container {
   display: none !important;
 }
+
+.course-name-field {
+  max-width: 600px !important;
+}
+.no-error-type-alert {
+  color: var(--error-color);
+  font-size: larger;
+  animation: fade-in 2s;
+  position: absolute;
+  top: 0px;
+}
+
+.vue-select {
+  max-width: 600px !important;
+  width: inherit !important;
+  min-width: 250px;
+  height: 50px !important;
+  background-color: #f2f5f7;
+  border-radius: 5px !important;
+  border: 2px solid transparent !important;
+  padding: 15px 10px !important;
+  outline: none !important;
+}
+:deep(.vue-input input) {
+  font-size: 16px !important;
+  background-color: #f2f5f7;
+  margin-top: -8px !important;
+}
+
 @media (max-width: 770px) {
   audio {
     width: 400px;
@@ -314,6 +436,18 @@ audio::-webkit-media-controls-volume-control-container {
 @media (max-width: 400px) {
   audio {
     width: 250px;
+  }
+}
+:deep(.ck .ck-sticky-panel .ck-sticky-panel__content_sticky) {
+  position: static !important;
+}
+:deep(.ck-editor__top) {
+  position: static !important;
+  overflow: hidden !important;
+  display: block !important;
+  height: 38.67px !important;
+  .ck-sticky-panel__placeholder {
+    display: none !important;
   }
 }
 </style>
