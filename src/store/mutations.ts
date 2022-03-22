@@ -106,7 +106,12 @@ const mutations = {
   },
 
   loadCourseNames(state: State, payload: Array<Lesson>) {
-    state.courseNames = payload;
+    sessionStorage.setItem(
+      "courseNames",
+      JSON.stringify({
+        courseNames: payload,
+      })
+    );
   },
 
   pushNewLessonToLessons(state: State, payload: Lesson) {
