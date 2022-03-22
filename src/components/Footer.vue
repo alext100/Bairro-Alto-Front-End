@@ -17,7 +17,7 @@
         </li>
         <li class="contacts-item contacts-item-link">
           <a href="https://www.instagram.com/bairroaltospb/">
-            <em class="fab fa-instagram" alt="instagram" />
+            <em class="fas fa-ban" alt="instagram" />
           </a>
         </li>
         <li class="contacts-item-mail">
