@@ -29,7 +29,7 @@
         <template v-slot:footer>
           <span class="text-nowrap text-muted footer"
             >Создано {{ new Date(lesson.date).toLocaleString() }}.<span class="font-weight-bold">{{
-              lesson.lessonDescription
+              lesson.courseName
             }}</span>
             Уровень {{ lesson.level
             }}<b-button pill class="button-edit btn-light" @click="handleEditLesson(lesson)"
@@ -60,9 +60,10 @@ export default defineComponent({
     ...mapState(["lessons", "isLoading"]),
   },
   methods: {
-    ...mapActions(["getLessonsFromApi", "deleteLessonById"]),
+    ...mapActions(["getLessonsFromApi", "deleteLessonById", "getAllCourseNames"]),
     async handleDeleteLesson(lessonId: string) {
       await this.deleteLessonById(lessonId);
+      await this.getAllCourseNames();
     },
 
     handleEditLesson(lesson: Lesson) {
