@@ -26,13 +26,13 @@
 
       <span v-if="isWrong" class="login__wrong">Не правильное имя пользователя или пароль! Попробуйте ещё раз!</span>
       <button v-if="!isLoading" class="submit-btn" type="submit">Подтвердить</button>
-      <button v-if="isLoading" class="btn btn-primary submit-btn" type="submit" disabled>
+      <button v-if="isLoading" class="btn submit-btn" type="submit" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Загружается...
       </button>
 
       <router-link :to="{ name: 'Register' }" class="text-decoration-none">
-        <button v-if="!isLoading" class="register-btn text-decoration-none" type="button">Зарегистрироваться</button>
+        <button v-if="!isLoading" class="register-btn d-flex" type="button">Зарегистрироваться</button>
       </router-link>
     </Form>
   </div>
@@ -143,23 +143,32 @@ form {
 
 .submit-btn,
 .register-btn {
-  background: var(--primary-color);
+  display: inline-block;
   outline: none;
-  border: none;
-  color: #fff;
   font-size: 18px;
-  padding: 10px 15px;
-  display: block;
+  font-weight: 600;
   width: 100%;
-  border-radius: 7px;
-  margin-top: 40px;
-  transition: transform 0.3s ease-in-out;
   cursor: pointer;
   text-decoration: none;
+  justify-content: center;
+  padding: 1rem 1.6rem 1rem 2.5rem;
+  color: var(--hover-color);
+  border: 1px solid var(--hover-color);
+  border-radius: 1.2rem;
+  -webkit-transition: border-color 0.2s;
+  transition: border-color 0.2s;
+  line-height: normal;
+  background: transparent;
+  margin-top: 10px;
+  text-transform: uppercase;
 }
-
+.submit-btn {
+  letter-spacing: 0.5em;
+  width: -webkit-fill-available;
+}
 .register-btn {
-  background: var(--success-color);
+  letter-spacing: 0.2em;
+  width: -webkit-fill-available;
 }
 
 .submit-btn.invalid {
