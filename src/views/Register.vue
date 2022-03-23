@@ -45,8 +45,8 @@
         success-message="Запомните его!"
       />
 
-      <button v-if="!isLoading" class="submit-btn" type="submit">Подтвердить</button>
-      <button v-if="isLoading" class="btn btn-primary submit-btn" type="submit" disabled>
+      <button v-if="!isLoading" class="submit-btn d-flex" type="submit">Подтвердить</button>
+      <button v-if="isLoading" class="btn submit-btn" type="submit" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Загружается...
       </button>
@@ -161,18 +161,25 @@ form {
 }
 
 .submit-btn {
-  background: var(--primary-color);
+  display: inline-block;
   outline: none;
-  border: none;
-  color: #fff;
   font-size: 18px;
-  padding: 10px 15px;
-  display: block;
+  font-weight: 600;
   width: 100%;
-  border-radius: 7px;
-  margin-top: 40px;
-  transition: transform 0.3s ease-in-out;
   cursor: pointer;
+  text-decoration: none;
+  justify-content: center;
+  padding: 1rem 1.6rem 1rem 2.5rem;
+  color: var(--hover-color);
+  border: 1px solid var(--hover-color);
+  border-radius: 1.2rem;
+  -webkit-transition: border-color 0.2s;
+  transition: border-color 0.2s;
+  line-height: normal;
+  background: transparent;
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
 }
 
 .submit-btn.invalid {
