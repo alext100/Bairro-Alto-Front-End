@@ -22,6 +22,7 @@
 
                   <template #footer>
                     <b-button
+                      v-tippy="'Удалить группу из моего списка'"
                       @click="handleDeleteGroupe(group.id), $toast('Удалено из твоих групп')"
                       pill
                       class="btn-lg button-delete align-self-center"
