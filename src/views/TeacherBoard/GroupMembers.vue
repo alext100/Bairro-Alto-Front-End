@@ -13,6 +13,7 @@
 
                 <template #footer>
                   <b-button
+                    v-tippy="'Удалить студента из группы'"
                     @click="handleDeleteUser(userFromGroup.id), $toast('Студент удалён из группы')"
                     pill
                     class="btn-lg button-delete align-self-center"
