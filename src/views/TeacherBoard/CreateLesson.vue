@@ -22,6 +22,7 @@
         >
           <p v-if="noType" class="no-error-type-alert m-1">Выберите уровень урока</p>
           <b-form-radio-group
+            v-tippy="'Выбрать уровень урока'"
             buttons
             button-variant="outline-secondary"
             size="md"
@@ -31,7 +32,11 @@
             :aria-describedby="ariaDescribedby"
           ></b-form-radio-group>
         </b-form-group>
-        <label for="courses">Выберите название курса</label>
+        <label
+          v-tippy="'Только что созданный курс может не отображаться без обновления страницы (в разработке)'"
+          for="courses"
+          >Выберите название курса</label
+        >
         <div class="container inputs-container">
           <vue-select
             name="courses"
@@ -63,7 +68,7 @@
         <form class="row g-3" @submit.prevent="handleAudio">
           <div class="col-auto">
             <div class="input-group">
-              <label for="inputGroupFile" class="form-label"
+              <label v-tippy="'Аудио файл формата mp3, ogg, wav до 33 мб'" for="inputGroupFile" class="form-label"
                 ><em class="bi bi-file-earmark-music inputfile-icon">
                   Прикрепить аудио
                   <span class="inputfile-description">{{ this.fileNameAndSize }}</span>
@@ -90,11 +95,11 @@
         v-if="!isLoading"
         :disabled="isSubmitting"
         :class="{ submitting: isSubmitting }"
-        class="input-form--submit-button mb-3 mt-1"
+        class="input-form--submit-button mb-3 mt-3"
         pill
         type="submit"
       >
-        {{ !isEdited || editorData === "" ? "Отправить" : "Отредактировать" }}
+        {{ !isEdited || editorData === "" ? "Сохранить" : "Отредактировать" }}
       </b-button>
       <button v-if="isLoading" class="btn input-form__submit-button__spinner submit-btn" type="submit" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
