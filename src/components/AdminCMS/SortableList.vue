@@ -2,7 +2,13 @@
   <div class="backdrop">
     <div class="modal-screen">
       <h4 class="float-start">Manage {{ title }}</h4>
-      <button type="button" class="btn-close float-end" aria-label="Close" @click="closeWindow()"></button>
+      <button
+        v-tippy="'Закрыть окно'"
+        type="button"
+        class="btn-close float-end"
+        aria-label="Close"
+        @click="closeWindow()"
+      ></button>
       <div class="clear mt-5"></div>
 
       <div class="sortable">
@@ -12,10 +18,18 @@
               <div class="row g-0 d-flex">
                 <div class="col-1">
                   <div>
-                    <em class="fas fa-chevron-up move-icon" @click="moveUp(item.id, i)"></em>
+                    <em
+                      v-tippy="'Функционал в разработке'"
+                      class="fas fa-chevron-up move-icon"
+                      @click="moveUp(item.id, i)"
+                    ></em>
                   </div>
                   <div>
-                    <em class="fas fa-chevron-down move-icon" @click="moveDown(item.id, i)"></em>
+                    <em
+                      v-tippy="'Функционал в разработке'"
+                      class="fas fa-chevron-down move-icon"
+                      @click="moveDown(item.id, i)"
+                    ></em>
                   </div>
                 </div>
                 <div class="col-10 text-truncate justify-content-center align-self-center">
@@ -30,7 +44,7 @@
                     :flip="true"
                   >
                     <template #activator>
-                      <em class="fas fa-trash float-end move-icon trash-icon"></em>
+                      <em v-tippy="'Удалить статью'" class="fas fa-trash float-end move-icon trash-icon"></em>
                     </template>
                     Уверены?
                   </n-popconfirm>
