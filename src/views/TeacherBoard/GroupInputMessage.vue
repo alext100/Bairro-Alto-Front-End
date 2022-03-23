@@ -4,7 +4,10 @@
     <form class="row g-3" @submit.prevent="handleAudio">
       <div class="col-auto">
         <div class="input-group">
-          <label for="inputGroupFile" class="form-label"
+          <label
+            v-tippy="'Прикрепить аудио файл формата mp3, ogg, wav до 33 мб'"
+            for="inputGroupFile"
+            class="form-label"
             ><em class="bi bi-file-earmark-music inputfile-icon">
               <span class="inputfile-description">{{ this.fileNameAndSize }}</span>
             </em>
@@ -25,7 +28,7 @@
       </div>
     </form>
     <b-button v-if="!isLoading" class="input-form--submit-button mb-3 mt-1" @click="handleCKeditor" type="submit" pill
-      >Отправить</b-button
+      >Сохранить</b-button
     >
     <button v-if="isLoading" class="btn input-form__submit-button__spinner submit-btn" type="submit" disabled>
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -171,5 +174,81 @@ button.input-form__submit-button__spinner {
   border-radius: 24px;
   border-color: black;
   font-weight: bold;
+}
+
+button.input-form--submit-button {
+  width: 150px;
+  background-color: #fd8904;
+  color: white;
+}
+button.input-form__submit-button__spinner {
+  width: 200px;
+  background-color: #fd8904;
+  color: white;
+  border-radius: 24px;
+  border-color: black;
+  font-weight: bold;
+}
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.inputfile-icon {
+  font-size: 1.5em;
+  font-weight: 700;
+  display: inline-block;
+  cursor: pointer;
+}
+.inputfile-icon:hover {
+  color: blue;
+}
+.inputfile-description {
+  font-size: 18px;
+  color: chocolate;
+  margin: 20px;
+}
+.inputfile-alert {
+  font-size: 20px;
+  color: var(--error-color);
+}
+audio {
+  filter: sepia(10%) saturate(70%) grayscale(1) contrast(99%) invert(5%);
+  width: 500px;
+  height: 40px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+audio::-webkit-media-controls-mute-button {
+  display: none !important;
+}
+
+audio::-webkit-media-controls-volume-slider {
+  display: none !important;
+}
+
+audio::-webkit-media-controls-volume-control-container.closed {
+  display: none !important;
+}
+audio::-webkit-media-controls-volume-control-container {
+  display: none !important;
+}
+@media (max-width: 770px) {
+  audio {
+    width: 400px;
+  }
+}
+@media (max-width: 500px) {
+  audio {
+    width: 300px;
+  }
+}
+@media (max-width: 400px) {
+  audio {
+    width: 250px;
+  }
 }
 </style>

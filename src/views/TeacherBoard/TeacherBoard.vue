@@ -22,6 +22,7 @@
 
                   <template #footer>
                     <b-button
+                      v-tippy="'Удалить группу из моего списка'"
                       @click="handleDeleteGroupe(group.id), $toast('Удалено из твоих групп')"
                       pill
                       class="btn-lg button-delete align-self-center"
@@ -53,6 +54,7 @@
                   </router-link>
                   <template #footer>
                     <b-button
+                      v-tippy="'Добавить группу в мой список'"
                       @click="handleAddToMyGroups(group.id), $toast('Добавлено в твои группы')"
                       pill
                       class="btn-lg button-delete align-self-center"

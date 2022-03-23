@@ -7,6 +7,7 @@ import VueMobileDetection from "vue-mobile-detection";
 import VueKinesis from "vue-kinesis";
 import { MotionPlugin } from "@vueuse/motion";
 import VueNextSelect from "vue-next-select";
+import { TippyPlugin } from "tippy.vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -36,5 +37,6 @@ createApp(App)
   .use(VueMobileDetection)
   .use(VueKinesis)
   .use(MotionPlugin)
+  .use(TippyPlugin)
   .component("vue-select", VueNextSelect)
   .mount("#app");

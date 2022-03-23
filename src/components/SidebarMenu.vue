@@ -23,7 +23,7 @@
           </li>
 
           <span v-for="(menuItem, index) in menuItems" :key="index">
-            <li>
+            <li v-tippy="`${menuItem.name}`">
               <router-link :to="menuItem.link">
                 <i class="bx" :class="menuItem.icon || 'bx-square-rounded'" />
                 <span class="sidebar__nav-list_links">{{ menuItem.name }}</span>
@@ -48,7 +48,12 @@
             </div>
           </div>
         </div>
-        <i v-if="isExitButton" class="bx bx-log-out profile__log_out" @click="handleLogout" />
+        <i
+          v-tippy="'Выйти из аккаунта'"
+          v-if="isExitButton"
+          class="bx bx-log-out profile__log_out"
+          @click="handleLogout"
+        />
       </div>
     </div>
   </div>

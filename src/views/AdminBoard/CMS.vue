@@ -5,10 +5,10 @@
       <div class="settings">
         <template v-if="curCat && config.settings.allow_add_category">
           <div class="btn-group">
-            <button @click="showAddCat = true" class="btn btn-outline-light">
+            <button v-tippy="'Добавить категорию'" @click="showAddCat = true" class="btn btn-outline-light">
               <em class="fa fa-plus"></em>
             </button>
-            <button @click="showCatSettings = true" class="btn btn-outline-light">
+            <button v-tippy="'Управление категориями'" @click="showCatSettings = true" class="btn btn-outline-light">
               <em class="fa fa-cog"></em>
             </button>
           </div>
@@ -30,8 +30,12 @@
     <div class="col-3 col2 posts-group">
       <div class="posts-group__filter">
         <div class="btn-group">
-          <a @click="addItem()" class="btn btn-outline-dark"><em class="fa fa-plus"></em></a>
-          <a @click="showPostSettings = true" class="btn btn-outline-dark"><em class="fa fa-cog"></em></a>
+          <a v-tippy="'Добавить статью'" @click="addItem()" class="btn btn-outline-dark"
+            ><em class="fa fa-plus"></em
+          ></a>
+          <a v-tippy="'Управление статьями'" @click="showPostSettings = true" class="btn btn-outline-dark"
+            ><em class="fa fa-cog"></em
+          ></a>
         </div>
       </div>
       <n-space vertical>
@@ -75,7 +79,12 @@
 
           <template v-if="config.fields.posts[key].includes('dropdown')">
             <label>{{ key }}</label>
-            <select class="form-select w-25" v-model="curItem[key]" @change="changeCat(curItem[key])">
+            <select
+              v-tippy="'Поменять категорию для этой статьи'"
+              class="form-select w-25"
+              v-model="curItem[key]"
+              @change="changeCat(curItem[key])"
+            >
               <template v-for="item in webContent.categories" :key="item">
                 <option :value="item.slug">{{ item.title }}</option>
               </template>
@@ -95,7 +104,7 @@
 
         <button class="btn btn-primary mt-1" @click="save()">
           <template v-if="saving"> <em class="fas fa-spinner fa-spin"></em> &nbsp; </template>
-          Save
+          Сохранить
         </button>
 
         <template v-if="config.settings.preview_url">

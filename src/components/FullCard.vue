@@ -2,6 +2,7 @@
   <card class="card-stats" :show-footer-line="true">
     <div class="row">
       <div class="col">
+        <slot name="header"> </slot>
         <slot>
           <h5 class="card-title text-uppercase text-muted mb-0" v-if="title">
             {{ title }}

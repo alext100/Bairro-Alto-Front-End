@@ -11,6 +11,10 @@
         shadowSize="md"
         :hover="true"
       >
+        <template v-slot:header
+          ><span v-tippy="'Название курса'" class="font-weight-bold">{{ lesson.courseName }}.</span
+          ><span v-tippy="'Уровень курса'" class="font-weight-bold"> {{ lesson.level }}</span></template
+        >
         <h2 class="text-center card-title text-uppercase text-muted mb-0">{{ lesson.title }}</h2>
         <div class="m-2 card-text">
           <div v-html="lesson?.body"></div>
@@ -28,13 +32,14 @@
         </div>
         <template v-slot:footer>
           <span class="text-nowrap text-muted footer"
-            >Создано {{ new Date(lesson.date).toLocaleString() }}.<span class="font-weight-bold">{{
-              lesson.courseName
-            }}</span>
-            Уровень {{ lesson.level
-            }}<b-button pill class="button-edit btn-light" @click="handleEditLesson(lesson)"
+            >Создано {{ new Date(lesson.date).toLocaleString() }}.<b-button
+              v-tippy="'Редактировать урок'"
+              pill
+              class="button-edit btn-light"
+              @click="handleEditLesson(lesson)"
               ><em class="far fa-edit"></em> </b-button
             ><b-button
+              v-tippy="'Удалить урок'"
               pill
               class="button-delete align-self-center btn-light"
               @click="handleDeleteLesson(lesson.id), $toast('Урок удалён')"

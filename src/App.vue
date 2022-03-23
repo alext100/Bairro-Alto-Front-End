@@ -38,6 +38,7 @@ export default defineComponent({
   margin: 0;
 }
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import "~tippy.js/dist/tippy.css";
 #app {
   font-family: Noto Sans, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
