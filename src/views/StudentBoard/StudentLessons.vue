@@ -19,6 +19,10 @@
           shadowSize="md"
           :hover="true"
         >
+          <template v-slot:header
+            ><span v-tippy="'Название курса'" class="font-weight-bold">{{ lesson.courseName }}.</span
+            ><span v-tippy="'Уровень курса'" class="font-weight-bold"> {{ lesson.level }}</span></template
+          >
           <h2 class="text-center card-title text-uppercase text-muted mb-0">{{ lesson.title }}</h2>
           <div class="m-2 card-text">
             <div v-html="lesson?.body"></div>
@@ -34,11 +38,15 @@
               </div>
             </div>
           </div>
-          <template v-slot:footer
-            ><b-button pill class="button-redirect btn-light" @click="handleRedirect(lesson.id)"
+          <!--  <template v-slot:footer
+            ><b-button
+              v-tippy="`Функционал в разработке. Воспользуйтесь чатом с преподавателем`"
+              pill
+              class="button-redirect btn-light"
+              @click="handleRedirect(lesson.id)"
               ><em class="fas fa-keyboard"></em> Перейти к уроку и ответить на вопросы <em class="fas fa-keyboard"></em>
             </b-button>
-          </template>
+          </template> -->
         </full-card>
       </div>
     </div>
