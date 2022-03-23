@@ -17,7 +17,9 @@
         >
         <h2 class="text-center card-title text-uppercase text-muted mb-0">{{ lesson.title }}</h2>
         <div class="m-2 card-text">
-          <div v-html="lesson?.body"></div>
+          <v-zoomer :mouseWheelToZoom="false" :maxScale="2" pivot="cursor" :limitTranslation="false">
+            <div v-html="lesson?.body"></div>
+          </v-zoomer>
           <div v-if="lesson.audios !== []">
             <div v-for="audio in lesson.audios || []" :key="audio">
               <audio controls="true">

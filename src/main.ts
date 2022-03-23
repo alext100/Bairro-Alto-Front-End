@@ -8,6 +8,7 @@ import VueKinesis from "vue-kinesis";
 import { MotionPlugin } from "@vueuse/motion";
 import VueNextSelect from "vue-next-select";
 import { TippyPlugin } from "tippy.vue";
+import VueZoomer from "vue-zoomer";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -38,5 +39,6 @@ createApp(App)
   .use(VueKinesis)
   .use(MotionPlugin)
   .use(TippyPlugin)
+  .use(VueZoomer)
   .component("vue-select", VueNextSelect)
   .mount("#app");

@@ -79,6 +79,7 @@
     "vue-mobile-detection": "^2.0.1",
     "vue-next-select": "^2.10.3",
     "vue-router": "^4.0.12",
+    "vue-zoomer": "^0.4.0-beta.2",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.1.0",
     "yup": "^0.32.11"
