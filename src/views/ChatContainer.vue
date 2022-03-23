@@ -203,7 +203,7 @@ export default {
               },
               [
                 h(NAvatar, {
-                  src: "https://storage.googleapis.com/bairro-alto.appspot.com/queima-das-fitas32x32-1647209754638.webp",
+                  src: "https://storage.googleapis.com/bairro-alto.appspot.com/tile-1648000761200.webp",
                   round: true,
                   size: 22,
                   style: {
@@ -226,7 +226,7 @@ export default {
         },
         [
           h(NAvatar, {
-            src: "https://storage.googleapis.com/bairro-alto.appspot.com/queima-das-fitas32x32-1647209754638.webp",
+            src: "https://storage.googleapis.com/bairro-alto.appspot.com/tile-1648000761200.webp",
             round: true,
             size: 24,
             style: {
