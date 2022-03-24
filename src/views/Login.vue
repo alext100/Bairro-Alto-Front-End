@@ -24,7 +24,10 @@
         success-message="Сложный и безопасный!"
       />
 
-      <span v-if="isWrong" class="login__wrong">Не правильное имя пользователя или пароль! Попробуйте ещё раз!</span>
+      <span v-if="isNotActive" class="login__wrong">Перейдите по ссылке в письме, чтобы активировать аккаунт</span>
+      <span v-else-if="isWrong" class="login__wrong"
+        >Не правильное имя пользователя или пароль! Попробуйте ещё раз!</span
+      >
       <button v-if="!isLoading" class="submit-btn" type="submit">Подтвердить</button>
       <button v-if="isLoading" class="btn submit-btn" type="submit" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -86,6 +89,7 @@ export default defineComponent({
     return {
       userData: { email: null, password: null },
       isWrong: false,
+      isNotActive: false,
       email: state.isRegistered ? state.user.email : "",
       password: "",
     };
@@ -107,7 +111,12 @@ export default defineComponent({
             this.redirectToUserPage();
           }, 500);
         } catch (error) {
-          this.isWrong = true;
+          if (
+            (error as Error).message.match("Подтвердите регистрацию перейдя по ссылке в письме!") ||
+            (error as Error).message.match("Invalid token specified")
+          ) {
+            this.isNotActive = true;
+          } else this.isWrong = true;
         }
       }
     },
