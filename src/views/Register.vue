@@ -131,7 +131,7 @@ export default defineComponent({
         try {
           await this.registerUser(userData);
           if (state.isRegistered === true) {
-            this.$router.push("/login");
+            this.$router.push(`/check-email/${userData.email}`);
           }
           this.password = "";
           this.firstName = "";

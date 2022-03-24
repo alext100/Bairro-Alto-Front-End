@@ -40,6 +40,16 @@ const actions = {
     commit("stopLoading");
   },
 
+  async verifyUser({ commit }: ActionContext<State, State>, code: string): Promise<void> {
+    const response = await axios.get(`${process.env.VUE_APP_URL}/user/confirm/${code}`);
+    return response.data;
+  },
+
+  async sendConfirmEmailOneMoreTime({ commit }: ActionContext<State, State>, email: string): Promise<void> {
+    const response = await axios.get(`${process.env.VUE_APP_URL}/user/confirm/repeat-email/${email}`);
+    return response.data;
+  },
+
   async userLogedFromApi(
     { commit }: ActionContext<State, State>,
     { user, token, refreshToken }: UserLoggedIn

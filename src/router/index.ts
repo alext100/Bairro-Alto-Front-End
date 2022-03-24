@@ -18,6 +18,8 @@ import Courses from "@/pages/Courses.vue";
 import CoursesContOnline from "@/pages/CoursesContOnline.vue";
 import Payment from "@/pages/Payment.vue";
 import PaymentReturn from "@/pages/PaymentReturn.vue";
+import WelcomePage from "@/pages/Welcome.vue";
+import CheckConfirmationEmail from "@/pages/CheckConfirmationEmail.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
 const AdminBoard = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AdminBoard.vue");
@@ -132,6 +134,16 @@ const routes: Array<RouteRecordRaw> = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/confirm/:confirmationCode",
+    name: "WelcomePage",
+    component: WelcomePage,
+  },
+  {
+    path: "/check-email/:email",
+    name: "CheckConfirmationEmail",
+    component: CheckConfirmationEmail,
   },
   {
     path: "/admin",
