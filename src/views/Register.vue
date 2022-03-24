@@ -28,22 +28,26 @@
       <span v-if="isWrongEmailOnRegister()" class="email__wrong"
         >Кажется этот email уже зарегистрирован! Попробуйте ещё раз!</span
       >
+
       <TextInput
         :value="password"
         name="password"
-        type="password"
+        :type="passwordFieldType"
         label="Пароль"
         placeholder="Ваш пароль"
         success-message="Сложный и безопасный!"
       />
+      <em class="toggle-password fas" :class="[passwordFieldIcon]" @click="hidePassword = !hidePassword"></em>
+
       <TextInput
         :value="confirm_password"
         name="confirm_password"
-        type="password"
+        :type="passwordFieldType"
         label="Подтвердите пароль"
         placeholder="Введите пароль ещё раз"
         success-message="Запомните его!"
       />
+      <em class="toggle-password fas" :class="[passwordFieldIcon]" @click="hidePassword = !hidePassword"></em>
 
       <button v-if="!isLoading" class="submit-btn d-flex" type="submit">Подтвердить</button>
       <button v-if="isLoading" class="btn submit-btn" type="submit" disabled>
@@ -58,7 +62,7 @@
 import { Form } from "vee-validate";
 import * as Yup from "yup";
 import TextInput from "@/components/TextInput.vue";
-import { defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { mapActions, mapState } from "vuex";
 import { UserRegisterData } from "@/types/interfaces";
 import state from "@/store/state";
@@ -91,9 +95,16 @@ export default defineComponent({
         .oneOf([Yup.ref("password")], "Пароль не совпадает"),
     });
 
+    const hidePassword = ref(true);
+    const passwordFieldIcon = computed(() => (hidePassword.value ? "fa-eye" : "fa-eye-slash"));
+    const passwordFieldType = computed(() => (hidePassword.value ? "password" : "text"));
+
     return {
       schema,
+      hidePassword,
       onInvalidSubmit,
+      passwordFieldIcon,
+      passwordFieldType,
     };
   },
 
@@ -233,5 +244,15 @@ form {
   font-family: Noto Sans, Arial, sans-serif;
   font-weight: bold;
   margin-bottom: 10px;
+}
+.toggle-password {
+  top: -63px;
+  left: 265px;
+  position: relative;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease-in-out;
+  width: fit-content;
 }
 </style>
