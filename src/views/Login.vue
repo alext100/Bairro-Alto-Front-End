@@ -18,11 +18,12 @@
       <TextInput
         :value="password"
         name="password"
-        type="password"
+        :type="passwordFieldType"
         label="Пароль"
         placeholder="Введите пароль"
         success-message="Сложный и безопасный!"
       />
+      <em class="toggle-password fas" :class="[passwordFieldIcon]" @click="hidePassword = !hidePassword"></em>
 
       <span v-if="isNotActive" class="login__wrong">Перейдите по ссылке в письме, чтобы активировать аккаунт</span>
       <span v-else-if="isWrong" class="login__wrong"
@@ -45,7 +46,7 @@
 import { Form } from "vee-validate";
 import * as Yup from "yup";
 import TextInput from "@/components/TextInput.vue";
-import { defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { mapActions, mapState, useStore } from "vuex";
 import { UserLoginData } from "@/types/interfaces";
 import state from "@/store/state";
@@ -78,10 +79,17 @@ export default defineComponent({
       password: Yup.string().min(6).max(20).required(),
     });
 
+    const hidePassword = ref(true);
+    const passwordFieldIcon = computed(() => (hidePassword.value ? "fa-eye" : "fa-eye-slash"));
+    const passwordFieldType = computed(() => (hidePassword.value ? "password" : "text"));
+
     return {
       schema,
       onInvalidSubmit,
       onChange,
+      passwordFieldIcon,
+      passwordFieldType,
+      hidePassword,
     };
   },
 
@@ -231,5 +239,17 @@ form {
 .submit-btn:hover,
 .register-btn:hover {
   transform: scale(1.1);
+}
+
+.toggle-password {
+  top: -70px;
+  left: 260px;
+  position: relative;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  padding: 10px;
+  transition: background-color 0.2s ease-in-out;
+  width: fit-content;
 }
 </style>
