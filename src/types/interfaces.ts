@@ -16,6 +16,8 @@ interface UserModel {
   teacherGroups: Array<string>;
   studentGroups: Array<string>;
   info?: Array<InfoModel>;
+  status?: string;
+  confirmationCode?: string;
 }
 
 interface UserLoggedIn {
