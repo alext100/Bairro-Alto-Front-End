@@ -131,7 +131,7 @@ export default defineComponent({
 
     redirectToUserPage() {
       if (state.currentUser.studentAccess === true) {
-        this.$router.push({ path: `/student/lessons/${state.currentUser.id}` });
+        this.$router.push({ path: `/student/${state.currentUser.id}` });
       }
       if (state.currentUser.teacherAccess === true) {
         this.$router.push("/teacher");
