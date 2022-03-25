@@ -340,6 +340,9 @@ body {
 .form-select {
   margin-bottom: 15px;
 }
+.form-select {
+  height: 35px !important;
+}
 
 label {
   text-transform: uppercase;
