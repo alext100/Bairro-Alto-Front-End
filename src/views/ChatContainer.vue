@@ -71,6 +71,7 @@
       @send-message-reaction="sendMessageReaction"
       @typing-message="typingMessage"
       @toggle-rooms-list="$emit('show-demo-options', $event.opened)"
+      :text-messages="textMessages"
     >
     </chat-window>
   </div>
@@ -159,6 +160,20 @@ export default {
         },
       ],
 
+      textMessages: {
+        ROOMS_EMPTY: "Нет чатов",
+        ROOM_EMPTY: "Комната не выбрана",
+        NEW_MESSAGES: "Новые сообщения",
+        MESSAGE_DELETED: "Это сообщение было удалено",
+        MESSAGES_EMPTY: "Нет сообщений",
+        CONVERSATION_STARTED: "Разговор начался:",
+        TYPE_MESSAGE: "Напишите сообщение...",
+        SEARCH: "Поиск",
+        IS_ONLINE: "Онлайн",
+        LAST_SEEN: "был онлайн ",
+        IS_TYPING: "печатает...",
+        CANCEL_SELECT_MESSAGE: "Отменить выделение",
+      },
       // ,dbRequestCount: 0
     };
   },
@@ -414,6 +429,16 @@ export default {
         // this.incrementDbCounter('Listen Last Room Message', messages.length)
         messages.forEach((message) => {
           const lastMessage = this.formatLastMessage(message, room);
+
+          if (lastMessage.new) {
+            if (!lastMessage.seen) {
+              this.setUnreadCounter(room.roomId, room.unreadCount + 1);
+            }
+            if (lastMessage.seen) {
+              this.setUnreadCounter(room.roomId, 0);
+            }
+          }
+
           const roomIndex = this.rooms.findIndex((r) => room.roomId === r.roomId);
           this.rooms[roomIndex].lastMessage = lastMessage;
           this.rooms = [...this.rooms];
@@ -487,11 +512,17 @@ export default {
 
         data.forEach((message) => {
           const formattedMessage = this.formatMessage(room, message);
+
+          if (!formattedMessage.seen && message.sender_id !== this.currentUserId) {
+            this.setUnreadCounter(room.roomId, 0);
+          }
+
           this.messages.unshift(formattedMessage);
         });
 
         if (this.lastLoadedMessage) {
           this.previousLastLoadedMessage = this.lastLoadedMessage;
+          this.setUnreadCounter(room.roomId, 0);
         }
         this.lastLoadedMessage = docs[docs.length - 1];
 
@@ -521,6 +552,10 @@ export default {
         }
       );
       this.listeners.push(listener);
+    },
+
+    async setUnreadCounter(roomId, count) {
+      firestoreService.updateRoom(roomId, { unreadCount: count });
     },
 
     markMessagesSeen(room, message) {
@@ -810,6 +845,7 @@ export default {
           if (foundRoom) {
             foundRoom.typingUsers = room.typingUsers;
             foundRoom.index = room.lastUpdated.seconds;
+            foundRoom.unreadCount = room?.unreadCount;
           }
         });
       });
