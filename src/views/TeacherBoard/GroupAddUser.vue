@@ -13,7 +13,7 @@
         :defaultColDef="defaultColDef"
         :rowData="rowData"
         :pagination="true"
-        paginationAutoPageSize="true"
+        :paginationAutoPageSize="true"
         @grid-ready="onGridReady"
         :animateRows="true"
         :getRowId="getRowNodeId"
@@ -144,7 +144,7 @@ export default defineComponent({
       this.gridColumnApi = params.columnApi;
     },
 
-    getRowNodeId({data}) {
+    getRowNodeId({ data }) {
       return data.id;
     },
     onRowSelected(event) {
