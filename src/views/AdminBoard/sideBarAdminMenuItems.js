@@ -1,10 +1,15 @@
 export default function sideBarAdminMenuItems() {
   return [
     {
-      link: `/admin`,
-      name: "Dashboard",
-      tooltip: "Dashboard",
-      icon: "bx-grid-alt",
+      link: `/cms`,
+      name: "CMS",
+      tooltip: "CMS",
+      icon: "bx-command",
+    },
+    {
+      link: `/admin/all-users`,
+      name: "Роли пользователей",
+      icon: "bx-user",
     },
     {
       link: `/admin/all-groups`,
@@ -12,14 +17,14 @@ export default function sideBarAdminMenuItems() {
       icon: "bx-group",
     },
     {
-      link: `/cms`,
-      name: "CMS",
-      tooltip: "CMS",
-      icon: "bx-command",
+      link: `/admin`,
+      name: "Админ",
+      tooltip: "Dashboard",
+      icon: "bx-grid-alt",
     },
     {
       link: `/admin`,
-      name: "Settings",
+      name: "Настройки",
       tooltip: "Setting",
       icon: "bx-cog",
     },
