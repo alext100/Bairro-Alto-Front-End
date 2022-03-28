@@ -22,8 +22,8 @@ export default function sideBarTeacherMenuItems() {
       icon: "bx-chat",
     },
     {
-      link: `/teacher`,
-      name: "Settings",
+      link: `/teacher/settings`,
+      name: "Настройки",
       icon: "bx-cog",
     },
   ];

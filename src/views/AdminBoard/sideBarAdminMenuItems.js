@@ -23,7 +23,7 @@ export default function sideBarAdminMenuItems() {
       icon: "bx-grid-alt",
     },
     {
-      link: `/admin`,
+      link: `/admin/settings`,
       name: "Настройки",
       tooltip: "Setting",
       icon: "bx-cog",
