@@ -10,7 +10,7 @@
         :defaultColDef="defaultColDef"
         :rowData="rowData"
         :pagination="true"
-        paginationAutoPageSize="true"
+        :paginationAutoPageSize="true"
       >
         ></ag-grid-vue
       >

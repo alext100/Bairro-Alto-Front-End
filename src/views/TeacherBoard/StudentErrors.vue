@@ -10,7 +10,7 @@
         :defaultColDef="defaultColDef"
         :rowData="rowData"
         :pagination="true"
-        paginationAutoPageSize="true"
+        :paginationAutoPageSize="true"
         @cell-value-changed="onCellValueChanged"
         @grid-ready="onGridReady"
         :animateRows="true"
@@ -86,8 +86,8 @@ export default defineComponent({
           headerName: "Дата",
           editable: false,
           filter: false,
-          minWidth: 50,
-          maxWidth: 150,
+          minWidth: 120,
+          maxWidth: 170,
           valueFormatter: dateFormatter,
           sort: "desc",
         },
@@ -150,7 +150,7 @@ export default defineComponent({
       this.gridColumnApi = params.columnApi;
     },
 
-    getRowNodeId({data}) {
+    getRowNodeId({ data }) {
       return data.id;
     },
     onRowSelected(event) {
