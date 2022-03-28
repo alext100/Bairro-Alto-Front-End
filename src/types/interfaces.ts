@@ -43,6 +43,7 @@ interface UserLoggedIn {
   studentAccess: boolean;
   id: string;
   firstName: string;
+  email: string;
   lastName: string;
   studentGroups: Array<string>;
   teacherGroups: Array<string>;
