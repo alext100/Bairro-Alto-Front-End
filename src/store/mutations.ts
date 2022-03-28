@@ -58,6 +58,7 @@ const mutations = {
       },
       firstName: "",
       lastName: "",
+      email: "",
       token: "",
       refreshToken: "",
       adminAccess: false,

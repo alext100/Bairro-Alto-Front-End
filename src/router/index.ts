@@ -26,6 +26,7 @@ const AdminBoard = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/v
 const CMS = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/CMS.vue");
 const AdminAllGroups = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AllGroups.vue");
 const AdminAllUsers = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AllUsers.vue");
+const AdminSettings = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AdminSettings.vue");
 
 const TeacherBoard = () =>
   import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/TeacherBoard/TeacherBoard.vue");
@@ -34,6 +35,8 @@ const OnlineLesson = () =>
   import(/* webpackChunkName: "teacher-board-chunk" */ "../views/TeacherBoard/OnlineLesson.vue");
 const CreateGroup = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/TeacherBoard/CreateGroup.vue");
 const TeacherChat = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/TeacherBoard/TeacherChat.vue");
+const TeacherSettings = () =>
+  import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/TeacherBoard/TeacherSettings.vue");
 // const CreateLesson = () => import(/* webpackChunkName: "teacher-board-chunk" */ "@/views/CreateLesson.vue"); provoke error on deploy
 
 const StudentBoard = () =>
@@ -45,6 +48,8 @@ const StudentLessons = () =>
 const StudentChat = () => import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard/StudentChat.vue");
 const StudentHomework = () =>
   import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard/StudentHomework.vue");
+const StudentSettings = () =>
+  import(/* webpackChunkName: "student-board-chunk" */ "@/views/StudentBoard/StudentSettings.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -172,6 +177,12 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: teacherProtectedRoute,
   },
   {
+    path: "/teacher/settings",
+    name: "TeacherSettings",
+    component: TeacherSettings,
+    beforeEnter: teacherProtectedRoute,
+  },
+  {
     path: "/student/:id",
     name: "StudentBoard",
     component: StudentBoard,
@@ -199,6 +210,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/student/homework",
     name: "StudentHomework",
     component: StudentHomework,
+    beforeEnter: studentProtectedRoute,
+  },
+  {
+    path: "/student/settings",
+    name: "StudentSettings",
+    component: StudentSettings,
     beforeEnter: studentProtectedRoute,
   },
   {
@@ -235,6 +252,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/admin/all-users",
     name: "AdminAllUsers",
     component: AdminAllUsers,
+    beforeEnter: adminProtectedRoute,
+  },
+  {
+    path: "/admin/settings",
+    name: "AdminSettings",
+    component: AdminSettings,
     beforeEnter: adminProtectedRoute,
   },
 ];

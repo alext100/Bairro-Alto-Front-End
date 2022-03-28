@@ -70,6 +70,7 @@ const actions = {
         password: data.password,
         token: data.token,
         firstName: data.firstName,
+        email: data.email,
         adminAccess: data.adminAccess,
         teacherAccess: data.teacherAccess,
         studentAccess: data.studentAccess,
@@ -477,6 +478,21 @@ const actions = {
       data: { user },
     });
     dispatch("getAllUsersFromApi");
+    commit("stopLoading");
+  },
+
+  async changePassword({ commit }: ActionContext<State, State>, user: Post): Promise<void> {
+    commit("startLoading");
+    const updatedUser = await axios({
+      method: "PUT",
+      url: `${process.env.VUE_APP_URL}/user/change-password`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: user,
+    });
+    if (updatedUser) {
+      commit("loadUser", updatedUser);
+      commit("isRegistered", updatedUser);
+    }
     commit("stopLoading");
   },
 };

@@ -32,7 +32,7 @@ export default function sideBarStudentMenuItems() {
       icon: "bx-chat",
     },
     {
-      link: `/student/${state.currentUser.id}`,
+      link: `/student/settings`,
       name: "Настройки",
       tooltip: "Setting",
       icon: "bx-cog",
