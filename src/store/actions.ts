@@ -467,6 +467,18 @@ const actions = {
     commit("paymentResponse", paymentResponse);
     commit("stopLoading");
   },
+
+  async updateUser({ commit, dispatch }: ActionContext<State, State>, user: Post): Promise<void> {
+    commit("startLoading");
+    await axios({
+      method: "PUT",
+      url: `${process.env.VUE_APP_URL}/user/update-user/${user.id}`,
+      headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      data: { user },
+    });
+    dispatch("getAllUsersFromApi");
+    commit("stopLoading");
+  },
 };
 
 export default actions;

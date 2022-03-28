@@ -268,7 +268,7 @@ body {
 }
 @media (max-width: 599px) {
   .sidebar {
-    height: 5%;
+    height: 6%;
   }
   .sidebar__body-profile_open {
     display: flex;
@@ -316,7 +316,7 @@ body {
 .sidebar .sidebar__logo-details #btn {
   position: absolute;
   top: 50%;
-  right: -2px;
+  right: -5px;
   transform: translateY(-50%);
   font-size: 23px;
   text-align: center;
