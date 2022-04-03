@@ -138,7 +138,42 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
 
+  describe("When the action getUserById is invoked", () => {
+    test("Then it should invoke commit with 'loadOneGroup' and data", async () => {
+      const groupId = "61df3923ab6a9fda28a2398a";
+      const data = {
+        members: ["62076c93706d41ccaf4c1748"],
+        groupName: "A1. Вторник / Четверг 19:00-20:30",
+        groupErrors: ["61f805d84a80fbcfb7f33d38"],
+        homeworkToDo: [
+          {
+            title: "ghjk",
+            message: "<p>&nbsp;</p>",
+            time: "2022-02-15T17:56:39.791Z",
+            audios: ["https://storage.googleapis.com/bairro-alto.appspot.com/APPLAUSE-1644947827589.mp3"],
+          },
+        ],
+        teachers: ["61f07cf00e2b45ec821efee7", "61df3972ab6a9fda28a9022a"],
+        info: [],
+        lessons: ["620121900b6b1e9d34ea1c65", "620bd58941f515215b23458a"],
+        id: "61e4a8945a0d6cd627f65232",
+      };
+      const response = { data };
+
+      mockedAxios.get.mockResolvedValue(response);
+      await actions.getUserById(configActionContext(commit), groupId);
+
+      expect(commit).toHaveBeenCalledWith("loadedUsersFromGroup", { ...data });
+      expect(commit).toHaveBeenCalledWith("loadLastUser", { ...data });
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
