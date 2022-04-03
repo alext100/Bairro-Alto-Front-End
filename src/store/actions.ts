@@ -295,9 +295,7 @@ const actions = {
 
   async getLessonsFromApi({ commit }: ActionContext<State, State>): Promise<void> {
     commit("startLoading");
-    const { data } = await axios({
-      method: "GET",
-      url: `${process.env.VUE_APP_URL}/lesson/get-all`,
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/lesson/get-all`, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
     });
     commit("loadLessons", data);
