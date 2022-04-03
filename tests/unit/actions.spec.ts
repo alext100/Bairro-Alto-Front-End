@@ -366,4 +366,23 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
+
+  describe("When the action getAllCourseNames is invoked", () => {
+    test("Then it should invoke loadCourseNames with data", async () => {
+      const data = [{ courseName: "", id: "" }];
+
+      mockedAxios.get.mockResolvedValue({ data });
+      await actions.getAllCourseNames(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("loadCourseNames", data);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.getAllCourseNames(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
 });
