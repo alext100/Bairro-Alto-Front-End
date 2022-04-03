@@ -286,11 +286,8 @@ const actions = {
 
   async createLesson({ commit }: ActionContext<State, State>, lesson: Lesson): Promise<void> {
     commit("startLoading");
-    const newLesson = await axios({
-      method: "POST",
-      url: `${process.env.VUE_APP_URL}/lesson/add`,
+    const newLesson = await axios.post(`${process.env.VUE_APP_URL}/lesson/add`, lesson, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: lesson,
     });
     commit("pushNewLessonToLessons", newLesson.data);
     commit("stopLoading");
