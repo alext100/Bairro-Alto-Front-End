@@ -256,7 +256,7 @@ const actions = {
   },
 
   async updateGroupErrorsById({ dispatch }: ActionContext<State, State>, groupError: GroupError): Promise<void> {
-    await axios.put(`${process.env.VUE_APP_URL_LOCAL}/error/update-group-error/${groupError.id}`, groupError, {
+    await axios.put(`${process.env.VUE_APP_URL}/error/update-group-error/${groupError.id}`, groupError, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
     });
   },
@@ -265,12 +265,13 @@ const actions = {
     { commit }: ActionContext<State, State>,
     { groupId, errorId }: { groupId: string; errorId: string }
   ): Promise<void> {
-    await axios({
-      method: "PATCH",
-      url: `${process.env.VUE_APP_URL}/error/delete-error-from-group/${groupId}`,
-      headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: { id: errorId },
-    });
+    await axios.patch(
+      `${process.env.VUE_APP_URL}/error/delete-error-from-group/${groupId}`,
+      { id: errorId },
+      {
+        headers: { Authorization: `Bearer ${state.currentUser.token}` },
+      }
+    );
   },
 
   async createGroup({ dispatch }: ActionContext<State, State>, groupData: Group): Promise<void> {
