@@ -367,9 +367,7 @@ const actions = {
 
   async getGroupLessonsById({ commit }: ActionContext<State, State>, groupId: string): Promise<void> {
     commit("startLoading");
-    const { data } = await axios({
-      method: "GET",
-      url: `${process.env.VUE_APP_URL}/lesson/get-group-lessons/${groupId}`,
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/lesson/get-group-lessons/${groupId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     commit("setGroupLessons", data.lessons);
