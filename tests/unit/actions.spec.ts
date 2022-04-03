@@ -443,4 +443,26 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("updateGroupLessons", updatedLesson.data);
     });
   });
+
+  describe("When the action getGroupLessonsById is invoked with groupId", () => {
+    const groupId = "61df3923ab6a9fda28a2398a";
+    const data = { lessons: [], id: "" };
+
+    test("Then it should invoke commit with 'setGroupLessons' and data.lessons", async () => {
+      mockedAxios.get.mockResolvedValue({ data });
+      await actions.getGroupLessonsById(configActionContext(commit), groupId);
+
+      expect(commit).toHaveBeenCalledWith("setGroupLessons", data.lessons);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      mockedAxios.get.mockResolvedValue({ data });
+
+      await actions.getGroupLessonsById(configActionContext(commit), groupId);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
 });
