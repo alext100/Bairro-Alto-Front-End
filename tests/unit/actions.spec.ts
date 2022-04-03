@@ -286,4 +286,14 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
+
+  describe("When the action updateGroupErrorsById is invoked with groupError", () => {
+    test("Then it should invoke axios.put", async () => {
+      const groupError: GroupError = { errorType: "", errorMessage: "", errorComment: "" };
+
+      await actions.updateGroupErrorsById(configActionContextDispatch(dispatch), groupError);
+
+      expect(axios).toHaveBeenCalled();
+    });
+  });
 });
