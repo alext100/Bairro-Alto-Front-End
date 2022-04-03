@@ -429,4 +429,18 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
+
+  describe("When the action toggleLessonInGroup is invoked with lessonId and groupId", () => {
+    const lessonId = "620121900b6b1e9d34ea1c65";
+    const groupId = "620121900b6b1e9d34ea1c65";
+    const updatedLesson = { data: { author: "", title: "", level: "", body: "" } };
+
+    test("Then it should invoke commit with 'updateGroupLessons' and updatedLesson.data", async () => {
+      mockedAxios.patch.mockResolvedValue(updatedLesson);
+
+      await actions.toggleLessonInGroup(configActionContext(commit), { groupId, lessonId });
+
+      expect(commit).toHaveBeenCalledWith("updateGroupLessons", updatedLesson.data);
+    });
+  });
 });
