@@ -1,5 +1,5 @@
 import actions from "@/store/actions";
-import { Group } from "@/types/interfaces";
+import { Group, GroupError } from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
 import mockedState from "../mockedState";
@@ -222,6 +222,26 @@ describe("Given a actions from state", () => {
     });
     test("Then it should invoke commit with 'startLoading'", async () => {
       await actions.updateGroup(configActionContext(commit), groupToUpdate);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action getAllUsersFromApi is invoked", () => {
+    test("Then it should invoke commit with 'loadAllUsers' and data", async () => {
+      const data = {};
+      const response = { data };
+
+      mockedAxios.get.mockResolvedValue(response);
+      await actions.getAllUsersFromApi(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("loadAllUsers", data);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.getAllUsersFromApi(configActionContext(commit));
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
