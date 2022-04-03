@@ -178,4 +178,12 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
+
+  describe("When the action deleteLoadedUser invoked", () => {
+    test("Then it should invoke commit with 'deleteLoadedUsersFromGroup'", async () => {
+      await actions.deleteLoadedUsers(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("deleteLoadedUsersFromGroup");
+    });
+  });
 });
