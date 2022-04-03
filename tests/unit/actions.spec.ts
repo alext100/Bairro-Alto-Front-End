@@ -406,4 +406,27 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
+
+  describe("When the action updateLessonById is invoked with lessonId and lesson", () => {
+    const lessonId = "620121900b6b1e9d34ea1c65";
+    const lesson: Lesson = { author: "", title: "", level: "", body: "" };
+
+    test("Then it should invoke dispatch with 'getLessonsFromApi'", async () => {
+      mockedAxios.put.mockResolvedValue("");
+
+      await actions.updateLessonById(configActionContextDispatch(dispatch), { lessonId, lesson });
+
+      expect(dispatch).toHaveBeenCalledWith("getLessonsFromApi");
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      mockedAxios.put.mockResolvedValue("");
+
+      await actions.updateLessonById(configActionContext(commit), { lessonId, lesson });
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
 });
