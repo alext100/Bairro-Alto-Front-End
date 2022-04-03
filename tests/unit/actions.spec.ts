@@ -246,4 +246,20 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
+
+  describe("When the action addErrorToGroup is invoked with groupId and groupError", () => {
+    const groupId = "61df3923ab6a9fda28a2398a";
+    const groupError: GroupError = { errorType: "", errorMessage: "", errorComment: "" };
+
+    test("Then it should invoke dispatch with 'getGroupById' and groupId", async () => {
+      await actions.addErrorToGroup(configActionContextDispatch(dispatch), { groupId, groupError });
+
+      expect(dispatch).toHaveBeenCalledWith("getGroupById", groupId);
+    });
+    test("Then it should invoke dispatch with 'getGroupErrorsById' and groupId", async () => {
+      await actions.addErrorToGroup(configActionContextDispatch(dispatch), { groupId, groupError });
+
+      expect(dispatch).toHaveBeenCalledWith("getGroupErrorsById", groupId);
+    });
+  });
 });
