@@ -304,9 +304,7 @@ const actions = {
 
   async getAllCourseNames({ commit }: ActionContext<State, State>): Promise<void> {
     commit("startLoading");
-    const { data } = await axios({
-      method: "GET",
-      url: `${process.env.VUE_APP_URL}/lesson/get-all-course-names`,
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/lesson/get-all-course-names`, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
     });
     commit("loadCourseNames", data);
