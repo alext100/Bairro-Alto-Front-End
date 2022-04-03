@@ -347,4 +347,23 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
+
+  describe("When the action getLessonsFromApi is invoked with lesson", () => {
+    test("Then it should invoke commit with 'loadLessons' and received data", async () => {
+      const data: Array<Lesson> = [];
+
+      mockedAxios.get.mockResolvedValue({ data });
+      await actions.getLessonsFromApi(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("loadLessons", data);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.getLessonsFromApi(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
 });
