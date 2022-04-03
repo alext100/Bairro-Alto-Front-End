@@ -61,11 +61,18 @@ interface UserRegisterData {
   image: string;
 }
 
+interface HomeworkToDo {
+  title: string;
+  message: string;
+  time: string;
+  audios: Array<string>;
+}
+
 interface Group {
   id: string;
   groupName: string;
   members: Array<string>;
-  homeworkToDo: string;
+  homeworkToDo: Array<HomeworkToDo>;
   lessons: Array<string>;
   groupErrors: Array<string>;
   teachers: Array<string>;
