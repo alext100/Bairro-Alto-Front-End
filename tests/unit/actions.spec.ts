@@ -308,4 +308,23 @@ describe("Given a actions from state", () => {
       expect(axios.patch).toHaveBeenCalled();
     });
   });
+
+  describe("When the action createGroup is invoked with groupData", () => {
+    test("Then it should invoke dispatch with 'getGroupsFromApi'", async () => {
+      const groupData: Group = {
+        id: "",
+        groupName: "",
+        members: [],
+        homeworkToDo: [],
+        lessons: [],
+        groupErrors: [],
+        teachers: [],
+      };
+
+      mockedAxios.post.mockResolvedValue("");
+      await actions.createGroup(configActionContextDispatch(dispatch), groupData);
+
+      expect(dispatch).toHaveBeenCalledWith("getGroupsFromApi");
+    });
+  });
 });
