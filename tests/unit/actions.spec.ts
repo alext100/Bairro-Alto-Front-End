@@ -293,7 +293,19 @@ describe("Given a actions from state", () => {
 
       await actions.updateGroupErrorsById(configActionContextDispatch(dispatch), groupError);
 
-      expect(axios).toHaveBeenCalled();
+      expect(axios.put).toHaveBeenCalled();
+    });
+  });
+
+  describe("When the action deleteGroupError is invoked with groupId and errorId", () => {
+    test("Then it should invoke axios.patch", async () => {
+      const groupId = "61df3923ab6a9fda28a2398a";
+      const errorId = "61df3923ab6a9fda28a2398a";
+
+      mockedAxios.patch.mockResolvedValue("");
+      await actions.deleteGroupError(configActionContext(commit), { groupId, errorId });
+
+      expect(axios.patch).toHaveBeenCalled();
     });
   });
 });
