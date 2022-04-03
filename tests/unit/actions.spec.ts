@@ -2,7 +2,6 @@ import actions from "@/store/actions";
 import { Group, GroupError, Lesson } from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
-import mockedState from "../mockedState";
 import { configActionContext, configActionContextDispatch } from "../test-utils";
 
 jest.mock("axios");
@@ -463,6 +462,49 @@ describe("Given a actions from state", () => {
       await actions.getGroupLessonsById(configActionContext(commit), groupId);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action getWebContent is invoked", () => {
+    const response = {
+      data: [
+        {
+          categories: [{ title: "", slug: "" }],
+          posts: [{ title: "", body: "", category: "" }],
+          id: "123456789",
+        },
+      ],
+    };
+    test("Then it should invoke commit with 'setWebContent' and data[0]", async () => {
+      mockedAxios.get.mockResolvedValue(response);
+
+      await actions.getWebContent(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("setWebContent", response.data[0]);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      mockedAxios.get.mockResolvedValue(response);
+
+      await actions.getWebContent(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+    test("Then it should invoke sessionStorage.setItem with webContent", async () => {
+      jest.spyOn(Object.getPrototypeOf(window.sessionStorage), "setItem");
+      mockedAxios.get.mockResolvedValue(response);
+
+      await actions.getWebContent(configActionContext(commit));
+
+      expect(sessionStorage.setItem).toHaveBeenCalledWith(
+        "webContent",
+        JSON.stringify({
+          categories: response.data[0].categories,
+          posts: response.data[0].posts,
+        })
+      );
     });
   });
 });
