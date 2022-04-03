@@ -376,9 +376,7 @@ const actions = {
 
   async getWebContent({ commit }: ActionContext<State, State>): Promise<void> {
     commit("startLoading");
-    const { data } = await axios({
-      method: "GET",
-      url: `${process.env.VUE_APP_URL}/web-content/get-web-content/`,
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/web-content/get-web-content/`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     sessionStorage.setItem(
