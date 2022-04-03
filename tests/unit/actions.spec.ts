@@ -385,4 +385,25 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
+
+  describe("When the action deleteLessonById is invoked", () => {
+    const lessonId = "61df3923ab6a9fda28a2398a";
+    test("Then it should invoke deleteOneLessonFromLessons with lessonId", async () => {
+      mockedAxios.delete.mockResolvedValue("");
+
+      await actions.deleteLessonById(configActionContext(commit), lessonId);
+
+      expect(commit).toHaveBeenCalledWith("deleteOneLessonFromLessons", lessonId);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      mockedAxios.delete.mockResolvedValue("");
+
+      await actions.deleteLessonById(configActionContext(commit), lessonId);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
 });
