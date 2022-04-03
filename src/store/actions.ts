@@ -115,9 +115,7 @@ const actions = {
   },
 
   async getGroupsFromApi({ commit }: ActionContext<State, State>): Promise<void> {
-    const { data } = await axios({
-      method: "GET",
-      url: `${process.env.VUE_APP_URL}/group/get-all`,
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/group/get-all`, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
     });
     commit("loadGroups", data);
