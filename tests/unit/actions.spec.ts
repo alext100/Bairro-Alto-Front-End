@@ -1,5 +1,5 @@
 import actions from "@/store/actions";
-import { Group, GroupError } from "@/types/interfaces";
+import { Group, GroupError, Lesson } from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
 import mockedState from "../mockedState";
@@ -325,6 +325,26 @@ describe("Given a actions from state", () => {
       await actions.createGroup(configActionContextDispatch(dispatch), groupData);
 
       expect(dispatch).toHaveBeenCalledWith("getGroupsFromApi");
+    });
+  });
+
+  describe("When the action createLesson is invoked with lesson", () => {
+    const lesson: Lesson = { author: "", title: "", level: "", body: "" };
+    test("Then it should invoke commit with 'pushNewLessonToLessons' and newLesson.data", async () => {
+      const newLesson = { data: { author: "", title: "", level: "", body: "" } };
+
+      mockedAxios.post.mockResolvedValue(newLesson);
+      await actions.createLesson(configActionContext(commit), lesson);
+
+      expect(commit).toHaveBeenCalledWith("pushNewLessonToLessons", newLesson.data);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.createLesson(configActionContext(commit), lesson);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
 });
