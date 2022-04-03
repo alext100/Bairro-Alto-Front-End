@@ -286,11 +286,8 @@ const actions = {
 
   async createLesson({ commit }: ActionContext<State, State>, lesson: Lesson): Promise<void> {
     commit("startLoading");
-    const newLesson = await axios({
-      method: "POST",
-      url: `${process.env.VUE_APP_URL}/lesson/add`,
+    const newLesson = await axios.post(`${process.env.VUE_APP_URL}/lesson/add`, lesson, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: lesson,
     });
     commit("pushNewLessonToLessons", newLesson.data);
     commit("stopLoading");
@@ -298,9 +295,7 @@ const actions = {
 
   async getLessonsFromApi({ commit }: ActionContext<State, State>): Promise<void> {
     commit("startLoading");
-    const { data } = await axios({
-      method: "GET",
-      url: `${process.env.VUE_APP_URL}/lesson/get-all`,
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/lesson/get-all`, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
     });
     commit("loadLessons", data);
@@ -309,9 +304,7 @@ const actions = {
 
   async getAllCourseNames({ commit }: ActionContext<State, State>): Promise<void> {
     commit("startLoading");
-    const { data } = await axios({
-      method: "GET",
-      url: `${process.env.VUE_APP_URL}/lesson/get-all-course-names`,
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/lesson/get-all-course-names`, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
     });
     commit("loadCourseNames", data);
@@ -362,20 +355,19 @@ const actions = {
     { commit }: ActionContext<State, State>,
     { groupId, lessonId }: { groupId: string; lessonId: string }
   ) {
-    const updatedLesson = await axios({
-      method: "PATCH",
-      url: `${process.env.VUE_APP_URL}/group/add-group-lesson/${groupId}`,
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      data: { id: lessonId },
-    }).catch((error) => error);
+    const updatedLesson = await axios.patch(
+      `${process.env.VUE_APP_URL}/group/add-group-lesson/${groupId}`,
+      { id: lessonId },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
     commit("updateGroupLessons", updatedLesson.data);
   },
 
   async getGroupLessonsById({ commit }: ActionContext<State, State>, groupId: string): Promise<void> {
     commit("startLoading");
-    const { data } = await axios({
-      method: "GET",
-      url: `${process.env.VUE_APP_URL}/lesson/get-group-lessons/${groupId}`,
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/lesson/get-group-lessons/${groupId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     commit("setGroupLessons", data.lessons);

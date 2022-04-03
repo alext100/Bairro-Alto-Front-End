@@ -1,5 +1,5 @@
 import actions from "@/store/actions";
-import { Group, GroupError } from "@/types/interfaces";
+import { Group, GroupError, Lesson } from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
 import mockedState from "../mockedState";
@@ -306,6 +306,163 @@ describe("Given a actions from state", () => {
       await actions.deleteGroupError(configActionContext(commit), { groupId, errorId });
 
       expect(axios.patch).toHaveBeenCalled();
+    });
+  });
+
+  describe("When the action createGroup is invoked with groupData", () => {
+    test("Then it should invoke dispatch with 'getGroupsFromApi'", async () => {
+      const groupData: Group = {
+        id: "",
+        groupName: "",
+        members: [],
+        homeworkToDo: [],
+        lessons: [],
+        groupErrors: [],
+        teachers: [],
+      };
+
+      mockedAxios.post.mockResolvedValue("");
+      await actions.createGroup(configActionContextDispatch(dispatch), groupData);
+
+      expect(dispatch).toHaveBeenCalledWith("getGroupsFromApi");
+    });
+  });
+
+  describe("When the action createLesson is invoked with lesson", () => {
+    const lesson: Lesson = { author: "", title: "", level: "", body: "" };
+    test("Then it should invoke commit with 'pushNewLessonToLessons' and newLesson.data", async () => {
+      const newLesson = { data: { author: "", title: "", level: "", body: "" } };
+
+      mockedAxios.post.mockResolvedValue(newLesson);
+      await actions.createLesson(configActionContext(commit), lesson);
+
+      expect(commit).toHaveBeenCalledWith("pushNewLessonToLessons", newLesson.data);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.createLesson(configActionContext(commit), lesson);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action getLessonsFromApi is invoked with lesson", () => {
+    test("Then it should invoke commit with 'loadLessons' and received data", async () => {
+      const data: Array<Lesson> = [];
+
+      mockedAxios.get.mockResolvedValue({ data });
+      await actions.getLessonsFromApi(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("loadLessons", data);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.getLessonsFromApi(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action getAllCourseNames is invoked", () => {
+    test("Then it should invoke loadCourseNames with data", async () => {
+      const data = [{ courseName: "", id: "" }];
+
+      mockedAxios.get.mockResolvedValue({ data });
+      await actions.getAllCourseNames(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("loadCourseNames", data);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.getAllCourseNames(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action deleteLessonById is invoked", () => {
+    const lessonId = "61df3923ab6a9fda28a2398a";
+    test("Then it should invoke deleteOneLessonFromLessons with lessonId", async () => {
+      mockedAxios.delete.mockResolvedValue("");
+
+      await actions.deleteLessonById(configActionContext(commit), lessonId);
+
+      expect(commit).toHaveBeenCalledWith("deleteOneLessonFromLessons", lessonId);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      mockedAxios.delete.mockResolvedValue("");
+
+      await actions.deleteLessonById(configActionContext(commit), lessonId);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action updateLessonById is invoked with lessonId and lesson", () => {
+    const lessonId = "620121900b6b1e9d34ea1c65";
+    const lesson: Lesson = { author: "", title: "", level: "", body: "" };
+
+    test("Then it should invoke dispatch with 'getLessonsFromApi'", async () => {
+      mockedAxios.put.mockResolvedValue("");
+
+      await actions.updateLessonById(configActionContextDispatch(dispatch), { lessonId, lesson });
+
+      expect(dispatch).toHaveBeenCalledWith("getLessonsFromApi");
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      mockedAxios.put.mockResolvedValue("");
+
+      await actions.updateLessonById(configActionContext(commit), { lessonId, lesson });
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action toggleLessonInGroup is invoked with lessonId and groupId", () => {
+    const lessonId = "620121900b6b1e9d34ea1c65";
+    const groupId = "620121900b6b1e9d34ea1c65";
+    const updatedLesson = { data: { author: "", title: "", level: "", body: "" } };
+
+    test("Then it should invoke commit with 'updateGroupLessons' and updatedLesson.data", async () => {
+      mockedAxios.patch.mockResolvedValue(updatedLesson);
+
+      await actions.toggleLessonInGroup(configActionContext(commit), { groupId, lessonId });
+
+      expect(commit).toHaveBeenCalledWith("updateGroupLessons", updatedLesson.data);
+    });
+  });
+
+  describe("When the action getGroupLessonsById is invoked with groupId", () => {
+    const groupId = "61df3923ab6a9fda28a2398a";
+    const data = { lessons: [], id: "" };
+
+    test("Then it should invoke commit with 'setGroupLessons' and data.lessons", async () => {
+      mockedAxios.get.mockResolvedValue({ data });
+      await actions.getGroupLessonsById(configActionContext(commit), groupId);
+
+      expect(commit).toHaveBeenCalledWith("setGroupLessons", data.lessons);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      mockedAxios.get.mockResolvedValue({ data });
+
+      await actions.getGroupLessonsById(configActionContext(commit), groupId);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
 });
