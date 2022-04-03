@@ -262,4 +262,28 @@ describe("Given a actions from state", () => {
       expect(dispatch).toHaveBeenCalledWith("getGroupErrorsById", groupId);
     });
   });
+
+  describe("When the action getGroupErrorsById is invoked with groupId", () => {
+    const groupId = "61df3923ab6a9fda28a2398a";
+
+    test("Then it should invoke commit with 'addGroupError' and data.groupErrors", async () => {
+      const data = {
+        groupErrors: [],
+        id: "",
+      };
+
+      mockedAxios.get.mockResolvedValue({ data });
+      await actions.getGroupErrorsById(configActionContext(commit), groupId);
+
+      expect(commit).toHaveBeenCalledWith("addGroupError", data.groupErrors);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.getGroupErrorsById(configActionContext(commit), groupId);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
 });
