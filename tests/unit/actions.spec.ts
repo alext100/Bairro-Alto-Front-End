@@ -13,24 +13,24 @@ const dispatch = jest.fn() as jest.MockedFunction<Dispatch>;
 
 describe("Given a actions from state", () => {
   describe("When the action getGroupById is invoked", () => {
+    const data = {
+      members: ["64016c92709d41ccaf5c1948"],
+      groupName: "A1. Вторник / Четверг 19:00-20:30",
+      groupErrors: ["61f805d94a80fbcfb7y33d98"],
+      homeworkToDo: [
+        {
+          title: "ghjk",
+          message: "<p>&nbsp;</p>",
+          time: "2022-02-15T17:56:39.791Z",
+          audios: ["https://storage.googleapis.com/bairro-alto.appspot.com/APPLAUSE-1644947827589.mp3"],
+        },
+      ],
+      teachers: ["61f07cf00e2b45ec345efee8"],
+      info: [],
+      lessons: ["620121900b6b1e9d99ea1c92", "620bd58941f515215b27768a"],
+      id: "61e4a8945a0d6cd627f65232",
+    };
     test("Then it should invoke commit with 'loadOneGroup' and received data", async () => {
-      const data = {
-        members: ["64016c92709d41ccaf5c1948"],
-        groupName: "A1. Вторник / Четверг 19:00-20:30",
-        groupErrors: ["61f805d94a80fbcfb7y33d98"],
-        homeworkToDo: [
-          {
-            title: "ghjk",
-            message: "<p>&nbsp;</p>",
-            time: "2022-02-15T17:56:39.791Z",
-            audios: ["https://storage.googleapis.com/bairro-alto.appspot.com/APPLAUSE-1644947827589.mp3"],
-          },
-        ],
-        teachers: ["61f07cf00e2b45ec345efee8"],
-        info: [],
-        lessons: ["620121900b6b1e9d99ea1c92", "620bd58941f515215b27768a"],
-        id: "61e4a8945a0d6cd627f65232",
-      };
       mockedAxios.get.mockResolvedValue({ data });
 
       await actions.getGroupById(configActionContext(commit), data.id);
@@ -41,7 +41,9 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
 
-    test("Then it should invoke commit with 'startLoading'", () => {
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.getGroupById(configActionContext(commit), data.id);
+
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
@@ -109,8 +111,9 @@ describe("Given a actions from state", () => {
   });
 
   describe("When the action getGroupById is invoked", () => {
+    const groupId = "61df3923ab6a9fda28a2398a";
+
     test("Then it should invoke commit with 'loadOneGroup' and data", async () => {
-      const groupId = "61df3923ab6a9fda28a2398a";
       const data = {
         members: ["62076c93706d41ccaf4c1748"],
         groupName: "A1. Вторник / Четверг 19:00-20:30",
@@ -138,14 +141,16 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", () => {
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.getGroupById(configActionContext(commit), groupId);
+
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
 
   describe("When the action getUserById is invoked", () => {
+    const groupId = "61df3923ab6a9fda28a2398a";
     test("Then it should invoke commit with 'loadOneGroup' and data", async () => {
-      const groupId = "61df3923ab6a9fda28a2398a";
       const data = {
         members: ["62076c93706d41ccaf4c1748"],
         groupName: "A1. Вторник / Четверг 19:00-20:30",
@@ -174,7 +179,9 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", () => {
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.getUserById(configActionContext(commit), groupId);
+
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
@@ -184,6 +191,39 @@ describe("Given a actions from state", () => {
       await actions.deleteLoadedUsers(configActionContext(commit));
 
       expect(commit).toHaveBeenCalledWith("deleteLoadedUsersFromGroup");
+    });
+  });
+
+  describe("When the action updateGroup invoked", () => {
+    const groupToUpdate = {
+      members: ["62076c93706d41ccaf4c1748"],
+      groupName: "A1. Вторник / Четверг 19:00-20:30",
+      groupErrors: ["61f805d84a80fbcfb7f33d38"],
+      homeworkToDo: [
+        {
+          title: "ghjk",
+          message: "<p>&nbsp;</p>",
+          time: "2022-02-15T17:56:39.791Z",
+          audios: ["https://storage.googleapis.com/bairro-alto.appspot.com/APPLAUSE-1644947827589.mp3"],
+        },
+      ],
+      teachers: ["61f07cf00e2b45ec821efee7", "61df3972ab6a9fda28a9022a"],
+      info: [],
+      lessons: ["620121900b6b1e9d34ea1c65", "620bd58941f515215b23458a"],
+      id: "61e4a8945a0d6cd627f65232",
+    };
+    test("Then it should invoke dispatch with 'getGroupById'", async () => {
+      await actions.updateGroup(configActionContextDispatch(dispatch), groupToUpdate);
+
+      expect(dispatch).toHaveBeenCalledWith("getGroupById", groupToUpdate.id);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      await actions.updateGroup(configActionContext(commit), groupToUpdate);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
 });
