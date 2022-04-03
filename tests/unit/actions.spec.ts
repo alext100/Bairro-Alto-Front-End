@@ -75,4 +75,37 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("loadGroups", response.data);
     });
   });
+
+  describe("When the action getUserGroupsFromApi is invoked", () => {
+    test("Then it should invoke commit with 'loadUserGroups' and data", async () => {
+      const data = {
+        teacherGroups: [
+          {
+            members: ["62076c93706d41ccaf4c1748"],
+            groupName: "A1. Вторник / Четверг 19:00-20:30",
+            groupErrors: ["61f805d84a80fbcfb7f33d38"],
+            homeworkToDo: [
+              {
+                title: "ghjk",
+                message: "<p>&nbsp;</p>",
+                time: "2022-02-15T17:56:39.791Z",
+                audios: ["https://storage.googleapis.com/bairro-alto.appspot.com/APPLAUSE-1644947827589.mp3"],
+              },
+            ],
+            teachers: ["61f07cf00e2b45ec821efee7", "61df3972ab6a9fda28a9022a"],
+            info: [],
+            lessons: ["620121900b6b1e9d34ea1c65", "620bd58941f515215b23458a"],
+            id: "61e4a8945a0d6cd627f65232",
+          },
+        ],
+        id: "61df3923ab6a9fda28a2398a",
+      };
+      const response = { data };
+
+      mockedAxios.get.mockResolvedValue(response);
+      await actions.getUserGroupsFromApi(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("loadUserGroups", data.teacherGroups);
+    });
+  });
 });
