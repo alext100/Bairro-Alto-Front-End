@@ -355,12 +355,13 @@ const actions = {
     { commit }: ActionContext<State, State>,
     { groupId, lessonId }: { groupId: string; lessonId: string }
   ) {
-    const updatedLesson = await axios({
-      method: "PATCH",
-      url: `${process.env.VUE_APP_URL}/group/add-group-lesson/${groupId}`,
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      data: { id: lessonId },
-    }).catch((error) => error);
+    const updatedLesson = await axios.patch(
+      `${process.env.VUE_APP_URL}/group/add-group-lesson/${groupId}`,
+      { id: lessonId },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
     commit("updateGroupLessons", updatedLesson.data);
   },
 
