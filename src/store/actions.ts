@@ -256,11 +256,8 @@ const actions = {
   },
 
   async updateGroupErrorsById({ dispatch }: ActionContext<State, State>, groupError: GroupError): Promise<void> {
-    await axios({
-      method: "PUT",
-      url: `${process.env.VUE_APP_URL}/error/update-group-error/${groupError.id}`,
+    await axios.put(`${process.env.VUE_APP_URL_LOCAL}/error/update-group-error/${groupError.id}`, groupError, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: groupError,
     });
   },
 
