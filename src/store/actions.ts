@@ -393,12 +393,11 @@ const actions = {
   async updateWebContent({ commit }: ActionContext<State, State>, webContent: WebContent): Promise<void> {
     commit("startLoading");
     const collectionId = process.env.VUE_APP_WEB_COLLECTION_ID;
-    const updated = await axios({
-      method: "PUT",
-      url: `${process.env.VUE_APP_URL}/web-content/update-web-content/${collectionId}`,
-      headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: webContent,
-    });
+    const updated = await axios.put(
+      `${process.env.VUE_APP_URL}/web-content/update-web-content/${collectionId}`,
+      webContent,
+      { headers: { Authorization: `Bearer ${state.currentUser.token}` } }
+    );
     commit("setWebContent", updated.data);
     commit("stopLoading");
   },
