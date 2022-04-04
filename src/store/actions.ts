@@ -447,7 +447,7 @@ const actions = {
     commit("stopLoading");
   },
 
-  async updateUser({ commit, dispatch }: ActionContext<State, State>, user: Post): Promise<void> {
+  async updateUser({ commit, dispatch }: ActionContext<State, State>, user: UserModel): Promise<void> {
     commit("startLoading");
     await axios.put(
       `${process.env.VUE_APP_URL}/user/update-user/${user.id}`,
@@ -458,13 +458,10 @@ const actions = {
     commit("stopLoading");
   },
 
-  async changePassword({ commit }: ActionContext<State, State>, user: Post): Promise<void> {
+  async changePassword({ commit }: ActionContext<State, State>, user: UserModel): Promise<void> {
     commit("startLoading");
-    const updatedUser = await axios({
-      method: "PUT",
-      url: `${process.env.VUE_APP_URL}/user/change-password`,
+    const updatedUser = await axios.put(`${process.env.VUE_APP_URL}/user/change-password`, user, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: user,
     });
     if (updatedUser) {
       commit("loadUser", updatedUser);
