@@ -245,12 +245,23 @@ describe("Given a actions from state", () => {
     });
   });
 
-  describe("When the action addGroupToTeacher is invoked", () => {
+  describe("When the action addGroupToTeacher is invoked with groupId", () => {
     test("Then it should call dispatch with 'getUserGroupsFromApi'", async () => {
       const groupId = "12435wt4veg5w2342sdf";
 
       mockedAxios.patch.mockResolvedValue("");
       await actions.addGroupToTeacher(configActionContextDispatch(dispatch), groupId);
+
+      expect(dispatch).toHaveBeenCalledWith("getUserGroupsFromApi");
+    });
+  });
+
+  describe("When the action deleteUserGroup is invoked with groupId", () => {
+    test("Then it should call dispatch with 'getUserGroupsFromApi'", async () => {
+      const groupId = "1243sg3eaw3df42sdf";
+
+      mockedAxios.patch.mockResolvedValue("");
+      await actions.deleteUserGroup(configActionContextDispatch(dispatch), groupId);
 
       expect(dispatch).toHaveBeenCalledWith("getUserGroupsFromApi");
     });
@@ -368,6 +379,33 @@ describe("Given a actions from state", () => {
     });
     test("Then it should invoke commit with 'stopLoading'", async () => {
       await actions.updateGroup(configActionContext(commit), groupToUpdate);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action addMemberToGroup invoked with { userId, groupId }", () => {
+    const userId = "lqasdjlhro28734uqtrfhq3";
+    const groupId = "lq234asdro28734uqtrfhq3";
+
+    test("Then it should invoke dispatch with 'getUserById' and userId", async () => {
+      await actions.addMemberToGroup(configActionContextDispatch(dispatch), { userId, groupId });
+
+      expect(dispatch).toHaveBeenCalledWith("getUserById", userId);
+    });
+
+    test("Then it should invoke dispatch with 'getGroupById' and groupId", async () => {
+      await actions.addMemberToGroup(configActionContextDispatch(dispatch), { userId, groupId });
+
+      expect(dispatch).toHaveBeenCalledWith("getGroupById", groupId);
+    });
+
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+
+    test("Then it should invoke commit with 'stopLoading'", async () => {
+      await actions.addMemberToGroup(configActionContext(commit), { userId, groupId });
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
