@@ -572,4 +572,25 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
+
+  describe("When the action deleteWebCategory is invoked with categoryId", () => {
+    const categoryId = "61df3923ab6a9fda28a2398a";
+    test("Then it should invoke commit with 'deleteOneCategory' and categoryId", async () => {
+      mockedAxios.delete.mockResolvedValue("");
+
+      await actions.deleteWebCategory(configActionContext(commit), categoryId);
+
+      expect(commit).toHaveBeenCalledWith("deleteOneCategory", categoryId);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'stopLoading'", async () => {
+      mockedAxios.delete.mockResolvedValue("");
+
+      await actions.deleteWebCategory(configActionContext(commit), categoryId);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
 });
