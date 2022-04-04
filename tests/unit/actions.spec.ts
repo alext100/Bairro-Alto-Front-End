@@ -78,6 +78,33 @@ describe("Given a actions from state", () => {
     });
   });
 
+  describe("When the action registerUser is invoked", () => {
+    const userData: UserLoginData = {
+      password: "12345",
+      email: "asdf@mail.com",
+    };
+    describe("And response.status === 201", () => {
+      test("Then it should call commit with 'isRegistered' and userData", async () => {
+        const response = { status: 201 };
+
+        mockedAxios.post.mockResolvedValue(response);
+        await actions.registerUser(configActionContext(commit), userData);
+
+        expect(commit).toHaveBeenCalledWith("isRegistered", userData);
+      });
+    });
+    describe("And response.status will be other", () => {
+      test("Then it should call commit with 'notRegistered'", async () => {
+        const response = { status: 500 };
+
+        mockedAxios.post.mockResolvedValue(response);
+        await actions.registerUser(configActionContext(commit), userData);
+
+        expect(commit).toHaveBeenCalledWith("notRegistered");
+      });
+    });
+  });
+
   describe("When the action getGroupById is invoked", () => {
     const data = {
       members: ["64016c92709d41ccaf5c1948"],
