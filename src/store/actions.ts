@@ -442,23 +442,18 @@ const actions = {
 
   async payment({ commit }: ActionContext<State, State>, userData: UserPaymentData): Promise<void> {
     commit("startLoading");
-    const paymentResponse = await axios({
-      method: "POST",
-      url: `${process.env.VUE_APP_URL}/payment`,
-      data: userData,
-    });
+    const paymentResponse = await axios.post(`${process.env.VUE_APP_URL}/payment`, userData);
     commit("paymentResponse", paymentResponse);
     commit("stopLoading");
   },
 
   async updateUser({ commit, dispatch }: ActionContext<State, State>, user: Post): Promise<void> {
     commit("startLoading");
-    await axios({
-      method: "PUT",
-      url: `${process.env.VUE_APP_URL}/user/update-user/${user.id}`,
-      headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: { user },
-    });
+    await axios.put(
+      `${process.env.VUE_APP_URL}/user/update-user/${user.id}`,
+      { user },
+      { headers: { Authorization: `Bearer ${state.currentUser.token}` } }
+    );
     dispatch("getAllUsersFromApi");
     commit("stopLoading");
   },
