@@ -54,6 +54,18 @@ describe("Given a actions from state", () => {
     });
   });
 
+  describe("When the action verifyUser is invoked with code", () => {
+    test("Then it should return response.data", async () => {
+      const code = "1234567890";
+      const response = { data: {} };
+
+      mockedAxios.get.mockResolvedValue(response);
+      await actions.verifyUser(configActionContext(commit), code);
+
+      expect(axios.get).toHaveBeenCalledWith(`${process.env.VUE_APP_URL}/user/confirm/${code}`);
+    });
+  });
+
   describe("When the action getGroupById is invoked", () => {
     const data = {
       members: ["64016c92709d41ccaf5c1948"],
