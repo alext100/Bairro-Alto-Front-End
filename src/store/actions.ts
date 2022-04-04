@@ -405,12 +405,11 @@ const actions = {
   async updatePostById({ commit, dispatch }: ActionContext<State, State>, post: Post): Promise<void> {
     commit("startLoading");
     const collectionId = process.env.VUE_APP_WEB_COLLECTION_ID;
-    await axios({
-      method: "PUT",
-      url: `${process.env.VUE_APP_URL}/web-content/update-post/${post.id}`,
-      headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: { post, collectionId },
-    });
+    await axios.put(
+      `${process.env.VUE_APP_URL}/web-content/update-post/${post.id}`,
+      { post, collectionId },
+      { headers: { Authorization: `Bearer ${state.currentUser.token}` } }
+    );
     dispatch("getWebContent");
     commit("stopLoading");
   },
