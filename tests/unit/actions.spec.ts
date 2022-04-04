@@ -32,11 +32,11 @@ describe("Given a actions from state", () => {
     };
     const { token } = response.data;
     const user = {};
-    test("Then it should call dispatch with 'userLogedFromApi' and { user, token }", async () => {
+    test("Then it should call dispatch with 'userLoggedFromApi' and { user, token }", async () => {
       mockedAxios.post.mockResolvedValue(response);
       await actions.login(configActionContextDispatch(dispatch), userData);
 
-      expect(dispatch).toHaveBeenCalledWith("userLogedFromApi", { user, token });
+      expect(dispatch).toHaveBeenCalledWith("userLoggedFromApi", { user, token });
     });
     test("Then it should call localStorage.setItem with 'userData' and JSON.stringify({ token })", async () => {
       jest.spyOn(Object.getPrototypeOf(window.localStorage), "setItem");
@@ -242,6 +242,17 @@ describe("Given a actions from state", () => {
       await actions.getUserGroupsFromApi(configActionContext(commit));
 
       expect(commit).toHaveBeenCalledWith("loadUserGroups", data.teacherGroups);
+    });
+  });
+
+  describe("When the action addGroupToTeacher is invoked", () => {
+    test("Then it should call dispatch with 'getUserGroupsFromApi'", async () => {
+      const groupId = "12435wt4veg5w2342sdf";
+
+      mockedAxios.patch.mockResolvedValue("");
+      await actions.addGroupToTeacher(configActionContextDispatch(dispatch), groupId);
+
+      expect(dispatch).toHaveBeenCalledWith("getUserGroupsFromApi");
     });
   });
 
