@@ -66,6 +66,18 @@ describe("Given a actions from state", () => {
     });
   });
 
+  describe("When the action sendConfirmEmailOneMoreTime is invoked with email", () => {
+    test("Then it should return response.data", async () => {
+      const email = "alex@mail.com";
+      const response = { data: {} };
+
+      mockedAxios.get.mockResolvedValue(response);
+      await actions.sendConfirmEmailOneMoreTime(configActionContext(commit), email);
+
+      expect(axios.get).toHaveBeenCalledWith(`${process.env.VUE_APP_URL}/user/confirm/repeat-email/${email}`);
+    });
+  });
+
   describe("When the action getGroupById is invoked", () => {
     const data = {
       members: ["64016c92709d41ccaf5c1948"],
