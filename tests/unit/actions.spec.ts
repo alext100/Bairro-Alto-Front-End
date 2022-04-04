@@ -1,5 +1,5 @@
 import actions from "@/store/actions";
-import { Group, GroupError, Lesson } from "@/types/interfaces";
+import { Group, GroupError, Lesson, WebContent } from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
 import { configActionContext, configActionContextDispatch } from "../test-utils";
@@ -505,6 +505,28 @@ describe("Given a actions from state", () => {
           posts: response.data[0].posts,
         })
       );
+    });
+  });
+
+  describe("When the action updateWebContent is invoked", () => {
+    const webContent: WebContent = { posts: [], categories: [] };
+    const updated = { data: { posts: [], categories: [] } };
+    test("Then it should call commit with 'setWebContent' and updated.data", async () => {
+      mockedAxios.put.mockResolvedValue(updated);
+
+      await actions.updateWebContent(configActionContext(commit), webContent);
+
+      expect(commit).toHaveBeenCalledWith("setWebContent", updated.data);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'startLoading'", async () => {
+      mockedAxios.put.mockResolvedValue(updated);
+
+      await actions.updateWebContent(configActionContext(commit), webContent);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
 });
