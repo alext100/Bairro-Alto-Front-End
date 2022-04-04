@@ -1,5 +1,14 @@
 import actions from "@/store/actions";
-import { Group, GroupError, Lesson, Post, UserModel, UserPaymentData, WebContent } from "@/types/interfaces";
+import {
+  Group,
+  GroupError,
+  Lesson,
+  Post,
+  UserLoginData,
+  UserModel,
+  UserPaymentData,
+  WebContent,
+} from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
 import { configActionContext, configActionContextDispatch } from "../test-utils";
@@ -11,6 +20,40 @@ const commit = jest.fn() as jest.MockedFunction<Commit>;
 const dispatch = jest.fn() as jest.MockedFunction<Dispatch>;
 
 describe("Given a actions from state", () => {
+  describe("When the action login is invoked with userData", () => {
+    const userData: UserLoginData = {
+      password: "12345",
+      email: "asdf@mail.com",
+    };
+    const response = {
+      data: {
+        token: "eyJhsdfOiJIUzIsgInR5cCI4MmNmssf1OGZkZWVhMGMjQ5eHAgh9.jMdhR_uMO9-Fu62lWzqM",
+      },
+    };
+    const { token } = response.data;
+    const user = {};
+    test("Then it should call dispatch with 'userLogedFromApi' and { user, token }", async () => {
+      mockedAxios.post.mockResolvedValue(response);
+      await actions.login(configActionContextDispatch(dispatch), userData);
+
+      expect(dispatch).toHaveBeenCalledWith("userLogedFromApi", { user, token });
+    });
+    test("Then it should call localStorage.setItem with 'userData' and JSON.stringify({ token })", async () => {
+      jest.spyOn(Object.getPrototypeOf(window.localStorage), "setItem");
+
+      mockedAxios.post.mockResolvedValue(response);
+      await actions.login(configActionContextDispatch(dispatch), userData);
+
+      expect(localStorage.setItem).toHaveBeenCalledWith("userData", JSON.stringify({ token }));
+    });
+    test("Then it should invoke commit with 'stopLoading'", async () => {
+      mockedAxios.post.mockResolvedValue(response);
+      await actions.login(configActionContext(commit), userData);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
   describe("When the action getGroupById is invoked", () => {
     const data = {
       members: ["64016c92709d41ccaf5c1948"],
