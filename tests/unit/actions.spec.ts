@@ -105,6 +105,48 @@ describe("Given a actions from state", () => {
     });
   });
 
+  describe("When the action deleteDataFromLocalStorage is invoked", () => {
+    test("Then it should call localStorage.removeItem with 'userData'", () => {
+      jest.spyOn(Object.getPrototypeOf(window.localStorage), "removeItem");
+
+      actions.deleteDataFromLocalStorage(configActionContext(commit));
+
+      expect(localStorage.removeItem).toHaveBeenCalledWith("userData");
+    });
+
+    test("Then it should call localStorage.removeItem with 'currentGroupId'", () => {
+      jest.spyOn(Object.getPrototypeOf(window.localStorage), "removeItem");
+
+      actions.deleteDataFromLocalStorage(configActionContext(commit));
+
+      expect(localStorage.removeItem).toHaveBeenCalledWith("currentGroupId");
+    });
+
+    test("Then it should call localStorage.removeItem with 'token'", () => {
+      jest.spyOn(Object.getPrototypeOf(window.localStorage), "removeItem");
+
+      actions.deleteDataFromLocalStorage(configActionContext(commit));
+
+      expect(localStorage.removeItem).toHaveBeenCalledWith("token");
+    });
+
+    test("Then it should call localStorage.removeItem with 'token'", () => {
+      jest.spyOn(Object.getPrototypeOf(window.sessionStorage), "clear");
+
+      actions.deleteDataFromLocalStorage(configActionContext(commit));
+
+      expect(sessionStorage.clear).toHaveBeenCalled();
+    });
+
+    test("Then it should call commit with 'logoutUser' and loggedOutUser", () => {
+      const loggedOutUser = { token: "", refreshToken: "" };
+
+      actions.deleteDataFromLocalStorage(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("logoutUser", loggedOutUser);
+    });
+  });
+
   describe("When the action getGroupById is invoked", () => {
     const data = {
       members: ["64016c92709d41ccaf5c1948"],
