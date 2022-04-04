@@ -655,4 +655,61 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
   });
+
+  describe("When the action changePassword invoked with user", () => {
+    const user: UserModel = {
+      id: "",
+      password: "",
+      email: "asdf@mail.com",
+      firstName: "Ivan",
+      lastName: "Ivanov",
+      image: "",
+      adminAccess: false,
+      teacherAccess: false,
+      studentAccess: true,
+      groups: [],
+      teacherGroups: [],
+      studentGroups: ["61e4a8945a0d6cd627f65232"],
+      homeworkToCheck: [],
+      info: [],
+      status: "Active",
+      confirmationCode: "",
+    };
+    const updatedUser: UserModel = {
+      id: "",
+      password: "",
+      email: "asdf@mail.com",
+      firstName: "Ivan",
+      lastName: "Ivanov",
+      image: "",
+      adminAccess: false,
+      teacherAccess: false,
+      studentAccess: true,
+      groups: [],
+      teacherGroups: [],
+      studentGroups: ["61e4a8945a0d6cd627f65232"],
+      homeworkToCheck: [],
+      info: [],
+      status: "Active",
+      confirmationCode: "",
+    };
+    describe("And the updatedUser !== undefind", () => {
+      test("Then it should invoke commit with 'loadUser' and updatedUser", async () => {
+        mockedAxios.put.mockResolvedValue(updatedUser);
+
+        await actions.changePassword(configActionContext(commit), user);
+
+        expect(commit).toHaveBeenCalledWith("loadUser", updatedUser);
+        expect(commit).toHaveBeenCalledWith("isRegistered", updatedUser);
+      });
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'stopLoading'", async () => {
+      await actions.changePassword(configActionContext(commit), user);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
 });
