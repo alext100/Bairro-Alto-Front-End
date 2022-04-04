@@ -26,7 +26,7 @@ const actions = {
     const response = await axios.post(<string>process.env.VUE_APP_LOGIN_URL, userData);
     const { token } = response.data;
     const user = jwtDecode(token);
-    dispatch("userLogedFromApi", { user, token });
+    dispatch("userLoggedFromApi", { user, token });
     localStorage.setItem("userData", JSON.stringify({ token }));
 
     signInAnonymously(auth);
@@ -50,14 +50,12 @@ const actions = {
     return response.data;
   },
 
-  async userLogedFromApi(
+  async userLoggedFromApi(
     { commit }: ActionContext<State, State>,
-    { user, token, refreshToken }: UserLoggedIn
+    { user, token, refreshToken }: { user: UserLoggedIn; token: string; refreshToken: string }
   ): Promise<void> {
     commit("startLoading");
-    const { data } = await axios({
-      method: "GET",
-      url: `${process.env.VUE_APP_URL}/user/get-one-by-id/${user.id}`,
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/user/get-one-by-id/${user.id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     data.token = token;
@@ -97,7 +95,7 @@ const actions = {
       .then((response) => {
         if (response.status === 201) {
           commit("isRegistered", userData);
-        }
+        } else commit("notRegistered");
       })
       .catch((error) => {
         commit("notRegistered");
@@ -110,8 +108,8 @@ const actions = {
     localStorage.removeItem("currentGroupId");
     localStorage.removeItem("token");
     sessionStorage.clear();
-    const logedOutUser = { token: "", refreshToken: "" };
-    commit("logoutUser", logedOutUser);
+    const loggedOutUser = { token: "", refreshToken: "" };
+    commit("logoutUser", loggedOutUser);
   },
 
   async getGroupsFromApi({ commit }: ActionContext<State, State>): Promise<void> {
