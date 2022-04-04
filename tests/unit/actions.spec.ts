@@ -1,5 +1,5 @@
 import actions from "@/store/actions";
-import { Group, GroupError, Lesson, WebContent } from "@/types/interfaces";
+import { Group, GroupError, Lesson, Post, WebContent } from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
 import { configActionContext, configActionContextDispatch } from "../test-utils";
@@ -40,7 +40,7 @@ describe("Given a actions from state", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
 
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       await actions.getGroupById(configActionContext(commit), data.id);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
@@ -140,7 +140,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       await actions.getGroupById(configActionContext(commit), groupId);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
@@ -178,7 +178,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       await actions.getUserById(configActionContext(commit), groupId);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
@@ -219,7 +219,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       await actions.updateGroup(configActionContext(commit), groupToUpdate);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
@@ -239,7 +239,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       await actions.getAllUsersFromApi(configActionContext(commit));
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
@@ -279,7 +279,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       await actions.getGroupErrorsById(configActionContext(commit), groupId);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
@@ -340,7 +340,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       await actions.createLesson(configActionContext(commit), lesson);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
@@ -359,7 +359,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       await actions.getLessonsFromApi(configActionContext(commit));
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
@@ -378,7 +378,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       await actions.getAllCourseNames(configActionContext(commit));
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
@@ -397,7 +397,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       mockedAxios.delete.mockResolvedValue("");
 
       await actions.deleteLessonById(configActionContext(commit), lessonId);
@@ -420,7 +420,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       mockedAxios.put.mockResolvedValue("");
 
       await actions.updateLessonById(configActionContext(commit), { lessonId, lesson });
@@ -456,7 +456,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       mockedAxios.get.mockResolvedValue({ data });
 
       await actions.getGroupLessonsById(configActionContext(commit), groupId);
@@ -485,7 +485,7 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       mockedAxios.get.mockResolvedValue(response);
 
       await actions.getWebContent(configActionContext(commit));
@@ -521,10 +521,32 @@ describe("Given a actions from state", () => {
     test("Then it should invoke commit with 'startLoading'", () => {
       expect(commit).toHaveBeenCalledWith("startLoading");
     });
-    test("Then it should invoke commit with 'startLoading'", async () => {
+    test("Then it should invoke commit with 'stopLoading'", async () => {
       mockedAxios.put.mockResolvedValue(updated);
 
       await actions.updateWebContent(configActionContext(commit), webContent);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action updatePostById is invoked with post", () => {
+    const post: Post = { title: "", body: "", category: "", id: "61df3923ab6a9fda28a2398a" };
+
+    test("Then it should invoke dispatch with 'getWebContent'", async () => {
+      mockedAxios.put.mockResolvedValue("");
+
+      await actions.updatePostById(configActionContextDispatch(dispatch), post);
+
+      expect(dispatch).toHaveBeenCalledWith("getWebContent");
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'stopLoading'", async () => {
+      mockedAxios.put.mockResolvedValue("");
+
+      await actions.updatePostById(configActionContext(commit), post);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
