@@ -1,5 +1,5 @@
 import actions from "@/store/actions";
-import { Group, GroupError, Lesson, Post, WebContent } from "@/types/interfaces";
+import { Group, GroupError, Lesson, Post, UserPaymentData, WebContent } from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
 import { configActionContext, configActionContextDispatch } from "../test-utils";
@@ -589,6 +589,34 @@ describe("Given a actions from state", () => {
       mockedAxios.delete.mockResolvedValue("");
 
       await actions.deleteWebCategory(configActionContext(commit), categoryId);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action payment is invoked with userData", () => {
+    const userData: UserPaymentData = {
+      courseName: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      price: 1000,
+      date: 344356356,
+    };
+    const paymentResponse = {};
+    test("Then it should call commit with 'paymentResponse' and paymentResponse", async () => {
+      mockedAxios.post.mockResolvedValue(paymentResponse);
+      await actions.payment(configActionContext(commit), userData);
+
+      expect(commit).toHaveBeenCalledWith("paymentResponse", paymentResponse);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'stopLoading'", async () => {
+      mockedAxios.post.mockResolvedValue(paymentResponse);
+
+      await actions.payment(configActionContext(commit), userData);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
