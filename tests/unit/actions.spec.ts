@@ -1,5 +1,5 @@
 import actions from "@/store/actions";
-import { Group, GroupError, Lesson, Post, UserPaymentData, WebContent } from "@/types/interfaces";
+import { Group, GroupError, Lesson, Post, UserModel, UserPaymentData, WebContent } from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
 import { configActionContext, configActionContextDispatch } from "../test-utils";
@@ -193,7 +193,7 @@ describe("Given a actions from state", () => {
     });
   });
 
-  describe("When the action updateGroup invoked", () => {
+  describe("When the action updateGroup invoked with groupToUpdate", () => {
     const groupToUpdate = {
       members: ["62076c93706d41ccaf4c1748"],
       groupName: "A1. Вторник / Четверг 19:00-20:30",
@@ -617,6 +617,40 @@ describe("Given a actions from state", () => {
       mockedAxios.post.mockResolvedValue(paymentResponse);
 
       await actions.payment(configActionContext(commit), userData);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action updateUser invoked with user", () => {
+    const user: UserModel = {
+      id: "",
+      password: "",
+      email: "asdf@mail.com",
+      firstName: "Ivan",
+      lastName: "Ivanov",
+      image: "",
+      adminAccess: false,
+      teacherAccess: false,
+      studentAccess: true,
+      groups: [],
+      teacherGroups: [],
+      studentGroups: ["61e4a8945a0d6cd627f65232"],
+      homeworkToCheck: [],
+      info: [],
+      status: "Active",
+      confirmationCode: "",
+    };
+    test("Then it should invoke dispatch with 'getAllUsersFromApi'", async () => {
+      await actions.updateUser(configActionContextDispatch(dispatch), user);
+
+      expect(dispatch).toHaveBeenCalledWith("getAllUsersFromApi");
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'stopLoading'", async () => {
+      await actions.updateUser(configActionContext(commit), user);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
