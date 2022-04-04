@@ -411,6 +411,19 @@ describe("Given a actions from state", () => {
     });
   });
 
+  describe("When the action deleteMemberFromGroup invoked with { userId, groupId }", () => {
+    const userId = "lqa2sd2l2ro28734uq2rf2q3";
+    const groupId = "lq234asd2o28734uwe2rfh23";
+
+    test("Then it should invoke dispatch", async () => {
+      mockedAxios.patch.mockResolvedValue("");
+
+      await actions.deleteMemberFromGroup(configActionContextDispatch(dispatch), { userId, groupId });
+
+      expect(dispatch).toHaveBeenCalled();
+    });
+  });
+
   describe("When the action getAllUsersFromApi is invoked", () => {
     test("Then it should invoke commit with 'loadAllUsers' and data", async () => {
       const data = {};
