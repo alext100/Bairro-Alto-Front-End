@@ -367,7 +367,7 @@ describe("Given a actions from state", () => {
   });
 
   describe("When the action getAllCourseNames is invoked", () => {
-    test("Then it should invoke loadCourseNames with data", async () => {
+    test("Then it should invoke commit with 'loadCourseNames' and data", async () => {
       const data = [{ courseName: "", id: "" }];
 
       mockedAxios.get.mockResolvedValue({ data });
@@ -387,7 +387,7 @@ describe("Given a actions from state", () => {
 
   describe("When the action deleteLessonById is invoked", () => {
     const lessonId = "61df3923ab6a9fda28a2398a";
-    test("Then it should invoke deleteOneLessonFromLessons with lessonId", async () => {
+    test("Then it should invoke commit with 'deleteOneLessonFromLessons' and lessonId", async () => {
       mockedAxios.delete.mockResolvedValue("");
 
       await actions.deleteLessonById(configActionContext(commit), lessonId);
@@ -547,6 +547,27 @@ describe("Given a actions from state", () => {
       mockedAxios.put.mockResolvedValue("");
 
       await actions.updatePostById(configActionContext(commit), post);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action deleteWebPost is invoked with postId", () => {
+    const postId = "61df3923ab6a9fda28a2398a";
+    test("Then it should invoke commit with 'deleteOnePostFromPosts' and postId", async () => {
+      mockedAxios.delete.mockResolvedValue("");
+
+      await actions.deleteWebPost(configActionContext(commit), postId);
+
+      expect(commit).toHaveBeenCalledWith("deleteOnePostFromPosts", postId);
+    });
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+    test("Then it should invoke commit with 'stopLoading'", async () => {
+      mockedAxios.delete.mockResolvedValue("");
+
+      await actions.deleteWebPost(configActionContext(commit), postId);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
     });
