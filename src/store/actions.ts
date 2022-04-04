@@ -376,9 +376,7 @@ const actions = {
 
   async getWebContent({ commit }: ActionContext<State, State>): Promise<void> {
     commit("startLoading");
-    const { data } = await axios({
-      method: "GET",
-      url: `${process.env.VUE_APP_URL}/web-content/get-web-content/`,
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/web-content/get-web-content/`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     sessionStorage.setItem(
@@ -395,12 +393,11 @@ const actions = {
   async updateWebContent({ commit }: ActionContext<State, State>, webContent: WebContent): Promise<void> {
     commit("startLoading");
     const collectionId = process.env.VUE_APP_WEB_COLLECTION_ID;
-    const updated = await axios({
-      method: "PUT",
-      url: `${process.env.VUE_APP_URL}/web-content/update-web-content/${collectionId}`,
-      headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: webContent,
-    });
+    const updated = await axios.put(
+      `${process.env.VUE_APP_URL}/web-content/update-web-content/${collectionId}`,
+      webContent,
+      { headers: { Authorization: `Bearer ${state.currentUser.token}` } }
+    );
     commit("setWebContent", updated.data);
     commit("stopLoading");
   },
@@ -408,12 +405,11 @@ const actions = {
   async updatePostById({ commit, dispatch }: ActionContext<State, State>, post: Post): Promise<void> {
     commit("startLoading");
     const collectionId = process.env.VUE_APP_WEB_COLLECTION_ID;
-    await axios({
-      method: "PUT",
-      url: `${process.env.VUE_APP_URL}/web-content/update-post/${post.id}`,
-      headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: { post, collectionId },
-    });
+    await axios.put(
+      `${process.env.VUE_APP_URL}/web-content/update-post/${post.id}`,
+      { post, collectionId },
+      { headers: { Authorization: `Bearer ${state.currentUser.token}` } }
+    );
     dispatch("getWebContent");
     commit("stopLoading");
   },
@@ -446,34 +442,26 @@ const actions = {
 
   async payment({ commit }: ActionContext<State, State>, userData: UserPaymentData): Promise<void> {
     commit("startLoading");
-    const paymentResponse = await axios({
-      method: "POST",
-      url: `${process.env.VUE_APP_URL}/payment`,
-      data: userData,
-    });
+    const paymentResponse = await axios.post(`${process.env.VUE_APP_URL}/payment`, userData);
     commit("paymentResponse", paymentResponse);
     commit("stopLoading");
   },
 
-  async updateUser({ commit, dispatch }: ActionContext<State, State>, user: Post): Promise<void> {
+  async updateUser({ commit, dispatch }: ActionContext<State, State>, user: UserModel): Promise<void> {
     commit("startLoading");
-    await axios({
-      method: "PUT",
-      url: `${process.env.VUE_APP_URL}/user/update-user/${user.id}`,
-      headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: { user },
-    });
+    await axios.put(
+      `${process.env.VUE_APP_URL}/user/update-user/${user.id}`,
+      { user },
+      { headers: { Authorization: `Bearer ${state.currentUser.token}` } }
+    );
     dispatch("getAllUsersFromApi");
     commit("stopLoading");
   },
 
-  async changePassword({ commit }: ActionContext<State, State>, user: Post): Promise<void> {
+  async changePassword({ commit }: ActionContext<State, State>, user: UserModel): Promise<void> {
     commit("startLoading");
-    const updatedUser = await axios({
-      method: "PUT",
-      url: `${process.env.VUE_APP_URL}/user/change-password`,
+    const updatedUser = await axios.put(`${process.env.VUE_APP_URL}/user/change-password`, user, {
       headers: { Authorization: `Bearer ${state.currentUser.token}` },
-      data: user,
     });
     if (updatedUser) {
       commit("loadUser", updatedUser);
