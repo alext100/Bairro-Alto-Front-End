@@ -1,5 +1,14 @@
 import actions from "@/store/actions";
-import { Group, GroupError, Lesson, Post, UserModel, UserPaymentData, WebContent } from "@/types/interfaces";
+import {
+  Group,
+  GroupError,
+  Lesson,
+  Post,
+  UserLoginData,
+  UserModel,
+  UserPaymentData,
+  WebContent,
+} from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
 import { configActionContext, configActionContextDispatch } from "../test-utils";
@@ -11,6 +20,133 @@ const commit = jest.fn() as jest.MockedFunction<Commit>;
 const dispatch = jest.fn() as jest.MockedFunction<Dispatch>;
 
 describe("Given a actions from state", () => {
+  describe("When the action login is invoked with userData", () => {
+    const userData: UserLoginData = {
+      password: "12345",
+      email: "asdf@mail.com",
+    };
+    const response = {
+      data: {
+        token: "eyJhsdfOiJIUzIsgInR5cCI4MmNmssf1OGZkZWVhMGMjQ5eHAgh9.jMdhR_uMO9-Fu62lWzqM",
+      },
+    };
+    const { token } = response.data;
+    const user = {};
+    test("Then it should call dispatch with 'userLoggedFromApi' and { user, token }", async () => {
+      mockedAxios.post.mockResolvedValue(response);
+      await actions.login(configActionContextDispatch(dispatch), userData);
+
+      expect(dispatch).toHaveBeenCalledWith("userLoggedFromApi", { user, token });
+    });
+    test("Then it should call localStorage.setItem with 'userData' and JSON.stringify({ token })", async () => {
+      jest.spyOn(Object.getPrototypeOf(window.localStorage), "setItem");
+
+      mockedAxios.post.mockResolvedValue(response);
+      await actions.login(configActionContextDispatch(dispatch), userData);
+
+      expect(localStorage.setItem).toHaveBeenCalledWith("userData", JSON.stringify({ token }));
+    });
+    test("Then it should invoke commit with 'stopLoading'", async () => {
+      mockedAxios.post.mockResolvedValue(response);
+      await actions.login(configActionContext(commit), userData);
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action verifyUser is invoked with code", () => {
+    test("Then it should return response.data", async () => {
+      const code = "1234567890";
+      const response = { data: {} };
+
+      mockedAxios.get.mockResolvedValue(response);
+      await actions.verifyUser(configActionContext(commit), code);
+
+      expect(axios.get).toHaveBeenCalledWith(`${process.env.VUE_APP_URL}/user/confirm/${code}`);
+    });
+  });
+
+  describe("When the action sendConfirmEmailOneMoreTime is invoked with email", () => {
+    test("Then it should return response.data", async () => {
+      const email = "alex@mail.com";
+      const response = { data: {} };
+
+      mockedAxios.get.mockResolvedValue(response);
+      await actions.sendConfirmEmailOneMoreTime(configActionContext(commit), email);
+
+      expect(axios.get).toHaveBeenCalledWith(`${process.env.VUE_APP_URL}/user/confirm/repeat-email/${email}`);
+    });
+  });
+
+  describe("When the action registerUser is invoked", () => {
+    const userData: UserLoginData = {
+      password: "12345",
+      email: "asdf@mail.com",
+    };
+    describe("And response.status === 201", () => {
+      test("Then it should call commit with 'isRegistered' and userData", async () => {
+        const response = { status: 201 };
+
+        mockedAxios.post.mockResolvedValue(response);
+        await actions.registerUser(configActionContext(commit), userData);
+
+        expect(commit).toHaveBeenCalledWith("isRegistered", userData);
+      });
+    });
+    describe("And response.status will be other", () => {
+      test("Then it should call commit with 'notRegistered'", async () => {
+        const response = { status: 500 };
+
+        mockedAxios.post.mockResolvedValue(response);
+        await actions.registerUser(configActionContext(commit), userData);
+
+        expect(commit).toHaveBeenCalledWith("notRegistered");
+      });
+    });
+  });
+
+  describe("When the action deleteDataFromLocalStorage is invoked", () => {
+    test("Then it should call localStorage.removeItem with 'userData'", () => {
+      jest.spyOn(Object.getPrototypeOf(window.localStorage), "removeItem");
+
+      actions.deleteDataFromLocalStorage(configActionContext(commit));
+
+      expect(localStorage.removeItem).toHaveBeenCalledWith("userData");
+    });
+
+    test("Then it should call localStorage.removeItem with 'currentGroupId'", () => {
+      jest.spyOn(Object.getPrototypeOf(window.localStorage), "removeItem");
+
+      actions.deleteDataFromLocalStorage(configActionContext(commit));
+
+      expect(localStorage.removeItem).toHaveBeenCalledWith("currentGroupId");
+    });
+
+    test("Then it should call localStorage.removeItem with 'token'", () => {
+      jest.spyOn(Object.getPrototypeOf(window.localStorage), "removeItem");
+
+      actions.deleteDataFromLocalStorage(configActionContext(commit));
+
+      expect(localStorage.removeItem).toHaveBeenCalledWith("token");
+    });
+
+    test("Then it should call localStorage.removeItem with 'token'", () => {
+      jest.spyOn(Object.getPrototypeOf(window.sessionStorage), "clear");
+
+      actions.deleteDataFromLocalStorage(configActionContext(commit));
+
+      expect(sessionStorage.clear).toHaveBeenCalled();
+    });
+
+    test("Then it should call commit with 'logoutUser' and loggedOutUser", () => {
+      const loggedOutUser = { token: "", refreshToken: "" };
+
+      actions.deleteDataFromLocalStorage(configActionContext(commit));
+
+      expect(commit).toHaveBeenCalledWith("logoutUser", loggedOutUser);
+    });
+  });
+
   describe("When the action getGroupById is invoked", () => {
     const data = {
       members: ["64016c92709d41ccaf5c1948"],
@@ -106,6 +242,28 @@ describe("Given a actions from state", () => {
       await actions.getUserGroupsFromApi(configActionContext(commit));
 
       expect(commit).toHaveBeenCalledWith("loadUserGroups", data.teacherGroups);
+    });
+  });
+
+  describe("When the action addGroupToTeacher is invoked with groupId", () => {
+    test("Then it should call dispatch with 'getUserGroupsFromApi'", async () => {
+      const groupId = "12435wt4veg5w2342sdf";
+
+      mockedAxios.patch.mockResolvedValue("");
+      await actions.addGroupToTeacher(configActionContextDispatch(dispatch), groupId);
+
+      expect(dispatch).toHaveBeenCalledWith("getUserGroupsFromApi");
+    });
+  });
+
+  describe("When the action deleteUserGroup is invoked with groupId", () => {
+    test("Then it should call dispatch with 'getUserGroupsFromApi'", async () => {
+      const groupId = "1243sg3eaw3df42sdf";
+
+      mockedAxios.patch.mockResolvedValue("");
+      await actions.deleteUserGroup(configActionContextDispatch(dispatch), groupId);
+
+      expect(dispatch).toHaveBeenCalledWith("getUserGroupsFromApi");
     });
   });
 
@@ -223,6 +381,46 @@ describe("Given a actions from state", () => {
       await actions.updateGroup(configActionContext(commit), groupToUpdate);
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action addMemberToGroup invoked with { userId, groupId }", () => {
+    const userId = "lqasdjlhro28734uqtrfhq3";
+    const groupId = "lq234asdro28734uqtrfhq3";
+
+    test("Then it should invoke dispatch with 'getUserById' and userId", async () => {
+      await actions.addMemberToGroup(configActionContextDispatch(dispatch), { userId, groupId });
+
+      expect(dispatch).toHaveBeenCalledWith("getUserById", userId);
+    });
+
+    test("Then it should invoke dispatch with 'getGroupById' and groupId", async () => {
+      await actions.addMemberToGroup(configActionContextDispatch(dispatch), { userId, groupId });
+
+      expect(dispatch).toHaveBeenCalledWith("getGroupById", groupId);
+    });
+
+    test("Then it should invoke commit with 'startLoading'", () => {
+      expect(commit).toHaveBeenCalledWith("startLoading");
+    });
+
+    test("Then it should invoke commit with 'stopLoading'", async () => {
+      await actions.addMemberToGroup(configActionContext(commit), { userId, groupId });
+
+      expect(commit).toHaveBeenCalledWith("stopLoading");
+    });
+  });
+
+  describe("When the action deleteMemberFromGroup invoked with { userId, groupId }", () => {
+    const userId = "lqa2sd2l2ro28734uq2rf2q3";
+    const groupId = "lq234asd2o28734uwe2rfh23";
+
+    test("Then it should invoke dispatch", async () => {
+      mockedAxios.patch.mockResolvedValue("");
+
+      await actions.deleteMemberFromGroup(configActionContextDispatch(dispatch), { userId, groupId });
+
+      expect(dispatch).toHaveBeenCalled();
     });
   });
 
