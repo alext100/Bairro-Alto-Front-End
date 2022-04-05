@@ -25,7 +25,7 @@
         placeholder="Ваш email адрес"
         success-message="Готово, мы не будем спамить!"
       />
-      <span v-if="isWrongEmailOnRegister()" class="email__wrong"
+      <span v-if="isWrongEmailOnRegister" class="email__wrong"
         >Кажется этот email уже зарегистрирован! Попробуйте ещё раз!</span
       >
 
@@ -40,8 +40,8 @@
       <em class="toggle-password fas" :class="[passwordFieldIcon]" @click="hidePassword = !hidePassword"></em>
 
       <TextInput
-        :value="confirm_password"
-        name="confirm_password"
+        :value="confirmPassword"
+        name="confirmPassword"
         :type="passwordFieldType"
         label="Подтвердите пароль"
         placeholder="Введите пароль ещё раз"
@@ -63,9 +63,10 @@ import { Form } from "vee-validate";
 import * as Yup from "yup";
 import TextInput from "@/components/TextInput.vue";
 import { computed, defineComponent, ref } from "vue";
-import { mapActions, mapState } from "vuex";
+import { useStore } from "vuex";
 import { UserRegisterData } from "@/types/interfaces";
-import state from "@/store/state";
+import { useRouter } from "vue-router";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default defineComponent({
   name: "Register",
@@ -74,14 +75,30 @@ export default defineComponent({
     Form,
   },
   setup() {
-    function onInvalidSubmit() {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { state, dispatch } = useStore();
+    const router = useRouter();
+
+    const hidePassword = ref(true);
+    const passwordFieldIcon = computed(() => (hidePassword.value ? "fa-eye" : "fa-eye-slash"));
+    const passwordFieldType = computed(() => (hidePassword.value ? "password" : "text"));
+    const isLoading = computed(() => state.isLoading);
+    const isRegistered = computed(() => state.isRegistered);
+    const isWrongEmailOnRegister = computed(() => state.isWrongEmailOnRegister);
+    const isWrong = ref(false);
+    const email = "";
+    const password = "";
+    const firstName = "";
+    const lastName = "";
+    const image = "";
+    const confirmPassword = "";
+
+    const onInvalidSubmit = () => {
       const submitBtn: any = document.querySelector(".submit-btn");
       submitBtn.classList.add("invalid");
       setTimeout(() => {
         submitBtn.classList.remove("invalid");
       }, 1000);
-    }
+    };
 
     // Using yup to generate a validation schema
     // https://vee-validate.logaretm.com/v4/guide/validation#validation-schemas-with-yup
@@ -90,49 +107,18 @@ export default defineComponent({
       lastName: Yup.string().required(),
       email: Yup.string().email().required(),
       password: Yup.string().min(6).max(20).required(),
-      confirm_password: Yup.string()
+      confirmPassword: Yup.string()
         .required()
         .oneOf([Yup.ref("password")], "Пароль не совпадает"),
     });
 
-    const hidePassword = ref(true);
-    const passwordFieldIcon = computed(() => (hidePassword.value ? "fa-eye" : "fa-eye-slash"));
-    const passwordFieldType = computed(() => (hidePassword.value ? "password" : "text"));
-
-    return {
-      schema,
-      hidePassword,
-      onInvalidSubmit,
-      passwordFieldIcon,
-      passwordFieldType,
-    };
-  },
-
-  data() {
-    return {
-      userData: { password: null, firstName: null, lastName: null, email: null, image: null },
-      isWrong: false,
-      email: "",
-      password: "",
-      firstName: "",
-      lastName: "",
-      image: "",
-      confirm_password: "",
-    };
-  },
-
-  methods: {
-    ...mapActions(["registerUser"]),
-    ...mapState(["isRegistered", "isWrongEmailOnRegister"]),
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async handleCreate({ password, firstName, lastName, email, image }: Record<string, any>) {
-      if (email !== "" && password !== "") {
+    const handleCreate = async (values: Record<string, any>) => {
+      if (values.email !== "" && values.password !== "") {
         const userData: UserRegisterData = {
-          password,
-          firstName,
-          lastName,
-          email,
+          password: values.password,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
           image:
             image === ""
               ? "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
@@ -140,25 +126,36 @@ export default defineComponent({
         };
 
         try {
-          await this.registerUser(userData);
+          await dispatch("registerUser", userData);
           if (state.isRegistered === true) {
-            this.$router.push(`/check-email/${userData.email}`);
+            router.push(`/check-email/${userData.email}`);
           }
-          this.password = "";
-          this.firstName = "";
-          this.lastName = "";
-          this.email = "";
-          this.image = "";
-          this.isWrong = false;
+          isWrong.value = false;
         } catch (error) {
-          this.isWrong = true;
+          isWrong.value = true;
         }
       }
-    },
-  },
+    };
 
-  computed: {
-    ...mapState(["isLoading"]),
+    return {
+      image,
+      email,
+      schema,
+      isWrong,
+      password,
+      lastName,
+      firstName,
+      isLoading,
+      isRegistered,
+      hidePassword,
+      handleCreate,
+      confirmPassword,
+      onInvalidSubmit,
+      passwordFieldIcon,
+      passwordFieldType,
+      isWrongEmailOnRegister,
+      userData: { password: null, firstName: null, lastName: null, email: null, image: null },
+    };
   },
 });
 </script>
