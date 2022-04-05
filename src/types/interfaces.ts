@@ -171,6 +171,12 @@ interface UserPaymentData {
   date: number;
 }
 
+interface IUserError extends Error {
+  errno?: number;
+  code?: string;
+  path?: string;
+}
+
 export {
   UserModel,
   UserRegisterData,
@@ -185,4 +191,5 @@ export {
   WebContent,
   Post,
   UserPaymentData,
+  IUserError,
 };
