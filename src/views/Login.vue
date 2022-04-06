@@ -5,7 +5,7 @@
       :validation-schema="schema"
       @invalid-submit="onInvalidSubmit"
       @change="onChange"
-      class="shadow-lg"
+      class="shadow-lg login-form"
     >
       <TextInput
         :value="email"
@@ -25,12 +25,14 @@
       />
       <em class="toggle-password fas" :class="[passwordFieldIcon]" @click="hidePassword = !hidePassword"></em>
 
-      <span v-if="isNotActive" class="login__wrong">Перейдите по ссылке в письме, чтобы активировать аккаунт</span>
+      <span v-if="isNotActive" class="login__wrong login__wrong--is-not-active"
+        >Перейдите по ссылке в письме, чтобы активировать аккаунт</span
+      >
       <span v-else-if="isWrong" class="login__wrong"
         >Не правильное имя пользователя или пароль! Попробуйте ещё раз!</span
       >
       <button v-if="!isLoading" class="submit-btn" type="submit">Подтвердить</button>
-      <button v-if="isLoading" class="btn submit-btn" type="submit" disabled>
+      <button v-if="isLoading" class="btn submit-btn submit-btn--disabled" type="submit" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Загружается...
       </button>
@@ -46,10 +48,11 @@
 import { Form } from "vee-validate";
 import * as Yup from "yup";
 import TextInput from "@/components/TextInput.vue";
-import { computed, defineComponent, ref } from "vue";
-import { mapActions, mapState, useStore } from "vuex";
-import { UserLoginData } from "@/types/interfaces";
-import state from "@/store/state";
+import { computed, defineComponent, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+import { IUserError, UserLoginData } from "@/types/interfaces";
+import { useRouter } from "vue-router";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default defineComponent({
   name: "Login",
@@ -58,18 +61,41 @@ export default defineComponent({
     Form,
   },
   setup() {
-    const store = useStore();
-    function onInvalidSubmit() {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { state, dispatch } = useStore();
+    const router = useRouter();
+    const isLoading = computed(() => state.isLoading);
+    const isRegistered = computed(() => state.isRegistered);
+    const currentUser = computed(() => state.currentUser);
+    const hidePassword = ref(true);
+    const passwordFieldIcon = computed(() => (hidePassword.value ? "fa-eye" : "fa-eye-slash"));
+    const passwordFieldType = computed(() => (hidePassword.value ? "password" : "text"));
+    const isWrong = ref(false);
+    const isNotActive = ref(false);
+
+    const redirectToUserPage = () => {
+      if (state.currentUser.studentAccess === true) {
+        router.push({ path: `/student/${state.currentUser.id}` });
+      }
+      if (state.currentUser.teacherAccess === true) {
+        router.push("/teacher");
+      }
+      if (state.currentUser.adminAccess === true) {
+        router.push("/admin");
+      }
+    };
+
+    onMounted(() => redirectToUserPage());
+
+    const onInvalidSubmit = () => {
       const submitBtn: any = document.querySelector(".submit-btn");
       submitBtn.classList.add("invalid");
       setTimeout(() => {
         submitBtn.classList.remove("invalid");
       }, 1000);
-    }
+    };
 
     const onChange = () => {
-      store.state.isLoading = false;
+      state.isLoading = false;
     };
 
     // Using yup to generate a validation schema
@@ -79,73 +105,47 @@ export default defineComponent({
       password: Yup.string().min(6).max(20).required(),
     });
 
-    const hidePassword = ref(true);
-    const passwordFieldIcon = computed(() => (hidePassword.value ? "fa-eye" : "fa-eye-slash"));
-    const passwordFieldType = computed(() => (hidePassword.value ? "password" : "text"));
-
-    return {
-      schema,
-      onInvalidSubmit,
-      onChange,
-      passwordFieldIcon,
-      passwordFieldType,
-      hidePassword,
-    };
-  },
-
-  data() {
-    return {
-      userData: { email: null, password: null },
-      isWrong: false,
-      isNotActive: false,
-      email: state.isRegistered ? state.user.email : "",
-      password: "",
-    };
-  },
-  methods: {
-    ...mapActions(["login"]),
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async handleLogin(values: Record<string, any>) {
+    const handleLogin = async (values: Record<string, any>) => {
       if (values.email !== "" && values.password !== "") {
         const userData: UserLoginData = {
           email: values.email,
           password: values.password,
         };
         try {
-          await this.login(userData);
-          this.isWrong = false;
+          await dispatch("login", userData);
+          isWrong.value = false;
           setTimeout(() => {
-            this.redirectToUserPage();
+            redirectToUserPage();
           }, 500);
         } catch (error) {
           if (
             (error as Error).message.match("Подтвердите регистрацию перейдя по ссылке в письме!") ||
-            (error as Error).message.match("Invalid token specified")
+            (error as Error).message.match("Invalid token specified") ||
+            (error as IUserError).code?.match("401")
           ) {
-            this.isNotActive = true;
-          } else this.isWrong = true;
+            isNotActive.value = true;
+          } else isWrong.value = true;
         }
       }
-    },
+    };
 
-    redirectToUserPage() {
-      if (state.currentUser.studentAccess === true) {
-        this.$router.push({ path: `/student/${state.currentUser.id}` });
-      }
-      if (state.currentUser.teacherAccess === true) {
-        this.$router.push("/teacher");
-      }
-      if (state.currentUser.adminAccess === true) {
-        this.$router.push("/admin");
-      }
-    },
-  },
-  computed: {
-    ...mapState(["isLoading", "isRegistered", "currentUser"]),
-  },
-  mounted() {
-    this.redirectToUserPage();
+    return {
+      schema,
+      isWrong,
+      onChange,
+      isLoading,
+      currentUser,
+      handleLogin,
+      isNotActive,
+      password: "",
+      hidePassword,
+      isRegistered,
+      onInvalidSubmit,
+      passwordFieldIcon,
+      passwordFieldType,
+      userData: { email: null, password: null },
+      email: state.isRegistered ? state.user.email : "",
+    };
   },
 });
 </script>
@@ -240,7 +240,9 @@ form {
 .register-btn:hover {
   transform: scale(1.1);
 }
-
+.submit-btn:disabled {
+  font-size: 17px;
+}
 .toggle-password {
   top: -70px;
   left: 260px;
