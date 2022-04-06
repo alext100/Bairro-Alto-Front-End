@@ -9,7 +9,7 @@
           >Bairro Alto, 2-я линия ВО, д. 37, последний этаж</a
         >
       </address>
-      <ul class="rowSep pageFooter-contacts">
+      <ul class="pageFooter-contacts">
         <li class="contacts-item contacts-item-link">
           <a href="https://vk.com/bairroalto">
             <em class="fab fa-vk" />
