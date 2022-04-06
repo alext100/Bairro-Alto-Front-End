@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Form @submit="handleCreate" :validation-schema="schema" @invalid-submit="onInvalidSubmit" class="shadow-lg">
+    <Form
+      @submit="handleCreate"
+      :validation-schema="schema"
+      @invalid-submit="onInvalidSubmit"
+      class="shadow-lg register-form"
+    >
       <TextInput
         :value="firstName"
         name="firstName"
