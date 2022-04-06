@@ -5,7 +5,7 @@
       :validation-schema="schema"
       @invalid-submit="onInvalidSubmit"
       @change="onChange"
-      class="shadow-lg"
+      class="shadow-lg login-form"
     >
       <TextInput
         :value="email"
