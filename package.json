@@ -8,7 +8,8 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "prepare": "husky install",
-    "test:unit-dev": "vue-cli-service test:unit --watchAll --collect-coverage"
+    "test:unit-dev": "vue-cli-service test:unit --watchAll --collect-coverage",
+    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --config jest.config.js --runInBand"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "^32.0.0",
