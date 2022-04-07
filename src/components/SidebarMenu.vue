@@ -221,9 +221,6 @@ export default {
   },
   methods: {
     ...mapActions(["deleteDataFromLocalStorage"]),
-    handleClick(event) {
-      this.$emit("click", event);
-    },
     handleLogout(event) {
       if (event.target.classList.contains("profile__log_out")) {
         this.deleteDataFromLocalStorage();
