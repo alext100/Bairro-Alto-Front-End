@@ -2,7 +2,11 @@
   <nav class="navbar navbar-expand-xl navbar-light bg-light header-navbar ps-5">
     <div class="container-fluid">
       <router-link to="/" data-target=".navbar-collapse.show" data-toggle="collapse">
-        <img class="logo-image" src="../../public/BA_VK_Template_1_1_logo_h50_1.webp" alt="logo" />
+        <img
+          class="logo-image"
+          src="https://firebasestorage.googleapis.com/v0/b/bairro-alto.appspot.com/o/BA_VK_Template_1_1_logo_h50_1.webp?alt=media&token=8285cfba-9833-4ce1-bc65-f9f37a235f12"
+          alt="logo"
+        />
       </router-link>
       <button
         class="navbar-toggler"
@@ -85,7 +89,7 @@
           </li>
           <li
             v-if="currentUser.studentAccess"
-            class="nav-item"
+            class="nav-item student-board"
             data-target=".navbar-collapse.show"
             data-toggle="collapse"
           >
