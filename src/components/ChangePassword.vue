@@ -5,6 +5,7 @@
       :validation-schema="schema"
       @invalid-submit="onInvalidSubmit"
       class="shadow-lg"
+      data-test="change-password-form"
     >
       <n-h1>Поменять пароль</n-h1>
 
@@ -26,7 +27,12 @@
         placeholder="Введите пароль ещё раз"
         success-message="Запомните его!"
       />
-      <em class="toggle-password fas" :class="[passwordFieldIcon]" @click="hidePassword = !hidePassword"></em>
+      <em
+        class="toggle-password fas"
+        data-test="toggle-password"
+        :class="[passwordFieldIcon]"
+        @click="hidePassword = !hidePassword"
+      ></em>
 
       <button v-if="!isLoading" class="submit-btn d-flex" type="submit">Подтвердить</button>
       <button v-if="isLoading" class="btn submit-btn" type="submit" disabled>
