@@ -1,7 +1,7 @@
 import { State } from "@/types/interfaces";
 
 const mockedState = {
-  currentUser: localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData") || "") : "",
+  currentUser: localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData") || "") : {},
   // eslint-disable-next-line no-unneeded-ternary
   isUserAuthenticated: localStorage.getItem("userData") ? true : false,
   groups: [],
