@@ -1,12 +1,11 @@
 <template>
   <div class="container">
     <div class="ck-content">
-      <h1 class="features-item m-3">Спецкурсы</h1>
+      <n-h1 class="special-courses-title m-3">Спецкурсы</n-h1>
       <div class="container cards-container">
         <n-card :bordered="false" hoverable header-style="font-size: 30px" footer-style="font-size: 18px">
           <template #header>{{ postToShow[0].title }}</template>
           <div v-html="postToShow[0].body"></div>
-
           <template #footer>
             <router-link class="nav-link" to="/special-courses">Вернуться к спецкурсам</router-link>
           </template>
@@ -21,17 +20,18 @@
 import { computed, defineComponent, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Post } from "@/types/interfaces";
-import { NCard } from "naive-ui";
+import { NCard, NH1 } from "naive-ui";
 import { useRoute } from "vue-router";
 import Footer from "@/components/Footer.vue";
 
 export default defineComponent({
   name: "SpecialCourse",
-  components: { NCard, Footer },
+  components: { NCard, Footer, NH1 },
 
   setup() {
     const route = useRoute();
     const { state, dispatch } = useStore();
+
     onMounted(() => {
       dispatch("getWebContent");
       document.body.style.backgroundColor = "white";
@@ -39,9 +39,7 @@ export default defineComponent({
 
     const postToShow = computed(() => state.webContent?.posts?.filter((post: Post) => post?.id === route.params.id));
 
-    return {
-      postToShow,
-    };
+    return { postToShow };
   },
 });
 </script>
@@ -63,7 +61,7 @@ export default defineComponent({
   flex-wrap: wrap;
   justify-content: space-around;
 }
-.features-item {
+.special-courses-title {
   color: var(--hover-color);
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
