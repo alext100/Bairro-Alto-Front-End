@@ -7,6 +7,7 @@
       :interval="7000"
       show-arrow
       :transition-style="{ transitionDuration: 800, transitionTimingFunction: 'cubic-bezier(.29, 1.01, 1, 0.48)' }"
+      data-test="teachers-carousel"
     >
       <div v-for="teacher in allTeachers" :key="teacher">
         <n-card :bordered="false">
