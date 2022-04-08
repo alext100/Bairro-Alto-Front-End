@@ -117,6 +117,7 @@ interface Post {
   title: string;
   body: string;
   category: string;
+  image?: string;
 }
 
 interface Category {
