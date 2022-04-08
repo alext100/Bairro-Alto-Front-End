@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <div class="ck-content">
-      <h1 class="features-title m-3">Новости</h1>
-
+      <h1 class="news-title m-3">Новости</h1>
       <full-card
         v-for="theNews in news || []"
         :key="theNews"
@@ -24,7 +23,7 @@
 
 <script lang="ts">
 import { Post } from "@/types/interfaces";
-import { computed, defineComponent, onMounted, onUnmounted } from "vue";
+import { computed, defineComponent, onMounted } from "vue";
 import { useStore } from "vuex";
 import FullCard from "@/components/FullCard.vue";
 import Footer from "@/components/Footer.vue";
@@ -33,25 +32,21 @@ export default defineComponent({
   name: "News",
   components: { FullCard, Footer },
   setup() {
+    const { state } = useStore();
+
     onMounted(() => {
       document.body.style.backgroundColor = "white";
     });
-    onUnmounted(() => {
-      document.body.style.backgroundColor = "";
-    });
 
-    const { state } = useStore();
     const news = computed(() => state.webContent?.posts?.filter((post: Post) => post?.category === "Новости"));
 
-    return {
-      news,
-    };
+    return { news };
   },
 });
 </script>
 
 <style scoped>
-.features-title {
+.news-title {
   color: var(--hover-color);
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
