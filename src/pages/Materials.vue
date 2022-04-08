@@ -2,7 +2,7 @@
   <div class="container">
     <Banner id="tsparticles-materials" url="/particlesImages.json" v-if="!$isMobile()" />
     <div class="ck-content">
-      <h1 class="features-title m-3">Материалы</h1>
+      <h1 class="materials-title m-3">Материалы</h1>
       <div class="container cards-container">
         <n-card hoverable v-for="material in materials || []" :key="material" footer-style="font-size:18px;">
           <template #cover>
@@ -29,7 +29,7 @@
 
 <script>
 import { computed, defineComponent, onMounted } from "vue";
-import { mapActions, useStore } from "vuex";
+import { useStore } from "vuex";
 import { NCard } from "naive-ui";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
@@ -40,6 +40,7 @@ export default defineComponent({
 
   setup() {
     const { state, dispatch } = useStore();
+
     onMounted(() => {
       dispatch("getWebContent");
       document.body.style.backgroundColor = "white";
@@ -47,13 +48,7 @@ export default defineComponent({
 
     const materials = computed(() => state.webContent?.posts?.filter((post) => post?.category === "Материалы"));
 
-    return {
-      materials,
-    };
-  },
-
-  methods: {
-    ...mapActions(["getWebContent"]),
+    return { materials };
   },
 });
 </script>
@@ -77,7 +72,7 @@ export default defineComponent({
   color: black;
   text-decoration: none;
 }
-.features-title {
+.materials-title {
   color: var(--hover-color);
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
