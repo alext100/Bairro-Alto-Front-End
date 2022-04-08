@@ -3,6 +3,7 @@ import { mount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { TippyPlugin } from "tippy.vue";
+import { cleanup } from "@testing-library/vue";
 import state from "../mockedState";
 
 const store = createStore({
@@ -17,6 +18,7 @@ const router = createRouterMock({});
 beforeEach(() => {
   injectRouterMock(router);
 });
+afterEach(() => cleanup());
 
 describe("Given a SidebarMenu component", () => {
   describe("When it's closed and the user clicks on the open menu icon", () => {

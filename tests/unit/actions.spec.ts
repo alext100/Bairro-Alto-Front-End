@@ -11,6 +11,7 @@ import {
 } from "@/types/interfaces";
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
+import { cleanup } from "@testing-library/vue";
 import { configActionContext, configActionContextDispatch } from "../test-utils";
 
 jest.mock("axios");
@@ -18,6 +19,7 @@ jest.mock("jwt-decode", () => () => ({}));
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const commit = jest.fn() as jest.MockedFunction<Commit>;
 const dispatch = jest.fn() as jest.MockedFunction<Dispatch>;
+afterEach(() => cleanup());
 
 describe("Given a actions from state", () => {
   describe("When the action login is invoked with userData", () => {

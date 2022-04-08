@@ -2,6 +2,7 @@ import { mount } from "@vue/test-utils";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { createStore } from "vuex";
 import Header from "@/components/Header.vue";
+import { cleanup } from "@testing-library/vue";
 import state from "../mockedState";
 
 const store = createStore({
@@ -16,6 +17,7 @@ const router = createRouterMock({});
 beforeEach(() => {
   injectRouterMock(router);
 });
+afterEach(() => cleanup());
 
 describe("Given a Header component", () => {
   describe("When it is rendered", () => {

@@ -1,5 +1,8 @@
 import Footer from "@/components/Footer.vue";
 import { mount } from "@vue/test-utils";
+import { cleanup } from "@testing-library/vue";
+
+afterEach(() => cleanup());
 
 describe("Given a Footer component", () => {
   describe("When it rendered", () => {
