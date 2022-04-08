@@ -1,13 +1,13 @@
 <template>
   <div class="container p-3 mt-2">
-    <div v-if="methodic[0]?.body" class="features-text" v-html="methodicBody?.body"></div>
+    <div v-if="methodic[0]?.body" class="methodic" v-html="methodicBody?.body"></div>
   </div>
   <Footer />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted } from "vue";
-import { mapActions, useStore } from "vuex";
+import { computed, defineComponent, onMounted } from "vue";
+import { useStore } from "vuex";
 import getTitleAndBody from "@/utils/getTitleAndBody";
 import { Post } from "@/types/interfaces";
 import Footer from "@/components/Footer.vue";
@@ -18,12 +18,10 @@ export default defineComponent({
 
   setup() {
     const { state, dispatch } = useStore();
+
     onMounted(() => {
       dispatch("getWebContent");
       document.body.style.backgroundColor = "white";
-    });
-    onUnmounted(() => {
-      document.body.style.backgroundColor = "";
     });
 
     const methodic = computed(() =>
@@ -36,15 +34,11 @@ export default defineComponent({
       methodicBody,
     };
   },
-
-  methods: {
-    ...mapActions(["getWebContent"]),
-  },
 });
 </script>
 
 <style>
-.features-text {
+.methodic {
   text-align: justify;
   text-justify: inter-word;
 }
