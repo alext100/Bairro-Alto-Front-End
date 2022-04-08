@@ -1,13 +1,13 @@
 <template>
   <div class="container p-3 mt-2">
-    <div v-if="atmosphere[0]?.body" class="features-text" v-html="atmosphereBody?.body"></div>
+    <div v-if="atmosphere[0]?.body" class="atmosphere" v-html="atmosphereBody?.body"></div>
   </div>
   <Footer />
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted } from "vue";
-import { mapActions, useStore } from "vuex";
+import { useStore } from "vuex";
 import getTitleAndBody from "@/utils/getTitleAndBody";
 import { Post } from "@/types/interfaces";
 import Footer from "@/components/Footer.vue";
@@ -36,15 +36,11 @@ export default defineComponent({
       atmosphereBody,
     };
   },
-
-  methods: {
-    ...mapActions(["getWebContent"]),
-  },
 });
 </script>
 
 <style>
-.features-text {
+.atmosphere {
   text-align: justify;
   text-justify: inter-word;
 }
