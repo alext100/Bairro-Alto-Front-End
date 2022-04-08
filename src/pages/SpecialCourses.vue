@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <Banner id="tsparticles-materials" url="/particlesImages.json" v-if="!$isMobile()" />
-    <div class="specialCourses-page__features ck-content">
-      <h1 class="features-title features-item m-3">Спецкурсы</h1>
+    <div class="special-courses ck-content">
+      <h1 class="special-courses__title m-3">Спецкурсы</h1>
       <div class="container cards-container">
         <n-card hoverable v-for="course in specialCourses || []" :key="course" footer-style="font-size: 18px">
           <template #cover>
@@ -14,7 +14,7 @@
           <template #footer>
             <router-link
               v-tippy="'Узнать подробности'"
-              class="materials-page__router-link"
+              class="special-courses__link-to-card"
               :to="{ name: 'SpecialCourse', params: { id: course.id } }"
             >
               {{ course.title }}
@@ -40,6 +40,7 @@ export default defineComponent({
 
   setup() {
     const { state, dispatch } = useStore();
+
     onMounted(() => {
       dispatch("getWebContent");
       document.body.style.backgroundColor = "white";
@@ -47,15 +48,13 @@ export default defineComponent({
 
     const specialCourses = computed(() => state.webContent?.posts?.filter((post) => post?.category === "Спецкурсы"));
 
-    return {
-      specialCourses,
-    };
+    return { specialCourses };
   },
 });
 </script>
 
 <style scoped>
-.features-item {
+.special-courses__title {
   color: var(--hover-color);
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
@@ -77,7 +76,7 @@ export default defineComponent({
   flex-wrap: wrap;
   justify-content: space-around;
 }
-.materials-page__router-link {
+.special-courses__link-to-card {
   color: black;
   text-decoration: none;
 }

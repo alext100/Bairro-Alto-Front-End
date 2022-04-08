@@ -131,28 +131,28 @@
 <script>
 import { NCard, NCarousel, NIcon } from "naive-ui";
 import { computed, defineComponent, onMounted } from "vue";
-import { mapActions, useStore } from "vuex";
+import { useStore } from "vuex";
 import { ArrowBack, ArrowForward } from "@vicons/ionicons5";
 import getTitleAndBody from "@/utils/getTitleAndBody";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
 
-function getRandomInteger(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 export default defineComponent({
   name: "MainPage",
 
   components: { NCard, NCarousel, ArrowBack, ArrowForward, NIcon, Banner, Footer },
   setup() {
+    const { state, dispatch } = useStore();
     onMounted(() => {
       document.body.style.backgroundColor = "white";
+      dispatch("getWebContent");
     });
 
-    const { state, dispatch } = useStore();
-    onMounted(() => dispatch("getWebContent"));
     const allTeachers = computed(() => state.webContent?.posts?.filter((post) => post.category === "Преподаватели"));
+    const teacher = computed(() => allTeachers.value[getRandomInteger(0, allTeachers.value.length - 1)]);
+
     const methodic = computed(() =>
       state.webContent?.posts?.filter((post) => post?.title.match("Лексический подход - главная страница"))
     );
@@ -166,27 +166,15 @@ export default defineComponent({
     const news = computed(() => state.webContent?.posts?.filter((post) => post?.category === "Новости"));
     const newsBody = computed(() => news.value.map((element) => getTitleAndBody(element?.body)));
 
-    const teacher = computed(() => allTeachers.value[getRandomInteger(0, allTeachers.value.length - 1)]);
-
     return {
       teacher,
-      allTeachers,
-      atmosphere,
       methodic,
-      atmosphereBody,
-      methodicBody,
       newsBody,
+      atmosphere,
+      allTeachers,
+      methodicBody,
+      atmosphereBody,
     };
-  },
-
-  data() {
-    return {};
-  },
-
-  computed: {},
-
-  methods: {
-    ...mapActions(["getWebContent"]),
   },
 });
 </script>

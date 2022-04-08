@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Form @submit="handlePayment" :validation-schema="schema" @invalid-submit="onInvalidSubmit">
+    <Form @submit="handlePayment" :validation-schema="schema" @invalid-submit="onInvalidSubmit" data-test="payment">
       <n-h2 align-text class="mt-3 mb-4">Оплатить занятия можно здесь:</n-h2>
       <TextInput
         :value="firstName"
@@ -78,7 +78,7 @@
 import { Form } from "vee-validate";
 import * as Yup from "yup";
 import TextInput from "@/components/TextInput.vue";
-import { mapActions } from "vuex";
+import { useStore } from "vuex";
 import { UserPaymentData } from "@/types/interfaces";
 import { computed, defineComponent, ref } from "vue";
 import Footer from "@/components/Footer.vue";
@@ -86,14 +86,10 @@ import { NH2 } from "naive-ui";
 
 export default defineComponent({
   name: "Payment",
-  components: {
-    TextInput,
-    Form,
-    Footer,
-    NH2,
-  },
+  components: { TextInput, Form, Footer, NH2 },
 
   setup() {
+    const { dispatch } = useStore();
     const mixedGroupedSelected = ref([]);
     const mixedGroupedOptions = [
       {
@@ -109,6 +105,12 @@ export default defineComponent({
         value: "Oferta",
       },
     ];
+    const isChecked = ref(true);
+    const email = "";
+    const courseName = "";
+    const firstName = "";
+    const lastName = "";
+    const price = "";
 
     const contextualState = computed(() => {
       if (mixedGroupedSelected.value.length === 2) {
@@ -128,8 +130,6 @@ export default defineComponent({
       }, 1000);
     };
 
-    // Using yup to generate a validation schema
-    // https://vee-validate.logaretm.com/v4/guide/validation#validation-schemas-with-yup
     const schema = Yup.object().shape({
       firstName: Yup.string().required(),
       lastName: Yup.string().required(),
@@ -138,61 +138,52 @@ export default defineComponent({
       courseName: Yup.string().required(),
     });
 
-    return {
-      schema,
-      onInvalidSubmit,
-      mixedGroupedOptions,
-      mixedGroupedSelected,
-      contextualState,
-    };
-  },
-
-  data() {
-    return {
-      userData: { courseName: null, firstName: null, lastName: null, email: null, price: null },
-      isChecked: true,
-      email: "",
-      courseName: "",
-      firstName: "",
-      lastName: "",
-      price: "",
-    };
-  },
-
-  methods: {
-    ...mapActions(["payment"]),
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async handlePayment({ courseName, firstName, lastName, email, price }: Record<string, any>) {
-      if (this.mixedGroupedSelected.length !== 2) {
-        this.isChecked = false;
-      } else this.isChecked = true;
+    const handlePayment = async (values: Record<string, any>) => {
+      if (mixedGroupedSelected.value.length !== 2) {
+        isChecked.value = false;
+      } else isChecked.value = true;
 
-      if (email !== "" && courseName !== "" && firstName !== "" && lastName !== "" && price !== "") {
+      if (
+        values.email !== "" &&
+        values.courseName !== "" &&
+        values.firstName !== "" &&
+        values.lastName !== "" &&
+        values.price !== ""
+      ) {
         const userData: UserPaymentData = {
-          courseName,
-          firstName,
-          lastName,
-          email,
-          price,
+          courseName: values.courseName,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          price: values.price,
           date: Date.now(),
         };
 
         try {
-          if (this.isChecked) {
-            await this.payment(userData);
-            this.firstName = "";
-            this.lastName = "";
-            this.email = "";
-            this.courseName = "";
-            this.price = "";
-            this.isChecked = false;
+          if (isChecked.value) {
+            await dispatch("payment", userData);
           }
         } catch (error) {
-          this.isChecked = false;
+          isChecked.value = false;
         }
       }
-    },
+    };
+
+    return {
+      price,
+      email,
+      schema,
+      lastName,
+      firstName,
+      isChecked,
+      courseName,
+      handlePayment,
+      contextualState,
+      onInvalidSubmit,
+      mixedGroupedOptions,
+      mixedGroupedSelected,
+    };
   },
 });
 </script>
