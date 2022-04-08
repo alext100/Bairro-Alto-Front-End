@@ -1,6 +1,6 @@
 <template>
   <div class="container ck-content m-4">
-    <n-card :bordered="false" hoverable>
+    <n-card :bordered="false" hoverable data-test="courses-card">
       <div v-html="courses[0].body"></div>
     </n-card>
   </div>
