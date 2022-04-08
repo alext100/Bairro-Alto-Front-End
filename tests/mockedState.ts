@@ -3,7 +3,7 @@ import { State } from "@/types/interfaces";
 const mockedState = {
   currentUser: localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData") || "") : {},
   // eslint-disable-next-line no-unneeded-ternary
-  isUserAuthenticated: localStorage.getItem("userData") ? true : false,
+  isUserAuthenticated: false,
   groups: [],
   userGroups: [],
   currentGroup: {},
@@ -37,16 +37,38 @@ const mockedState = {
   lastLoadedUser: {},
   lessons: [],
   groupLessons: [],
-  webContent: sessionStorage.getItem("webContent")
-    ? JSON.parse(sessionStorage.getItem("webContent") || "")
-    : {
-        posts: [],
-        categories: [],
+  webContent: {
+    posts: [
+      {
+        title: "ОБУЧЕНИЕ В ШКОЛЕ / УРОВНИ text-disabled",
+        body: '<h1>&nbsp;</h1><h2 style="-webkit-text-stroke-width:0px;color:rgb(213, 151, 88);font-family:&quot;Noto Sans&quot;, Arial, sans-serif;font-size:3.6rem;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;letter-spacing:0.1em;line-height:1.1875;margin:0px 0px 2rem;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:uppercase;white-space:normal;widows:2;word-spacing:0px;"><span style="color:rgb(0,51,102);"><span style="margin-top:0px;"><strong>ОБУЧЕНИЕ В ШКОЛЕ</strong></span></span></h2>',
+        category: "Курсы",
+        image: "",
+        id: "624a945fa4a7260aa1b63087",
       },
-  courseNames: sessionStorage.getItem("courseNames")
-    ? JSON.parse(sessionStorage.getItem("courseNames") || "")
-    : {
-        courseNames: [],
+      {
+        title: "Онлайн ДЛЯ ПРОДОЛЖАЮЩИХ Не редактировать этот заголовок! text-disabled",
+        body: '<h1>ПОРТУГАЛЬСКИЙ ДЛЯ ПРОДОЛЖАЮЩИХ ОНЛАЙН</h1><p style="-webkit-text-stroke-width:0px;color:rgb(0, 0, 0);font-family:&quot;Noto Sans&quot;, Arial, sans-serif;font-size:17px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;margin-bottom:1rem;margin-top:0px;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;"><a style="background-color:transparent;color:rgb(213, 151, 88);margin-top:0px;text-decoration:none;transition:color 0.2s ease 0s;" target="_blank" rel="noopener noreferrer" href="https://forms.gle/TqUaHodSEQTKiHYD9">ПРОВЕРИТЬ СВОЙ УРОВЕНЬ ПОРТУГАЛЬСКОГО</a></p>',
+        category: "Курсы",
+        image: "",
+        id: "624a945fa4a7260aa1b63088",
       },
+    ],
+    categories: [
+      { title: "Мероприятия", slug: "Мероприятия", id: "624a945fa4a7260aa1b630b6" },
+      { title: "Спецкурсы", slug: "Спецкурсы", id: "624a945fa4a7260aa1b630b7" },
+      { title: "Курсы", slug: "Курсы", id: "624a945fa4a7260aa1b630b8" },
+      { title: "Материалы", slug: "Материалы", id: "624a945fa4a7260aa1b630b9" },
+      { title: "Преподаватели", slug: "Преподаватели", id: "624a945fa4a7260aa1b630ba" },
+      { title: "Отзывы", slug: "Отзывы", id: "624a945fa4a7260aa1b630bb" },
+      { title: "Атмосфера", slug: "Атмосфера", id: "624a945fa4a7260aa1b630bc" },
+      { title: "Новости", slug: "Новости", id: "624a945fa4a7260aa1b630bd" },
+      { title: "Методика", slug: "Методика", id: "624a945fa4a7260aa1b630be" },
+      { title: "Группы", slug: "Группы", id: "624a945fa4a7260aa1b630bf" },
+    ],
+  },
+  courseNames: {
+    courseNames: ["name"],
+  },
 };
 export default mockedState as unknown as State;
