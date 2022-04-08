@@ -8,6 +8,7 @@
         draggable
         show-arrow
         :transition-style="{ transitionDuration: 800, transitionTimingFunction: 'cubic-bezier(.29, 1.01, 1, 0.48)' }"
+        data-test="news-carousel"
       >
         <div v-for="news in newsBody" :key="news">
           <n-card :bordered="false">

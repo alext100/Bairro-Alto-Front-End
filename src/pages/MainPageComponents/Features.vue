@@ -1,7 +1,7 @@
 <template>
   <section class="main-page__features ck-content">
     <div class="features">
-      <router-link to="/methodic" class="features-item">
+      <router-link to="/methodic" class="features-item" data-test="features-item-methodic">
         <div v-motion-slide-visible-once-left :delay="300">
           <h2 class="features-title">Методика</h2>
           <div v-if="methodic[0]?.body" class="features-text" v-html="methodicBody?.body"></div>
@@ -12,7 +12,7 @@
           <span>Подробнее...</span>
         </div>
       </router-link>
-      <router-link to="/atmosphere" class="features-item">
+      <router-link to="/atmosphere" class="features-item" data-test="features-item-atmosphere">
         <div v-motion-slide-visible-once-right :delay="300">
           <h2 class="features-title">Атмосфера</h2>
           <div v-if="atmosphere[0]?.body" class="features-text" v-html="atmosphereBody?.body"></div>

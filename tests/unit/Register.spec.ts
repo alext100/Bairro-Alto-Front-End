@@ -3,6 +3,7 @@ import { mount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import TextInput from "@/components/TextInput.vue";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
+import { cleanup } from "@testing-library/vue";
 import state from "../mockedState";
 
 const store = createStore({
@@ -12,12 +13,12 @@ const store = createStore({
   actions: { registerUser: jest.fn() },
   mutations: { isRegistered: jest.fn(), notRegistered: jest.fn() },
 });
-store.dispatch = jest.fn();
 
 const router = createRouterMock({});
 beforeEach(() => {
   injectRouterMock(router);
 });
+afterEach(() => cleanup());
 
 describe("Given a Register view", () => {
   describe("When it is rendered", () => {

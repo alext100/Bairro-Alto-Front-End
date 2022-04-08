@@ -3,7 +3,7 @@ import { mount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import TextInput from "@/components/TextInput.vue";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
-
+import { cleanup } from "@testing-library/vue";
 import state from "../mockedState";
 
 const store = createStore({
@@ -16,6 +16,7 @@ const router = createRouterMock({});
 beforeEach(() => {
   injectRouterMock(router);
 });
+afterEach(() => cleanup());
 
 describe("Given a ChangePassword component", () => {
   describe("When it is rendered", () => {
