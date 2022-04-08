@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="ck-content">
-      <h1 class="features-title m-3">Мероприятия</h1>
+      <h1 class="events-title m-3">Мероприятия</h1>
       <full-card
         v-for="event in events || []"
         :key="event"
@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted } from "vue";
-import { mapActions, useStore } from "vuex";
+import { useStore } from "vuex";
 import { Post } from "@/types/interfaces";
 import FullCard from "@/components/FullCard.vue";
 import Footer from "@/components/Footer.vue";
@@ -34,6 +34,7 @@ export default defineComponent({
 
   setup() {
     const { state, dispatch } = useStore();
+
     onMounted(() => {
       dispatch("getWebContent");
       document.body.style.backgroundColor = "white";
@@ -41,19 +42,13 @@ export default defineComponent({
 
     const events = computed(() => state.webContent?.posts?.filter((post: Post) => post?.category === "Мероприятия"));
 
-    return {
-      events,
-    };
-  },
-
-  methods: {
-    ...mapActions(["getWebContent"]),
+    return { events };
   },
 });
 </script>
 
 <style scoped>
-.features-title {
+.events-title {
   color: var(--hover-color);
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
