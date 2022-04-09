@@ -3,14 +3,14 @@
     <div class="sidebar__logo-details">
       <img v-if="menuLogo" :src="menuLogo" alt="menu-logo" class="menu-logo icon" />
       <img v-else src="../../public/sardines32x32.png" alt="menu icon" class="m-3 icon" :class="menuIcon" />
-      <div class="logo_name">
+      <div class="logo-name">
         {{ menuTitle }}
       </div>
       <i class="bx" :class="isOpened ? 'bx-menu-alt-right' : 'bx-menu'" id="btn" @click="isOpened = !isOpened" />
     </div>
 
-    <div class="sidebar__body-profile_open">
-      <div class="sidebar__body_open">
+    <div class="sidebar__body-profile--open">
+      <div class="sidebar__body--open">
         <ul class="sidebar__nav-list">
           <li v-if="isSearch" @click="isOpened = true">
             <i class="bx bx-search" />
@@ -26,7 +26,7 @@
             <li v-tippy="`${menuItem.name}`">
               <router-link :to="menuItem.link">
                 <i class="bx" :class="menuItem.icon || 'bx-square-rounded'" />
-                <span class="sidebar__nav-list_links">{{ menuItem.name }}</span>
+                <span class="nav-list__links">{{ menuItem.name }}</span>
               </router-link>
 
               <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
@@ -51,7 +51,7 @@
         <i
           v-tippy="'Выйти из аккаунта'"
           v-if="isExitButton"
-          class="bx bx-log-out profile__log_out"
+          class="bx bx-log-out profile__logout"
           @click="handleLogout"
         />
       </div>
@@ -222,7 +222,7 @@ export default {
   methods: {
     ...mapActions(["deleteDataFromLocalStorage"]),
     handleLogout(event) {
-      if (event.target.classList.contains("profile__log_out")) {
+      if (event.target.classList.contains("profile__logout")) {
         this.deleteDataFromLocalStorage();
         this.$router.push("/");
       }
@@ -267,7 +267,7 @@ body {
   .sidebar {
     height: 6%;
   }
-  .sidebar__body-profile_open {
+  .sidebar__body-profile--open {
     display: flex;
   }
   .sidebar .sidebar__logo-details #btn {
@@ -299,7 +299,7 @@ body {
   opacity: 0;
   transition: all 0.5s ease;
 }
-.sidebar .sidebar__logo-details .logo_name {
+.sidebar .sidebar__logo-details .logo-name {
   color: var(--logo-title-color);
   font-size: 20px;
   font-weight: 600;
@@ -307,7 +307,7 @@ body {
   transition: all 0.5s ease;
 }
 .sidebar.open .sidebar__logo-details .icon,
-.sidebar.open .sidebar__logo-details .logo_name {
+.sidebar.open .sidebar__logo-details .logo-name {
   opacity: 1;
 }
 .sidebar .sidebar__logo-details #btn {
@@ -413,7 +413,7 @@ body {
 .sidebar li a:hover {
   background: var(--menu-items-hover-color);
 }
-.sidebar li a .sidebar__nav-list_links {
+.sidebar li a .nav-list__links {
   color: var(--menu-items-text-color);
   font-size: 15px;
   font-weight: 400;
@@ -422,11 +422,11 @@ body {
   pointer-events: none;
   transition: 0.4s;
 }
-.sidebar.open li a .sidebar__nav-list_links {
+.sidebar.open li a .nav-list__links {
   opacity: 1;
   pointer-events: auto;
 }
-.sidebar li a:hover .sidebar__nav-list_links,
+.sidebar li a:hover .nav-list__links,
 .sidebar li a:hover i {
   transition: all 0.5s ease;
   color: var(--bg-color);
@@ -473,7 +473,7 @@ body {
 .sidebar div.profile .job {
   font-size: 12px;
 }
-.sidebar .profile .profile__log_out {
+.sidebar .profile .profile__logout {
   position: absolute;
   top: 50%;
   right: 0;
@@ -485,22 +485,22 @@ body {
   border-radius: 0px;
   transition: all 0.5s ease;
 }
-.sidebar.open .profile .profile__log_out {
+.sidebar.open .profile .profile__logout {
   width: 50px;
   background: var(--secondary-color);
   opacity: 0;
 }
-.sidebar.open .profile:hover .profile__log_out {
+.sidebar.open .profile:hover .profile__logout {
   opacity: 1;
 }
-.sidebar.open .profile .profile__log_out:hover {
+.sidebar.open .profile .profile__logout:hover {
   opacity: 1;
   color: red;
 }
-.sidebar .profile .profile__log_out:hover {
+.sidebar .profile .profile__logout:hover {
   color: red;
 }
-.sidebar__body-profile_open {
+.sidebar__body-profile--open {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -528,15 +528,15 @@ body {
   font-weight: 500;
   margin: 18px;
 }
-.sidebar__body_open-active {
+.sidebar__body--open-active {
   overflow-y: auto;
 }
-.sidebar__body_open {
+.sidebar__body--open {
   overflow-y: auto;
   height: calc(100% - 60px);
   margin: 6px 0 0 -40px;
 }
-.sidebar__body_open::-webkit-scrollbar {
+.sidebar__body--open::-webkit-scrollbar {
   display: none;
 }
 .profile__name {

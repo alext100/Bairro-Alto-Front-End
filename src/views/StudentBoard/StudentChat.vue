@@ -42,6 +42,11 @@ export default {
       if (ev.isTrusted) this.isDevice = window.innerWidth < 500;
     });
   },
+  unmounted() {
+    document.body.removeEventListener("resize", (ev) => {
+      if (ev.isTrusted) this.isDevice = window.innerWidth < 500;
+    });
+  },
   methods: {
     ...mapActions(["getAllUsersFromApi"]),
 
