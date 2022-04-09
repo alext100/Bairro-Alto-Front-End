@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { Commit, Dispatch } from "vuex";
 import { cleanup } from "@testing-library/vue";
+import { enableAutoUnmount } from "@vue/test-utils";
 import { configActionContext, configActionContextDispatch } from "../test-utils";
 
 jest.mock("axios");
@@ -20,6 +21,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 const commit = jest.fn() as jest.MockedFunction<Commit>;
 const dispatch = jest.fn() as jest.MockedFunction<Dispatch>;
 afterEach(() => cleanup());
+enableAutoUnmount(afterEach);
 
 describe("Given a actions from state", () => {
   describe("When the action login is invoked with userData", () => {

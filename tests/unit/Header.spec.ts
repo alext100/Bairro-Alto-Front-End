@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { createStore } from "vuex";
 import Header from "@/components/Header.vue";
@@ -18,6 +18,7 @@ beforeEach(() => {
   injectRouterMock(router);
 });
 afterEach(() => cleanup());
+enableAutoUnmount(afterEach);
 
 describe("Given a Header component", () => {
   describe("When it is rendered", () => {

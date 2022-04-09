@@ -1,5 +1,5 @@
 import SidebarMenu from "@/components/SidebarMenu.vue";
-import { mount } from "@vue/test-utils";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { TippyPlugin } from "tippy.vue";
@@ -19,6 +19,7 @@ beforeEach(() => {
   injectRouterMock(router);
 });
 afterEach(() => cleanup());
+enableAutoUnmount(afterEach);
 
 describe("Given a SidebarMenu component", () => {
   describe("When it's closed and the user clicks on the open menu icon", () => {
