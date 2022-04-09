@@ -6,7 +6,7 @@ import { MotionPlugin } from "@vueuse/motion";
 import { cleanup, render } from "@testing-library/vue";
 import "@testing-library/jest-dom";
 
-import { mount } from "@vue/test-utils";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
 import state from "../../mockedState";
 
 const store = createStore({
@@ -21,6 +21,7 @@ beforeEach(() => {
 });
 
 afterEach(() => cleanup());
+enableAutoUnmount(afterEach);
 
 const methodic = [
   {

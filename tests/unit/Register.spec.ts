@@ -1,5 +1,5 @@
 import Register from "@/views/Register.vue";
-import { mount } from "@vue/test-utils";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import TextInput from "@/components/TextInput.vue";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
@@ -19,6 +19,7 @@ beforeEach(() => {
   injectRouterMock(router);
 });
 afterEach(() => cleanup());
+enableAutoUnmount(afterEach);
 
 describe("Given a Register view", () => {
   describe("When it is rendered", () => {

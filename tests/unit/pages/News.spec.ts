@@ -1,5 +1,5 @@
 import News from "@/pages/MainPageComponents/News.vue";
-import { mount } from "@vue/test-utils";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { TippyPlugin } from "tippy.vue";
@@ -19,6 +19,7 @@ beforeEach(() => {
   injectRouterMock(router);
 });
 afterEach(() => cleanup());
+enableAutoUnmount(afterEach);
 
 const newsBody = [
   {

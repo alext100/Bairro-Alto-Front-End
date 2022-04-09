@@ -1,6 +1,6 @@
 import Courses from "@/pages/Courses.vue";
 import Footer from "@/components/Footer.vue";
-import { mount } from "@vue/test-utils";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { cleanup } from "@testing-library/vue";
@@ -24,6 +24,7 @@ beforeEach(() => {
   injectRouterMock(router);
 });
 afterEach(() => cleanup());
+enableAutoUnmount(afterEach);
 
 describe("Given a Courses page", () => {
   describe("When it is rendered", () => {
