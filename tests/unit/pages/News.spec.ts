@@ -39,6 +39,7 @@ enableAutoUnmount(afterEach);
 describe("Given a Materials page", () => {
   describe("When it is rendered", () => {
     test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const wrapper = mount(News, wrapperOptions);
 
       expect(document.body.style.backgroundColor).toBe("white");
