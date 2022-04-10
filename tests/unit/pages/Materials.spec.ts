@@ -17,6 +17,7 @@ const store = createStore({
   },
   actions: { getWebContent: jest.fn() },
 });
+store.dispatch = jest.fn();
 
 const wrapperOptions = {
   global: {
@@ -39,6 +40,12 @@ enableAutoUnmount(afterEach);
 
 describe("Given a Materials page", () => {
   describe("When it is rendered", () => {
+    test("Then it should call dispatch method with 'getWebContent'", () => {
+      const wrapper = mount(Materials, wrapperOptions);
+
+      expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith("getWebContent");
+    });
+
     test("Then it should render Banner component", () => {
       const wrapper = mount(Materials, wrapperOptions);
 
