@@ -54,7 +54,7 @@ describe("Given a SidebarMenu component", () => {
         },
         props: { isExitButton: true },
       });
-      const logOutButton = wrapper.find(".profile__log_out");
+      const logOutButton = wrapper.find(".profile__logout");
 
       await logOutButton.trigger("click");
 
@@ -144,7 +144,7 @@ describe("Given a SidebarMenu component", () => {
         },
         props: { menuTitle: "Menu of sidebar" },
       });
-      const logoName = wrapper.find(".logo_name");
+      const logoName = wrapper.find(".logo-name");
 
       expect(logoName.html()).toContain("Menu of sidebar");
     });
