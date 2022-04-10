@@ -19,6 +19,7 @@ const store = createStore({
   },
   actions: { getWebContent: jest.fn() },
 });
+store.dispatch = jest.fn();
 
 const wrapperOptions = {
   global: {
@@ -43,6 +44,19 @@ enableAutoUnmount(afterEach);
 
 describe("Given a Main page", () => {
   describe("When it is rendered", () => {
+    test("Then it should call dispatch method with 'getWebContent'", () => {
+      const wrapper = mount(Main, wrapperOptions);
+
+      expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith("getWebContent");
+    });
+
+    test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const wrapper = mount(Main, wrapperOptions);
+
+      expect(document.body.style.backgroundColor).toBe("white");
+    });
+
     test("Then it should show Teachers component", async () => {
       const wrapper = mount(Main, wrapperOptions);
 
