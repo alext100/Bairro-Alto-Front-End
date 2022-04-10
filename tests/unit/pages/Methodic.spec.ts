@@ -1,4 +1,4 @@
-import Atmosphere from "@/pages/Atmosphere.vue";
+import Methodic from "@/pages/Methodic.vue";
 import Footer from "@/components/Footer.vue";
 import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
@@ -28,31 +28,31 @@ beforeEach(() => {
 afterEach(() => cleanup());
 enableAutoUnmount(afterEach);
 
-describe("Given a Atmosphere page", () => {
+describe("Given a Methodic page", () => {
   describe("When it is rendered", () => {
     test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const wrapper = mount(Atmosphere, wrapperOptions);
+      const wrapper = mount(Methodic, wrapperOptions);
 
       expect(document.body.style.backgroundColor).toBe("white");
     });
 
     test("Then it should call dispatch method with 'getWebContent'", () => {
-      const wrapper = mount(Atmosphere, wrapperOptions);
+      const wrapper = mount(Methodic, wrapperOptions);
 
       expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith("getWebContent");
     });
 
     test("Then it should show Footer", () => {
-      const wrapper = mount(Atmosphere, wrapperOptions);
+      const wrapper = mount(Methodic, wrapperOptions);
       const footer = wrapper.findComponent(Footer);
 
       expect(footer.exists()).toBe(true);
     });
 
-    test("Then it should show the article about school atmosphere", () => {
-      const wrapper = mount(Atmosphere, wrapperOptions);
-      const stringFromArticle = `В большинстве отзывов наши студенты говорят об особенной, домашней обстановке в школе, о дружелюбной атмосфере тепла и уюта.`;
+    test("Then it should show the article about school methodic", () => {
+      const wrapper = mount(Methodic, wrapperOptions);
+      const stringFromArticle = `Преподаём по лексическому подходу`;
 
       expect(wrapper.html()).toContain(stringFromArticle);
     });
