@@ -12,6 +12,8 @@ const store = createStore({
   },
   actions: { getWebContent: jest.fn() },
 });
+store.dispatch = jest.fn();
+
 const wrapperOptions = {
   global: {
     plugins: [store],
@@ -28,6 +30,19 @@ enableAutoUnmount(afterEach);
 
 describe("Given a Atmosphere page", () => {
   describe("When it is rendered", () => {
+    test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const wrapper = mount(Atmosphere, wrapperOptions);
+
+      expect(document.body.style.backgroundColor).toBe("white");
+    });
+
+    test("Then it should call dispatch method with 'getWebContent'", () => {
+      const wrapper = mount(Atmosphere, wrapperOptions);
+
+      expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith("getWebContent");
+    });
+
     test("Then it should show Footer", () => {
       const wrapper = mount(Atmosphere, wrapperOptions);
       const footer = wrapper.findComponent(Footer);
