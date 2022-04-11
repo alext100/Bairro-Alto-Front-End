@@ -2,18 +2,17 @@
   <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
   <div class="container">
     <!-- <button :disabled="updatingData" @click="addData">Add Data</button> -->
-    <chat-container v-if="showChat" :current-user-id="this.currentUser.id" :theme="theme" :is-device="isDevice" />
+    <chat-container v-if="showChat" :current-user-id="currentUser.id" :theme="theme" :is-device="isDevice" />
   </div>
 </template>
 
 <script>
-import state from "@/store/state";
-import { mapActions, mapState } from "vuex";
-import SidebarMenu from "@/components/SidebarMenu.vue";
-import ChatContainer from "@/views/ChatContainer.vue";
-import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
-
+import { useStore } from "vuex";
 import "vue-advanced-chat/dist/vue-advanced-chat.css";
+import ChatContainer from "@/views/ChatContainer.vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+import SidebarMenu from "@/components/SidebarMenu.vue";
+import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
 export default {
   name: "StudentChat",
@@ -21,36 +20,43 @@ export default {
     SidebarMenu,
     ChatContainer,
   },
-  data() {
+  setup() {
+    const { state } = useStore();
+    const isDevice = ref(false);
+
+    onMounted(() => {
+      isDevice.value = window.innerWidth < 500;
+      window.addEventListener("resize", (ev) => {
+        if (ev.isTrusted) isDevice.value = window.innerWidth < 500;
+      });
+    });
+
+    const currentUser = computed(() => state.currentUser);
+    const isLoading = computed(() => state.isLoading);
+    const allUsers = computed(() => state.allUsers);
+
+    onUnmounted(() => {
+      document.body.removeEventListener("resize", (ev) => {
+        if (ev.isTrusted) isDevice.value = window.innerWidth < 500;
+      });
+    });
+
     return {
+      isDevice,
+      allUsers,
+      isLoading,
+      currentUser,
       theme: "light",
       showChat: true,
       currentUserId: "",
-      isDevice: false,
       updatingData: false,
-      profileName: state.currentUser.firstName,
       menuItems: sideBarStudentMenuItems(),
+      profileName: state.currentUser.firstName,
     };
   },
-  computed: {
-    ...mapState(["currentUser", "isLoading", "allUsers"]),
-  },
 
-  mounted() {
-    this.isDevice = window.innerWidth < 500;
-    window.addEventListener("resize", (ev) => {
-      if (ev.isTrusted) this.isDevice = window.innerWidth < 500;
-    });
-  },
-  unmounted() {
-    document.body.removeEventListener("resize", (ev) => {
-      if (ev.isTrusted) this.isDevice = window.innerWidth < 500;
-    });
-  },
-  methods: {
-    ...mapActions(["getAllUsersFromApi"]),
-
-    /*     async addData() { // Update all users data in Cloud Firestore.  _id, username - required!
+  /*     methods: {
+         async addData() { // Update all users data in Cloud Firestore.  _id, username - required!
       await this.getAllUsersFromApi();
       this.updatingData = true;
       const users = this.allUsers;
@@ -64,8 +70,8 @@ export default {
           email: user.email,
         });
       });
-    }, */
-  },
+    },
+  }, */
 };
 </script>
 
