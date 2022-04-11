@@ -1,6 +1,5 @@
 <template>
   <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
-  <div class="container"></div>
 </template>
 
 <script lang="ts">
@@ -12,14 +11,12 @@ import sideBarAdminMenuItems from "@/views/AdminBoard/sideBarAdminMenuItems";
 export default defineComponent({
   name: "AdminBoard",
   components: { SidebarMenu },
-  data() {
+  setup() {
     return {
       isHiddenFormToCreate: true,
       profileName: state.currentUser.firstName,
       menuItems: sideBarAdminMenuItems(),
     };
   },
-
-  methods: {},
 });
 </script>

@@ -56,44 +56,41 @@
 </template>
 
 <script lang="ts">
-import state from "@/store/state";
-import { defineComponent } from "vue";
-import SidebarMenu from "@/components/SidebarMenu.vue";
-import { mapActions, mapGetters, mapState } from "vuex";
-import FullCard from "@/components/FullCard.vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import { NSkeleton, NSpace } from "naive-ui";
+import FullCard from "@/components/FullCard.vue";
+import SidebarMenu from "@/components/SidebarMenu.vue";
+import { computed, defineComponent, onMounted } from "vue";
 import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
 export default defineComponent({
   name: "StudentLessons",
-  components: {
-    SidebarMenu,
-    FullCard,
-    NSkeleton,
-    NSpace,
-  },
+  components: { SidebarMenu, FullCard, NSkeleton, NSpace },
+  setup() {
+    const { state, dispatch } = useStore();
+    const router = useRouter();
+    const isLoading = computed(() => state.isLoading);
+    const currentUser = computed(() => state.currentUser);
+    const groupLessons = computed(() => state.groupLessons);
 
-  data() {
-    return {
-      profileName: state.currentUser.firstName,
-      menuItems: sideBarStudentMenuItems(),
+    onMounted(async () => {
+      await dispatch("getGroupLessonsById", currentUser.value.studentGroups[0]);
+      await dispatch("getGroupById", currentUser.value.studentGroups[0]);
+    });
+
+    const handleRedirect = (lessonId: string) => {
+      router.push(`student/lesson/${lessonId}`);
     };
-  },
-  computed: {
-    ...mapState(["currentUser", "isLoading", "currentGroup", "groupLessons"]),
-    ...mapGetters(["getLessonByGroupLessonId"]),
-  },
 
-  methods: {
-    ...mapActions(["getLessonsFromApi", "getGroupById", "getGroupLessonsById"]),
-
-    handleRedirect(lessonId: string) {
-      this.$router.push(`student/lesson/${lessonId}`);
-    },
-  },
-  async mounted() {
-    await this.getGroupLessonsById(this.currentUser.studentGroups[0]);
-    await this.getGroupById(this.currentUser.studentGroups[0]);
+    return {
+      isLoading,
+      currentUser,
+      groupLessons,
+      handleRedirect,
+      menuItems: sideBarStudentMenuItems(),
+      profileName: state.currentUser.firstName,
+    };
   },
 });
 </script>

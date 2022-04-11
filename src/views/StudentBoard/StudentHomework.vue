@@ -40,42 +40,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
-import SidebarMenu from "@/components/SidebarMenu.vue";
-import { mapActions, mapState, useStore } from "vuex";
+import { useStore } from "vuex";
 import FullCard from "@/components/FullCard.vue";
+import SidebarMenu from "@/components/SidebarMenu.vue";
+import { computed, defineComponent, onMounted } from "vue";
 import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
 export default defineComponent({
   name: "StudentHomework",
-  components: {
-    SidebarMenu,
-    FullCard,
-  },
+  components: { SidebarMenu, FullCard },
 
   setup() {
     const { state, dispatch } = useStore();
-    const profileName = state.currentUser?.firstName;
-    const studentGroup = state.currentGroup;
+
     onMounted(() => {
       document.body.style.backgroundColor = "white";
       const studentGroupId = state.currentUser?.studentGroups[0];
       dispatch("getGroupById", studentGroupId);
     });
 
+    const studentGroup = state.currentGroup;
+    const profileName = state.currentUser?.firstName;
+    const isLoading = computed(() => state.isLoading);
+    const currentUser = computed(() => state.currentUser);
+
     return {
-      studentGroup,
+      isLoading,
       profileName,
+      currentUser,
+      studentGroup,
       menuItems: sideBarStudentMenuItems(),
     };
-  },
-
-  computed: {
-    ...mapState(["currentUser", "isLoading"]),
-  },
-
-  methods: {
-    ...mapActions(["getGroupById"]),
   },
 });
 </script>

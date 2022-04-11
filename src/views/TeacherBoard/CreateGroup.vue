@@ -28,73 +28,57 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import SidebarMenu from "@/components/SidebarMenu.vue";
-import state from "@/store/state";
-import { mapActions, mapState } from "vuex";
-import { Form } from "vee-validate";
 import * as Yup from "yup";
+import { useStore } from "vuex";
+import { Form } from "vee-validate";
 import TextInput from "@/components/TextInput.vue";
+import { computed, defineComponent, ref } from "vue";
+import SidebarMenu from "@/components/SidebarMenu.vue";
 import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default defineComponent({
   name: "CreateGroup",
   components: { SidebarMenu, TextInput, Form },
   setup() {
-    function onInvalidSubmit() {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { state, dispatch } = useStore();
+    const isLoading = computed(() => state.isLoading);
+    const isError = ref(false);
+    const onInvalidSubmit = () => {
       const submitBtn: any = document.querySelector(".submit-btn");
       submitBtn.classList.add("invalid");
       setTimeout(() => {
         submitBtn.classList.remove("invalid");
       }, 1000);
-    }
+    };
 
-    // Using yup to generate a validation schema
-    // https://vee-validate.logaretm.com/v4/guide/validation#validation-schemas-with-yup
     const schema = Yup.object().shape({
       name: Yup.string().min(6).max(70).required(),
     });
 
+    const handleCreateGroup = async (values: Record<string, any>, actions: any) => {
+      const groupData = { groupName: values.name };
+      try {
+        await dispatch("createGroup", groupData);
+        actions.setFieldValue("name", `Группа ${values.name} создана`);
+        isError.value = false;
+      } catch (error) {
+        isError.value = true;
+      }
+    };
+
     return {
       schema,
-      onInvalidSubmit,
-    };
-  },
-
-  data() {
-    return {
-      formValues: {
-        groupName: "",
-      },
+      isError,
+      isLoading,
       groupName: "",
-      isError: false,
+      onInvalidSubmit,
+      handleCreateGroup,
       isHiddenFormToCreate: true,
-      profileName: state.currentUser.firstName,
+      formValues: { groupName: "" },
       menuItems: sidebarTeacherMenuItems(),
+      profileName: state.currentUser.firstName,
     };
-  },
-
-  methods: {
-    ...mapActions(["createGroup"]),
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async handleCreateGroup(values: Record<string, any>, actions: any) {
-      const groupData = {
-        groupName: values.name,
-      };
-      try {
-        await this.createGroup(groupData);
-        actions.setFieldValue("name", `Группа ${values.name} создана`);
-        this.isError = false;
-      } catch (error) {
-        this.isError = true;
-      }
-    },
-  },
-
-  computed: {
-    ...mapState(["isLoading"]),
   },
 });
 </script>
@@ -106,7 +90,6 @@ form {
   margin: 0px auto;
   padding-bottom: 60px;
 }
-
 .submit-btn,
 .register-btn {
   background: var(--primary-color);
@@ -123,11 +106,9 @@ form {
   cursor: pointer;
   text-decoration: none;
 }
-
 .register-btn {
   background: var(--success-color);
 }
-
 .submit-btn.invalid {
   animation: shake 0.5s;
   animation-iteration-count: infinite;
@@ -139,7 +120,6 @@ form {
   font-weight: bold;
   margin-bottom: 10px;
 }
-
 @keyframes shake {
   0% {
     transform: translate(1px, 1px);
@@ -175,12 +155,10 @@ form {
     transform: translate(1px, -2px);
   }
 }
-
 .submit-btn:hover,
 .register-btn:hover {
   transform: scale(1.1);
 }
-
 button.submitting::after {
   content: "";
   position: absolute;
@@ -195,7 +173,6 @@ button.submitting::after {
   animation: spinner-rotation 0.75s infinite;
   animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
-
 @keyframes spinner-rotation {
   to {
     transform: rotate(360deg);
