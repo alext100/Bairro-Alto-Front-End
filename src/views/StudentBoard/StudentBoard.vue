@@ -23,11 +23,10 @@
 </template>
 
 <script>
-import state from "@/store/state";
-import { defineComponent, onMounted } from "vue";
-import SidebarMenu from "@/components/SidebarMenu.vue";
-import { mapState } from "vuex";
+import { useStore } from "vuex";
 import { NCard, NH1, NP } from "naive-ui";
+import SidebarMenu from "@/components/SidebarMenu.vue";
+import { computed, defineComponent, onMounted } from "vue";
 import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
 export default defineComponent({
@@ -40,22 +39,21 @@ export default defineComponent({
   },
 
   setup() {
+    const { state } = useStore();
+
     onMounted(() => {
       document.body.style.backgroundColor = "white";
     });
 
-    return {};
-  },
+    const currentUser = computed(() => state.currentUser);
+    const groups = computed(() => state.currentUser.studentGroups);
 
-  data() {
     return {
-      profileName: state.currentUser.firstName,
+      groups,
+      currentUser,
       menuItems: sideBarStudentMenuItems(),
-      groups: state.currentUser.studentGroups,
+      profileName: state.currentUser.firstName,
     };
-  },
-  computed: {
-    ...mapState(["currentUser"]),
   },
 });
 </script>
