@@ -1,8 +1,8 @@
 <template>
   <div class="container tabs-container">
     <router-link to="/teacher"
-      ><em class="fas fa-arrow-left backward-icon"> <span class="tooltiptext">Назад к группам</span></em></router-link
-    >
+      ><em v-tippy="'Назад к группам'" class="fas fa-arrow-left backward-icon"> </em
+    ></router-link>
     <h1 class="m-3">Группа {{ currentGroup.groupName }}</h1>
     <b-card no-body>
       <b-tabs active-nav-item-class="h-3 list-group-item-success" content-class="mt-3" justified>
@@ -17,15 +17,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
-import { mapState } from "vuex";
-import GroupMembersVue from "@/views/TeacherBoard/GroupMembers.vue";
-import GroupInputMessageVue from "@/views/TeacherBoard/GroupInputMessage.vue";
+import { useStore } from "vuex";
+import { computed, defineComponent, onMounted } from "vue";
 import AddUserVue from "@/views/TeacherBoard/GroupAddUser.vue";
-import StudentErrorsVue from "@/views/TeacherBoard/StudentErrors.vue";
-import GroupAddDeleteLesson from "@/views/TeacherBoard/GroupAddDeleteLesson.vue";
-
+import GroupMembersVue from "@/views/TeacherBoard/GroupMembers.vue";
 import OnlineLessonVue from "@/views/TeacherBoard/OnlineLesson.vue";
+import StudentErrorsVue from "@/views/TeacherBoard/StudentErrors.vue";
+import GroupInputMessageVue from "@/views/TeacherBoard/GroupInputMessage.vue";
+import GroupAddDeleteLesson from "@/views/TeacherBoard/GroupAddDeleteLesson.vue";
 
 export default defineComponent({
   name: "GroupPage",
@@ -39,16 +38,18 @@ export default defineComponent({
   },
 
   setup() {
+    const { state } = useStore();
+    const currentGroup = computed(() => state.currentGroup);
+    const loadedUsersFromGroup = computed(() => state.loadedUsersFromGroup);
+
     onMounted(() => {
       document.body.style.backgroundColor = "white";
     });
-  },
-  computed: {
-    ...mapState(["currentGroup", "loadedUsersFromGroup"]),
-  },
-  methods: {},
-  data() {
-    return {};
+
+    return {
+      currentGroup,
+      loadedUsersFromGroup,
+    };
   },
 });
 </script>
@@ -71,25 +72,5 @@ export default defineComponent({
   font-size: 44px;
   right: calc(100% - 50px);
   bottom: calc(100% - 50px);
-}
-
-.tooltiptext {
-  transform: translateY(-26%);
-  transition: all 1s ease-in;
-  visibility: hidden;
-  width: 190px;
-  background-color: black;
-  opacity: 0.6;
-  color: #fff;
-  text-align: center;
-  border-radius: 28px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  font-size: smaller;
-}
-
-.backward-icon:hover .tooltiptext {
-  visibility: visible;
 }
 </style>
