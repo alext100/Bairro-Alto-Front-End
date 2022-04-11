@@ -3,6 +3,10 @@ module.exports = {
   transform: {
     "^.+\\.vue$": "vue-jest",
   },
+  transformIgnorePatterns: [
+    "/node_modules/(?!lodash-es)(?!@ckeditor/*)(?!ckeditor5/*)", // transform all ckeditor dependencies
+    "\\.pnp\\.[^\\/]+$",
+  ],
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*.{js,vue,ts}", "!src/main.js"],
   modulePathIgnorePatterns: [
