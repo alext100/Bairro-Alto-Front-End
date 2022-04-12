@@ -54,8 +54,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { mapActions, mapState } from "vuex";
+import { computed, defineComponent, onMounted } from "vue";
+import { useStore } from "vuex";
 import FullCard from "@/components/FullCard.vue";
 import { Lesson } from "@/types/interfaces";
 
@@ -63,22 +63,30 @@ export default defineComponent({
   name: "Lessons",
   components: { FullCard },
   emits: ["updateLesson"],
-  computed: {
-    ...mapState(["lessons", "isLoading"]),
-  },
-  methods: {
-    ...mapActions(["getLessonsFromApi", "deleteLessonById", "getAllCourseNames"]),
-    async handleDeleteLesson(lessonId: string) {
-      await this.deleteLessonById(lessonId);
-      await this.getAllCourseNames();
-    },
+  setup(props, ctx) {
+    const { state, dispatch } = useStore();
 
-    handleEditLesson(lesson: Lesson) {
-      this.$emit("updateLesson", lesson);
-    },
-  },
-  mounted() {
-    this.getLessonsFromApi();
+    onMounted(() => dispatch("getLessonsFromApi"));
+
+    const lessons = computed(() => state.lessons);
+    const isLoading = computed(() => state.isLoading);
+
+    const handleDeleteLesson = async (lessonId: string) => {
+      await dispatch("deleteLessonById", lessonId);
+      await dispatch("getAllCourseNames");
+    };
+
+    const handleEditLesson = async (lesson: Lesson) => {
+      ctx.emit("updateLesson", lesson);
+      await dispatch("getAllCourseNames");
+    };
+
+    return {
+      lessons,
+      isLoading,
+      handleEditLesson,
+      handleDeleteLesson,
+    };
   },
 });
 </script>
