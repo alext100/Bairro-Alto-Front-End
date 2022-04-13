@@ -1,8 +1,8 @@
 <template>
   <div class="container tabs-container">
-    <router-link to="/teacher"
-      ><em v-tippy="'Назад к группам'" class="fas fa-arrow-left backward-icon"> </em
-    ></router-link>
+    <router-link to="/teacher">
+      <em v-tippy="'Назад к группам'" class="fas fa-arrow-left backward-icon"> </em>
+    </router-link>
     <h1 class="m-3">Группа {{ currentGroup.groupName }}</h1>
     <b-card no-body>
       <b-tabs active-nav-item-class="h-3 list-group-item-success" content-class="mt-3" justified>
@@ -29,11 +29,11 @@ import GroupAddDeleteLesson from "@/views/TeacherBoard/GroupAddDeleteLesson.vue"
 export default defineComponent({
   name: "GroupPage",
   components: {
-    GroupMembersVue,
-    GroupInputMessageVue,
     AddUserVue,
     OnlineLessonVue,
+    GroupMembersVue,
     StudentErrorsVue,
+    GroupInputMessageVue,
     GroupAddDeleteLesson,
   },
 

@@ -113,6 +113,7 @@ const mutations = {
         courseNames: payload,
       })
     );
+    state.courseNames = JSON.parse(sessionStorage.getItem("courseNames") || "");
   },
 
   pushNewLessonToLessons(state: State, payload: Lesson) {
