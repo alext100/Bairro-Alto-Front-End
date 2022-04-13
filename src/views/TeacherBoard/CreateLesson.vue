@@ -32,11 +32,7 @@
             :aria-describedby="ariaDescribedby"
           ></b-form-radio-group>
         </b-form-group>
-        <label
-          v-tippy="'Только что созданный курс может не отображаться без обновления страницы (в разработке)'"
-          for="courses"
-          >Выберите название курса</label
-        >
+        <label for="courses">Выберите название курса</label>
         <div class="container inputs-container">
           <vue-select
             name="courses"
@@ -68,10 +64,10 @@
         <form class="row g-3" @submit.prevent="handleAudio">
           <div class="col-auto">
             <div class="input-group">
-              <label v-tippy="'Аудио файл формата mp3, ogg, wav до 33 мб'" for="inputGroupFile" class="form-label"
-                ><em class="bi bi-file-earmark-music inputfile-icon">
+              <label v-tippy="'Аудио файл формата mp3, ogg, wav до 33 мб'" for="inputGroupFile" class="form-label">
+                <em class="bi bi-file-earmark-music inputfile-icon">
                   Прикрепить аудио
-                  <span class="inputfile-description">{{ this.fileNameAndSize }}</span>
+                  <span class="inputfile-description">{{ fileNameAndSize }}</span>
                 </em>
                 <p class="inputfile-alert" v-if="errorAlert !== ''">{{ errorAlert }}</p></label
               >
@@ -106,24 +102,22 @@
         Загружается...
       </button>
     </Form>
-
     <Lessons @update-lesson="handleUpdate" />
   </div>
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from "vue";
-import { mapActions, mapState, useStore } from "vuex";
-import CkEditor from "@/components/CkEditorCustom.vue";
-import state from "@/store/state";
-import SidebarMenu from "@/components/SidebarMenu.vue";
-import Lessons from "@/views/TeacherBoard/Lessons.vue";
-import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
-import getTitleAndBody from "@/utils/getTitleAndBody";
+import * as Yup from "yup";
+import { useStore } from "vuex";
+import { Form } from "vee-validate";
 import VueSelect from "vue-next-select";
 import TextInput from "@/components/TextInput.vue";
-import { Form } from "vee-validate";
-import * as Yup from "yup";
+import getTitleAndBody from "@/utils/getTitleAndBody";
+import CkEditor from "@/components/CkEditorCustom.vue";
+import SidebarMenu from "@/components/SidebarMenu.vue";
+import Lessons from "@/views/TeacherBoard/Lessons.vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
+import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
 
 export default defineComponent({
   name: "GroupInputMessage",
@@ -137,7 +131,9 @@ export default defineComponent({
   },
 
   setup() {
-    const { dispatch } = useStore();
+    const { dispatch, state } = useStore();
+    const courseNames = computed(() => state.courseNames.courseNames);
+    const isLoading = computed(() => state.isLoading);
     const editorData = ref("");
     const selectedCourse = ref(null);
     const mixedGroupedSelected = ref();
@@ -147,193 +143,192 @@ export default defineComponent({
       { text: "B1", value: "B1" },
       { text: "B2", value: "B2" },
     ];
+    let courseName = "";
+    const data = { editorData: null };
+    const isEdited = ref(false);
+    const noType = ref(false);
+    const lessonId = ref("");
+    const errorAlert = ref("");
+    const formValues = { courseName };
+    const fileNameAndSize = ref("");
+    const lessonAudios = ref([]);
+    const audio = ref([]);
+    const courseNameForm = ref(null);
+    const fileInput = ref(null);
 
+    const iframelyOembedConvert = () => {
+      document.querySelectorAll("oembed[url]").forEach((element) => {
+        // eslint-disable-next-line no-undef
+        iframely.load(element, element.attributes.url.value);
+      });
+    };
     onMounted(() => {
       dispatch("getAllCourseNames");
       document.body.style.backgroundColor = "white";
+
+      setTimeout(() => {
+        iframelyOembedConvert();
+      }, 1000);
+
+      fileInput.value.addEventListener("change", (event) => {
+        const [file] = event.target.files;
+        const { name: fileName, size } = file;
+        const fileSize = (size / 1000).toFixed(2);
+        if (fileSize >= 32000) {
+          errorAlert.value = "Максимальный размер файла 32 мб!";
+        }
+        fileNameAndSize.value = `${fileName} - ${fileSize}KB`;
+      });
     });
 
-    function onInvalidSubmit() {
+    const selectCourseNamesOptions = computed(() => {
+      const courses = courseNames.value.filter((course) => course.courseName).map((course) => course.courseName);
+      const uniqueCourses = [...new Set(courses)];
+      return uniqueCourses;
+    });
+
+    const onInvalidSubmit = () => {
       const submitBtn = document.querySelector(".input-form--submit-button");
       submitBtn.classList.add("invalid");
       setTimeout(() => {
         submitBtn.classList.remove("invalid");
       }, 1000);
-    }
-
-    const schema = Yup.object().shape({
-      name: Yup.string().min(6).max(80),
-    });
-
-    return {
-      schema,
-      editorData,
-      selectedCourse,
-      onInvalidSubmit,
-      mixedGroupedOptions,
-      mixedGroupedSelected,
     };
-  },
 
-  data() {
-    return {
-      noType: false,
-      editor: CkEditor,
-      profileName: state.currentUser.firstName,
-      data: {
-        editorData: null,
-      },
-      isEdited: false,
-      lessonId: "",
-      audio: [],
-      lessonAudios: [],
-      fileNameAndSize: "",
-      errorAlert: "",
-      menuItems: sidebarTeacherMenuItems(),
-      courseName: "",
-      formValues: {
-        courseName: "",
-      },
-    };
-  },
-  methods: {
-    ...mapActions(["createLesson", "updateLessonById", "uploadAudio", "getAllCourseNames"]),
-    ...mapState(["currentUser"]),
-    onReady(editor) {
+    const onReady = (editor) => {
       editor.ui
         .getEditableElement()
         .parentElement.insertBefore(editor.ui.view.toolbar.element, editor.ui.getEditableElement());
-    },
+    };
 
-    iframelyOembedConvert() {
-      document.querySelectorAll("oembed[url]").forEach((element) => {
-        // eslint-disable-next-line no-undef
-        iframely.load(element, element.attributes.url.value);
-      });
-    },
+    const updateModelValue = () => {
+      courseNameForm.value.setFieldValue("name", selectedCourse.value);
+    };
 
-    async handleCKeditor(values, { resetForm }) {
-      this.noType = true;
-
-      if (this.isEdited && this.editorData !== "") {
-        const data = getTitleAndBody(this.editorData);
-        const courseData = {
-          courseName: values.name,
-        };
-        const lesson = {
-          title: data.title,
-          body: data.body,
-          author: state.currentUser.id,
-          level: this.mixedGroupedSelected,
-          date: new Date(),
-          audios: this.audio.data === undefined ? undefined : [...this.lessonAudios, this.audio.data[0]],
-          courseName: courseData.courseName,
-        };
-        const { lessonId } = this;
-
-        await this.updateLessonById({ lessonId, lesson });
-        this.noType = false;
-        this.editorData = "";
-        this.isEdited = false;
-        resetForm();
-        setTimeout(() => {
-          this.iframelyOembedConvert();
-        }, 1100);
-      } else if (this.editorData !== "" && this.mixedGroupedSelected !== undefined) {
-        this.errorAlert = "";
-        const data = getTitleAndBody(this.editorData);
-        const courseData = {
-          courseName: values.name,
-        };
-        const lesson = {
-          title: data.title,
-          body: data.body,
-          author: state.currentUser.id,
-          level: this.mixedGroupedSelected,
-          date: new Date(),
-          audios: this.audio.data === undefined ? undefined : [...this.lessonAudios, this.audio.data[0]],
-          courseName: courseData.courseName,
-        };
-
-        await this.createLesson(lesson);
-        this.noType = false;
-        await this.getAllCourseNames();
-        resetForm();
-        this.editorData = "";
-        this.selectedCourse = null;
-        setTimeout(() => {
-          this.iframelyOembedConvert();
-        }, 1100);
-      }
-      if (this.mixedGroupedSelected === undefined) {
-        this.noType = true;
-      }
-      this.audio = [];
-      this.fileNameAndSize = "";
-      this.errorAlert = "";
-    },
-
-    handleUpdate(lesson) {
-      this.editorData = lesson.title + lesson.body;
-      this.isEdited = true;
-      this.lessonId = lesson.id;
-      this.lessonAudios = lesson.audios;
-      this.$refs.courseNameForm.setFieldValue("name", lesson.courseName);
-      this.courseName = lesson.courseName;
-      if (this.lessonAudios.length !== 0) {
+    const handleUpdate = (lesson) => {
+      editorData.value = lesson.title + lesson.body;
+      isEdited.value = true;
+      lessonId.value = lesson.id;
+      lessonAudios.value = lesson.audios;
+      courseNameForm.value.setFieldValue("name", lesson.courseName);
+      courseName = lesson.courseName;
+      mixedGroupedSelected.value = lesson.level;
+      if (lessonAudios.value.length !== 0) {
         // eslint-disable-next-line prefer-destructuring
-        this.fileNameAndSize = this.lessonAudios[0].split("/").filter(Boolean).pop();
+        fileNameAndSize.value = lessonAudios.value[0].split("/").filter(Boolean).pop();
       }
-    },
+    };
 
-    async chooseFile() {
-      this.audio = [];
-      this.errorAlert = "";
-      const input = this.$refs?.fileInput;
+    const clearAllForms = (resetForm) => {
+      noType.value = false;
+      editorData.value = "";
+      isEdited.value = false;
+      selectedCourse.value = null;
+      mixedGroupedSelected.value = null;
+      resetForm();
+      setTimeout(() => {
+        iframelyOembedConvert();
+      }, 1100);
+    };
+
+    const handleCKeditor = async (values, { resetForm }) => {
+      noType.value = true;
+      if (isEdited.value && editorData.value !== "") {
+        const editedData = getTitleAndBody(editorData.value);
+        const courseData = {
+          courseName: values.name,
+        };
+        const lesson = {
+          title: editedData.title,
+          body: editedData.body,
+          author: state.currentUser.id,
+          level: mixedGroupedSelected.value,
+          date: new Date(),
+          audios: audio.value.data === undefined ? undefined : [...lessonAudios.value, audio.value.data[0]],
+          courseName: courseData.courseName,
+        };
+        const editedLessonId = lessonId.value;
+        await dispatch("updateLessonById", { lessonId: editedLessonId, lesson });
+        await dispatch("getAllCourseNames");
+        clearAllForms(resetForm);
+      } else if (editorData.value !== "" && mixedGroupedSelected.value !== undefined) {
+        errorAlert.value = "";
+        const editedData = getTitleAndBody(editorData.value);
+        const courseData = { courseName: values.name };
+        const lesson = {
+          title: editedData.title,
+          body: editedData.body,
+          author: state.currentUser.id,
+          level: mixedGroupedSelected.value,
+          date: new Date(),
+          audios: audio.value.data === undefined ? undefined : [...lessonAudios.value, audio.value.data[0]],
+          courseName: courseData.courseName,
+        };
+        await dispatch("createLesson", lesson);
+        await dispatch("getAllCourseNames");
+        clearAllForms(resetForm);
+      }
+      if (mixedGroupedSelected.value === undefined) {
+        noType.value = true;
+      }
+      audio.value = [];
+      fileNameAndSize.value = "";
+      errorAlert.value = "";
+    };
+
+    const chooseFile = async () => {
+      audio.value = [];
+      errorAlert.value = "";
+      const input = fileInput.value;
       const file = input?.files;
-
       const extensionLists = {};
       extensionLists.audio = ["mp3", "ogg", "wav"];
       const isValidFileType = (fName, fType) =>
         extensionLists[fType].indexOf(fName.split(".").pop().toLowerCase()) > -1;
 
       if (!isValidFileType(file[0].name, "audio")) {
-        this.errorAlert = "Выберите файл формата mp3, ogg, wav";
+        errorAlert.value = "Выберите файл формата mp3, ogg, wav";
       } else if (file && file[0]) {
-        this.errorAlert = "";
-        this.audio = await this.uploadAudio(file);
+        errorAlert.value = "";
+        audio.value = await dispatch("uploadAudio", file);
       }
-    },
+    };
 
-    updateModelValue() {
-      this.$refs.courseNameForm.setFieldValue("name", this.selectedCourse);
-    },
-  },
-  computed: {
-    ...mapState(["isLoading", "courseNames"]),
-    selectCourseNamesOptions() {
-      const courses = this.courseNames.courseNames
-        .filter((course) => course.courseName)
-        .map((course) => course.courseName);
-      const uniqueCourses = [...new Set(courses)];
-      return uniqueCourses;
-    },
-  },
-
-  mounted() {
-    setTimeout(() => {
-      this.iframelyOembedConvert();
-    }, 1000);
-
-    this.$refs.fileInput.addEventListener("change", (e) => {
-      const [file] = e.target.files;
-      const { name: fileName, size } = file;
-      const fileSize = (size / 1000).toFixed(2);
-      if (fileSize >= 32000) {
-        this.errorAlert = "Максимальный размер файла 32 мб!";
-      }
-      this.fileNameAndSize = `${fileName} - ${fileSize}KB`;
+    const schema = Yup.object().shape({
+      name: Yup.string().min(6).max(80),
     });
+
+    return {
+      data,
+      audio,
+      noType,
+      schema,
+      onReady,
+      isEdited,
+      isLoading,
+      fileInput,
+      errorAlert,
+      editorData,
+      formValues,
+      courseName,
+      chooseFile,
+      courseNames,
+      handleUpdate,
+      selectedCourse,
+      handleCKeditor,
+      courseNameForm,
+      onInvalidSubmit,
+      fileNameAndSize,
+      updateModelValue,
+      editor: CkEditor,
+      mixedGroupedOptions,
+      mixedGroupedSelected,
+      iframelyOembedConvert,
+      selectCourseNamesOptions,
+      currentUser: state.currentUser,
+      menuItems: sidebarTeacherMenuItems(),
+      profileName: state.currentUser.firstName,
+    };
   },
 });
 </script>
