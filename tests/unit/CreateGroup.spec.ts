@@ -1,5 +1,5 @@
 import CreateGroup from "@/views/TeacherBoard/CreateGroup.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
+import { enableAutoUnmount, mount, flushPromises } from "@vue/test-utils";
 import { createStore } from "vuex";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { cleanup } from "@testing-library/vue";
@@ -8,14 +8,14 @@ import { Form } from "vee-validate";
 import TextInput from "@/components/TextInput.vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import state from "../mockedState";
+import "@testing-library/jest-dom";
 
 const store = createStore({
   state() {
     return state;
   },
-  actions: { getWebContent: jest.fn() },
+  actions: { createGroup: jest.fn() },
 });
-store.dispatch = jest.fn();
 
 const wrapperOptions = {
   global: {
@@ -64,6 +64,31 @@ describe("Given a CreateGroup component", () => {
       const form = wrapper.findComponent(Form);
 
       expect(form.exists()).toBe(true);
+    });
+
+    describe("When a user type a group name in the input field", () => {
+      test("Then input should have value equal to the group name", async () => {
+        const wrapper = mount(CreateGroup, wrapperOptions);
+        const textInput = wrapper.find("input");
+
+        await textInput.setValue("someGroupName");
+
+        expect(textInput.element).toHaveValue("someGroupName");
+      });
+    });
+
+    describe("When a user type a group name in the input field and click submit", () => {
+      test("Then Form should have truthy submit event", async () => {
+        const wrapper = mount(CreateGroup, wrapperOptions);
+        const textInput = wrapper.find("input");
+        const form = wrapper.findComponent(Form);
+
+        await textInput.setValue("groupName");
+        await form.trigger("submit");
+        await flushPromises();
+
+        expect(form.emitted().submit).toBeTruthy();
+      });
     });
   });
 });
