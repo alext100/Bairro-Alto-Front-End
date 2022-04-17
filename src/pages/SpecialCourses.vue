@@ -4,7 +4,7 @@
     <div class="special-courses ck-content">
       <h1 class="special-courses__title m-3">Спецкурсы</h1>
       <div class="container cards-container">
-        <n-card hoverable v-for="course in specialCourses || []" :key="course" footer-style="font-size: 18px">
+        <n-card hoverable v-for="course in specialCourses || []" :key="course.id" footer-style="font-size: 18px">
           <template #cover>
             <router-link :to="{ name: 'SpecialCourse', params: { id: course.id } }">
               <img v-if="course.image && course.image !== ''" :src="course.image" alt="Course cover" />
@@ -27,29 +27,24 @@
   <Footer />
 </template>
 
-<script>
-import { computed, defineComponent, onBeforeMount, onMounted } from "vue";
+<script setup lang="ts">
 import { useStore } from "vuex";
 import { NCard } from "naive-ui";
+import { Post } from "@/types/interfaces";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
+import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
 
-export default defineComponent({
-  name: "SpecialCourses",
-  components: { Banner, NCard, Footer },
+const { state, dispatch } = useStore();
 
-  setup() {
-    const { state, dispatch } = useStore();
-    onBeforeMount(() => dispatch("getWebContent"));
-    onMounted(() => {
-      document.body.style.backgroundColor = "white";
-    });
-
-    const specialCourses = computed(() => state.webContent?.posts?.filter((post) => post?.category === "Спецкурсы"));
-
-    return { specialCourses };
-  },
+onBeforeMount(() => dispatch("getWebContent"));
+onMounted(() => {
+  document.body.style.backgroundColor = "white";
 });
+
+const specialCourses: ComputedRef<Post[]> = computed(() =>
+  state.webContent?.posts?.filter((post: Post) => post?.category === "Спецкурсы")
+);
 </script>
 
 <style scoped>
