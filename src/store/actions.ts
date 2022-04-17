@@ -377,13 +377,6 @@ const actions = {
     const { data } = await axios.get(`${process.env.VUE_APP_URL}/web-content/get-web-content/`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-    sessionStorage.setItem(
-      "webContent",
-      JSON.stringify({
-        categories: data[0].categories,
-        posts: data[0].posts,
-      })
-    );
     commit("setWebContent", data[0]);
     commit("stopLoading");
   },
