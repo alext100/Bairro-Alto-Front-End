@@ -4,8 +4,8 @@
       <n-h1 class="special-courses-title m-3">Спецкурсы</n-h1>
       <div class="container cards-container">
         <n-card :bordered="false" hoverable header-style="font-size: 30px" footer-style="font-size: 18px">
-          <template #header>{{ postToShow[0].title }}</template>
-          <div v-html="postToShow[0].body"></div>
+          <template #header>{{ postToShow[0]?.title }}</template>
+          <div v-html="postToShow[0]?.body"></div>
           <template #footer>
             <router-link class="nav-link" to="/special-courses">Вернуться к спецкурсам</router-link>
           </template>
@@ -16,31 +16,25 @@
   <Footer />
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onBeforeMount, onMounted } from "vue";
+<script setup lang="ts">
 import { useStore } from "vuex";
-import { Post } from "@/types/interfaces";
 import { NCard, NH1 } from "naive-ui";
 import { useRoute } from "vue-router";
+import { Post } from "@/types/interfaces";
 import Footer from "@/components/Footer.vue";
+import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
 
-export default defineComponent({
-  name: "SpecialCourse",
-  components: { NCard, Footer, NH1 },
+const route = useRoute();
+const { state, dispatch } = useStore();
 
-  setup() {
-    const route = useRoute();
-    const { state, dispatch } = useStore();
-    onBeforeMount(() => dispatch("getWebContent"));
-    onMounted(() => {
-      document.body.style.backgroundColor = "white";
-    });
-
-    const postToShow = computed(() => state.webContent?.posts?.filter((post: Post) => post?.id === route.params.id));
-
-    return { postToShow };
-  },
+onBeforeMount(() => dispatch("getWebContent"));
+onMounted(() => {
+  document.body.style.backgroundColor = "white";
 });
+
+const postToShow: ComputedRef<Post[]> = computed(() =>
+  state.webContent?.posts?.filter((post: Post) => post?.id === route.params.id)
+);
 </script>
 
 <style scoped>
