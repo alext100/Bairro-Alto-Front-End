@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Post } from "@/types/interfaces";
 import { NCard, NH1 } from "naive-ui";
@@ -31,9 +31,8 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const { state, dispatch } = useStore();
-
+    onBeforeMount(() => dispatch("getWebContent"));
     onMounted(() => {
-      dispatch("getWebContent");
       document.body.style.backgroundColor = "white";
     });
 

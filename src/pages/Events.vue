@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Post } from "@/types/interfaces";
 import FullCard from "@/components/FullCard.vue";
@@ -34,9 +34,8 @@ export default defineComponent({
 
   setup() {
     const { state, dispatch } = useStore();
-
+    onBeforeMount(() => dispatch("getWebContent"));
     onMounted(() => {
-      dispatch("getWebContent");
       document.body.style.backgroundColor = "white";
     });
 

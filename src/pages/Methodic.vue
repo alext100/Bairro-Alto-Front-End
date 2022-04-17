@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
 import getTitleAndBody from "@/utils/getTitleAndBody";
 import { Post } from "@/types/interfaces";
@@ -18,9 +18,8 @@ export default defineComponent({
 
   setup() {
     const { state, dispatch } = useStore();
-
+    onBeforeMount(() => dispatch("getWebContent"));
     onMounted(() => {
-      dispatch("getWebContent");
       document.body.style.backgroundColor = "white";
     });
 

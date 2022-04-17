@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { Post } from "@/types/interfaces";
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
 import FullCard from "@/components/FullCard.vue";
 import Footer from "@/components/Footer.vue";
@@ -32,8 +32,8 @@ export default defineComponent({
   name: "News",
   components: { FullCard, Footer },
   setup() {
-    const { state } = useStore();
-
+    const { state, dispatch } = useStore();
+    onBeforeMount(() => dispatch("getWebContent"));
     onMounted(() => {
       document.body.style.backgroundColor = "white";
     });

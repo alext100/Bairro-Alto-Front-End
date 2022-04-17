@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
 import getTitleAndBody from "@/utils/getTitleAndBody";
 import Banner from "@/components/Banner.vue";
@@ -35,9 +35,9 @@ export default defineComponent({
   components: { Banner, Footer, Teachers, Features, News },
   setup() {
     const { state, dispatch } = useStore();
+    onBeforeMount(() => dispatch("getWebContent"));
     onMounted(() => {
       document.body.style.backgroundColor = "white";
-      dispatch("getWebContent");
     });
 
     const allTeachers = computed(() => state.webContent?.posts?.filter((post) => post.category === "Преподаватели"));
