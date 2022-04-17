@@ -33,7 +33,7 @@
         step="100"
         label="Сумма"
         placeholder="Сумма к оплате"
-        success-message="Готово!"
+        success-message="Готово"
       />
       <TextInput
         :value="courseName"
@@ -41,7 +41,7 @@
         type="text"
         label="Название курса"
         placeholder="Название курса"
-        success-message="Готово!"
+        success-message="Готово"
       />
       <b-form-group
         label-class="fw-bold pt-0 col-sm-12"
@@ -74,118 +74,97 @@
   <Footer />
 </template>
 
-<script lang="ts">
-import { Form } from "vee-validate";
+<script setup lang="ts">
 import * as Yup from "yup";
-import TextInput from "@/components/TextInput.vue";
-import { useStore } from "vuex";
-import { UserPaymentData } from "@/types/interfaces";
-import { computed, defineComponent, ref } from "vue";
-import Footer from "@/components/Footer.vue";
 import { NH2 } from "naive-ui";
+import { useStore } from "vuex";
+import { computed, ComputedRef, ref } from "vue";
+import { Form } from "vee-validate";
+import Footer from "@/components/Footer.vue";
+import TextInput from "@/components/TextInput.vue";
+import { UserPaymentData } from "@/types/interfaces";
 
-export default defineComponent({
-  name: "Payment",
-  components: { TextInput, Form, Footer, NH2 },
+const { dispatch } = useStore();
 
-  setup() {
-    const { dispatch } = useStore();
-    const mixedGroupedSelected = ref([]);
-    const mixedGroupedOptions = [
-      {
-        name: `Нажимая на кнопку вы подтверждаете согласие с
+const mixedGroupedSelected = ref([]);
+const mixedGroupedOptions = [
+  {
+    name: `Нажимая на кнопку вы подтверждаете согласие с
         <a onMouseOver=this.style.color='#8b5c29' onMouseOut=this.style.color='#d59758' style='text-decoration: none; color: #d59758;'
         href='/policy.pdf'>политикой обработки персональных данных</a>`,
-        value: "PersonalData",
-      },
-      {
-        name: `Нажимая на кнопку вы подтверждаете согласие с
+    value: "PersonalData",
+  },
+  {
+    name: `Нажимая на кнопку вы подтверждаете согласие с
         <a onMouseOver=this.style.color='#8b5c29' onMouseOut=this.style.color='#d59758' style='text-decoration: none; color: #d59758;'
         href='/offer.pdf'>договором оферты</a>`,
-        value: "Oferta",
-      },
-    ];
-    const isChecked = ref(true);
-    const email = "";
-    const courseName = "";
-    const firstName = "";
-    const lastName = "";
-    const price = "";
-
-    const contextualState = computed(() => {
-      if (mixedGroupedSelected.value.length === 2) {
-        return true;
-      }
-      if (mixedGroupedSelected.value.length === 1) {
-        return false;
-      }
-      return null;
-    });
-
-    const onInvalidSubmit = () => {
-      const submitBtn = document.querySelector(".submit-btn") as HTMLElement;
-      submitBtn.classList.add("invalid");
-      setTimeout(() => {
-        submitBtn.classList.remove("invalid");
-      }, 1000);
-    };
-
-    const schema = Yup.object().shape({
-      firstName: Yup.string().required(),
-      lastName: Yup.string().required(),
-      email: Yup.string().email().required(),
-      price: Yup.number().min(100).max(50000).required(),
-      courseName: Yup.string().required(),
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handlePayment = async (values: Record<string, any>) => {
-      if (mixedGroupedSelected.value.length !== 2) {
-        isChecked.value = false;
-      } else isChecked.value = true;
-
-      if (
-        values.email !== "" &&
-        values.courseName !== "" &&
-        values.firstName !== "" &&
-        values.lastName !== "" &&
-        values.price !== ""
-      ) {
-        const userData: UserPaymentData = {
-          courseName: values.courseName,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          price: values.price,
-          date: Date.now(),
-        };
-
-        try {
-          if (isChecked.value) {
-            await dispatch("payment", userData);
-          }
-        } catch (error) {
-          isChecked.value = false;
-        }
-      }
-    };
-
-    return {
-      price,
-      email,
-      schema,
-      lastName,
-      firstName,
-      isChecked,
-      courseName,
-      handlePayment,
-      contextualState,
-      onInvalidSubmit,
-      mixedGroupedOptions,
-      mixedGroupedSelected,
-    };
+    value: "Oferta",
   },
+];
+const isChecked = ref(true);
+const email = "";
+const courseName = "";
+const firstName = "";
+const lastName = "";
+const price = "";
+
+const contextualState: ComputedRef<boolean | null> = computed(() => {
+  if (mixedGroupedSelected.value.length === 2) {
+    return true;
+  }
+  if (mixedGroupedSelected.value.length === 1) {
+    return false;
+  }
+  return null;
 });
+
+const onInvalidSubmit = (): void => {
+  const submitBtn: HTMLElement = document.querySelector(".submit-btn") as HTMLElement;
+  submitBtn.classList.add("invalid");
+  setTimeout(() => {
+    submitBtn.classList.remove("invalid");
+  }, 1000);
+};
+
+const schema = Yup.object().shape({
+  firstName: Yup.string().required(),
+  lastName: Yup.string().required(),
+  email: Yup.string().email().required(),
+  price: Yup.number().min(100).max(50000).required(),
+  courseName: Yup.string().required(),
+});
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handlePayment = async (values: Record<string, any>): Promise<void> => {
+  if (mixedGroupedSelected.value.length !== 2) {
+    isChecked.value = false;
+  } else isChecked.value = true;
+
+  if (
+    values.email !== "" &&
+    values.courseName !== "" &&
+    values.firstName !== "" &&
+    values.lastName !== "" &&
+    values.price !== ""
+  ) {
+    const userData: UserPaymentData = {
+      courseName: values.courseName,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      price: values.price,
+      date: Date.now(),
+    };
+
+    try {
+      if (isChecked.value) {
+        await dispatch("payment", userData);
+      }
+    } catch (error) {
+      isChecked.value = false;
+    }
+  }
+};
 </script>
 
 <style scoped>
