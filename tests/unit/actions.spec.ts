@@ -23,7 +23,7 @@ const dispatch = jest.fn() as jest.MockedFunction<Dispatch>;
 afterEach(() => cleanup());
 enableAutoUnmount(afterEach);
 
-describe("Given a actions from state", () => {
+describe("Given an actions from state", () => {
   describe("When the action login is invoked with userData", () => {
     const userData: UserLoginData = {
       password: "12345",
@@ -693,20 +693,6 @@ describe("Given a actions from state", () => {
       await actions.getWebContent(configActionContext(commit));
 
       expect(commit).toHaveBeenCalledWith("stopLoading");
-    });
-    test("Then it should invoke sessionStorage.setItem with webContent", async () => {
-      jest.spyOn(Object.getPrototypeOf(window.sessionStorage), "setItem");
-      mockedAxios.get.mockResolvedValue(response);
-
-      await actions.getWebContent(configActionContext(commit));
-
-      expect(sessionStorage.setItem).toHaveBeenCalledWith(
-        "webContent",
-        JSON.stringify({
-          categories: response.data[0].categories,
-          posts: response.data[0].posts,
-        })
-      );
     });
   });
 
