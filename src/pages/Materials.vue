@@ -4,7 +4,7 @@
     <div class="ck-content">
       <h1 class="materials-title m-3">Материалы</h1>
       <div class="container cards-container">
-        <n-card hoverable v-for="material in materials || []" :key="material" footer-style="font-size:18px;">
+        <n-card hoverable v-for="material in materials || []" :key="material.id" footer-style="font-size:18px;">
           <template #cover>
             <router-link :to="{ name: 'MaterialsPost', params: { id: material.id } }">
               <img v-if="material.image && material.image !== ''" :src="material.image" alt="Post cover" />
@@ -27,29 +27,24 @@
   <Footer />
 </template>
 
-<script>
-import { computed, defineComponent, onBeforeMount, onMounted } from "vue";
+<script setup lang="ts">
+import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
 import { NCard } from "naive-ui";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
+import { Post } from "@/types/interfaces";
 
-export default defineComponent({
-  name: "Materials",
-  components: { NCard, Banner, Footer },
+const { state, dispatch } = useStore();
 
-  setup() {
-    const { state, dispatch } = useStore();
-    onBeforeMount(() => dispatch("getWebContent"));
-    onMounted(() => {
-      document.body.style.backgroundColor = "white";
-    });
-
-    const materials = computed(() => state.webContent?.posts?.filter((post) => post?.category === "Материалы"));
-
-    return { materials };
-  },
+onBeforeMount(() => dispatch("getWebContent"));
+onMounted(() => {
+  document.body.style.backgroundColor = "white";
 });
+
+const materials: ComputedRef<Post[]> = computed(() =>
+  state.webContent?.posts?.filter((post: Post) => post?.category === "Материалы")
+);
 </script>
 
 <style scoped>
