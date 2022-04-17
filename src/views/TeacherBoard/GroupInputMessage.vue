@@ -169,7 +169,7 @@ export default defineComponent({
 <style scoped>
 button.input-form__submit-button__spinner {
   width: 200px;
-  background-color: #fd8904;
+  background-color: var(--hover-color);
   color: white;
   border-radius: 24px;
   border-color: black;
@@ -178,16 +178,8 @@ button.input-form__submit-button__spinner {
 
 button.input-form--submit-button {
   width: 150px;
-  background-color: #fd8904;
+  background-color: var(--hover-color);
   color: white;
-}
-button.input-form__submit-button__spinner {
-  width: 200px;
-  background-color: #fd8904;
-  color: white;
-  border-radius: 24px;
-  border-color: black;
-  font-weight: bold;
 }
 .inputfile {
   width: 0.1px;

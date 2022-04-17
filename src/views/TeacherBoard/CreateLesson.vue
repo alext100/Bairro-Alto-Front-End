@@ -183,8 +183,7 @@ export default defineComponent({
 
     const selectCourseNamesOptions = computed(() => {
       const courses = courseNames.value.filter((course) => course.courseName).map((course) => course.courseName);
-      const uniqueCourses = [...new Set(courses)];
-      return uniqueCourses;
+      return [...new Set(courses)];
     });
 
     const onInvalidSubmit = () => {
