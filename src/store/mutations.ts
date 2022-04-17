@@ -133,7 +133,14 @@ const mutations = {
   },
 
   setWebContent(state: State, payload: WebContent) {
-    state.webContent = payload;
+    sessionStorage.setItem(
+      "webContent",
+      JSON.stringify({
+        categories: payload.categories,
+        posts: payload.posts,
+      })
+    );
+    state.webContent = JSON.parse(sessionStorage.getItem("webContent") || "");
   },
 
   deleteOnePostFromPosts(state: State, payload: string) {

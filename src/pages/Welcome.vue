@@ -15,22 +15,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted } from "vue";
-import { useRoute } from "vue-router";
+<script setup lang="ts">
+import { onMounted } from "vue";
 import { useStore } from "vuex";
 import { NCard } from "naive-ui";
+import { useRoute } from "vue-router";
 
-export default defineComponent({
-  name: "WelcomePage",
-  components: { NCard },
-  setup() {
-    const route = useRoute();
-    const { dispatch } = useStore();
-    onMounted(() => {
-      dispatch("verifyUser", route.params.confirmationCode);
-    });
-  },
+const route = useRoute();
+const { dispatch } = useStore();
+
+onMounted(() => {
+  dispatch("verifyUser", route.params.confirmationCode);
 });
 </script>
 

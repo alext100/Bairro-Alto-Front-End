@@ -10,37 +10,31 @@
     >
       Активируйте аккаунт по ссылке, которую мы отправили на ваш email
       <template #footer>
-        <button class="submit-btn d-flex" type="button" @click="handleSubmitSendEmail">Выслать ссылку ещё раз</button>
+        <button class="submit-confirmation-email d-flex" type="button" @click="handleSubmitSendEmail">
+          Выслать ссылку ещё раз
+        </button>
       </template>
     </n-card>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { useStore } from "vuex";
 import { NCard } from "naive-ui";
 import { useRoute } from "vue-router";
-import { useStore } from "vuex";
 
-export default defineComponent({
-  name: "CheckConfirmationEmail",
-  components: { NCard },
-  setup() {
-    const route = useRoute();
-    const { dispatch } = useStore();
-    const handleSubmitSendEmail = () => {
-      dispatch("sendConfirmEmailOneMoreTime", route.params.email);
-    };
-    return { handleSubmitSendEmail };
-  },
-});
+const route = useRoute();
+const { dispatch } = useStore();
+const handleSubmitSendEmail = () => {
+  dispatch("sendConfirmEmailOneMoreTime", route.params.email);
+};
 </script>
 
 <style scoped>
 .n-card {
   max-width: fit-content;
 }
-.submit-btn {
+.submit-confirmation-email {
   display: inline-block;
   outline: none;
   font-size: 18px;
@@ -61,7 +55,7 @@ export default defineComponent({
   text-transform: uppercase;
   letter-spacing: 0.2em;
 }
-.submit-btn:hover {
+.submit-confirmation-email:hover {
   color: var(--hover-color);
   border: 1px solid var(--hover-color);
   transform: scale(1.1);

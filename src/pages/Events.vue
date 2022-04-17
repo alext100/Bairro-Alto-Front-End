@@ -21,30 +21,21 @@
   <Footer />
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
+<script setup lang="ts">
 import { useStore } from "vuex";
 import { Post } from "@/types/interfaces";
-import FullCard from "@/components/FullCard.vue";
 import Footer from "@/components/Footer.vue";
+import FullCard from "@/components/FullCard.vue";
+import { computed, onBeforeMount, onMounted } from "vue";
 
-export default defineComponent({
-  name: "Events",
-  components: { FullCard, Footer },
+const { state, dispatch } = useStore();
 
-  setup() {
-    const { state, dispatch } = useStore();
-
-    onMounted(() => {
-      dispatch("getWebContent");
-      document.body.style.backgroundColor = "white";
-    });
-
-    const events = computed(() => state.webContent?.posts?.filter((post: Post) => post?.category === "Мероприятия"));
-
-    return { events };
-  },
+onBeforeMount(() => dispatch("getWebContent"));
+onMounted(() => {
+  document.body.style.backgroundColor = "white";
 });
+
+const events = computed(() => state.webContent?.posts?.filter((post: Post) => post?.category === "Мероприятия"));
 </script>
 
 <style scoped>
