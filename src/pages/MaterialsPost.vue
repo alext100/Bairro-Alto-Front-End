@@ -4,8 +4,8 @@
       <h1 class="materials-title m-3">Материалы</h1>
       <div class="container cards-container">
         <n-card :bordered="false" hoverable footer-style="font-size:18px">
-          <template #header>{{ postToShow[0].title }}</template>
-          <div v-html="postToShow[0].body"></div>
+          <template #header>{{ postToShow[0]?.title }}</template>
+          <div v-html="postToShow[0]?.body"></div>
           <template #footer>
             <router-link class="nav-link" to="/materials">Вернуться к материалам</router-link>
           </template>
@@ -16,31 +16,25 @@
   <Footer />
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onBeforeMount, onMounted } from "vue";
+<script setup lang="ts">
+import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Post } from "@/types/interfaces";
 import { NCard } from "naive-ui";
 import { useRoute } from "vue-router";
 import Footer from "@/components/Footer.vue";
 
-export default defineComponent({
-  name: "MaterialsPost",
-  components: { NCard, Footer },
+const route = useRoute();
+const { state, dispatch } = useStore();
 
-  setup() {
-    const route = useRoute();
-    const { state, dispatch } = useStore();
-    onBeforeMount(() => dispatch("getWebContent"));
-    onMounted(() => {
-      document.body.style.backgroundColor = "white";
-    });
-
-    const postToShow = computed(() => state.webContent?.posts?.filter((post: Post) => post?.id === route.params.id));
-
-    return { postToShow };
-  },
+onBeforeMount(() => dispatch("getWebContent"));
+onMounted(() => {
+  document.body.style.backgroundColor = "white";
 });
+
+const postToShow: ComputedRef<Post[]> = computed(() =>
+  state.webContent?.posts?.filter((post: Post) => post?.id === route.params.id)
+);
 </script>
 
 <style scoped>
