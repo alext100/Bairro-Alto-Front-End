@@ -17,56 +17,48 @@
   <Footer />
 </template>
 
-<script>
-import { computed, defineComponent, onBeforeMount, onMounted } from "vue";
+<script setup lang="ts">
 import { useStore } from "vuex";
-import getTitleAndBody from "@/utils/getTitleAndBody";
+import { Post } from "@/types/interfaces";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
-import Teachers from "./MainPageComponents/Teachers.vue";
-import Features from "./MainPageComponents/Features.vue";
-import News from "./MainPageComponents/News.vue";
+import getTitleAndBody from "@/utils/getTitleAndBody";
+import News from "@/pages/MainPageComponents/News.vue";
+import Teachers from "@/pages/MainPageComponents/Teachers.vue";
+import Features from "@/pages/MainPageComponents/Features.vue";
+import { computed, ComputedRef, onMounted } from "vue";
 
-const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+const { state, dispatch } = useStore();
 
-export default defineComponent({
-  name: "MainPage",
-
-  components: { Banner, Footer, Teachers, Features, News },
-  setup() {
-    const { state, dispatch } = useStore();
-    onBeforeMount(() => dispatch("getWebContent"));
-    onMounted(() => {
-      document.body.style.backgroundColor = "white";
-    });
-
-    const allTeachers = computed(() => state.webContent?.posts?.filter((post) => post.category === "Преподаватели"));
-    const teacher = computed(() => allTeachers.value[getRandomInteger(0, allTeachers.value.length - 1)]);
-
-    const methodic = computed(() =>
-      state.webContent?.posts?.filter((post) => post?.title.match("Лексический подход - главная страница"))
-    );
-    const methodicBody = computed(() => getTitleAndBody(methodic?.value[0].body));
-
-    const atmosphere = computed(() =>
-      state.webContent?.posts?.filter((post) => post?.title.match("Атмосфера - главная страница"))
-    );
-    const atmosphereBody = computed(() => getTitleAndBody(atmosphere?.value[0].body));
-
-    const news = computed(() => state.webContent?.posts?.filter((post) => post?.category === "Новости"));
-    const newsBody = computed(() => news.value.map((element) => getTitleAndBody(element?.body)));
-
-    return {
-      teacher,
-      methodic,
-      newsBody,
-      atmosphere,
-      allTeachers,
-      methodicBody,
-      atmosphereBody,
-    };
-  },
+onMounted(async () => {
+  await dispatch("getWebContent");
+  document.body.style.backgroundColor = "white";
 });
+
+const allTeachers: ComputedRef<Post[]> = computed(() =>
+  state.webContent?.posts?.filter((post: Post) => post.category === "Преподаватели")
+);
+
+const methodic: ComputedRef<Post[]> = computed(() =>
+  state.webContent?.posts?.filter((post: Post) => post?.title?.match("Лексический подход - главная страница"))
+);
+const methodicBody: ComputedRef<{ title: string; body: string }> = computed(() =>
+  methodic.value.length > 0 ? getTitleAndBody(methodic.value[0].body) : { title: "", body: "" }
+);
+
+const atmosphere: ComputedRef<Post[]> = computed(() =>
+  state.webContent?.posts?.filter((post: Post) => post?.title?.match("Атмосфера - главная страница"))
+);
+const atmosphereBody: ComputedRef<{ title: string; body: string }> = computed(() =>
+  atmosphere.value.length > 0 ? getTitleAndBody(atmosphere.value[0].body) : { title: "", body: "" }
+);
+
+const news: ComputedRef<Post[]> = computed(() =>
+  state.webContent?.posts?.filter((post: Post) => post?.category === "Новости")
+);
+const newsBody: ComputedRef<{ title: string; body: string }[]> = computed(() =>
+  news.value.map((element: Post) => getTitleAndBody(element?.body))
+);
 </script>
 
 <style scoped>
