@@ -17,17 +17,14 @@
 </template>
 
 <script setup lang="ts">
-import { gsap } from "gsap";
 import { useStore } from "vuex";
-import * as PIXI from "pixi.js";
 import { NCard, NH1 } from "naive-ui";
 import { useRoute } from "vue-router";
-import * as filters from "pixi-filters";
 import { Post } from "@/types/interfaces";
 import Footer from "@/components/Footer.vue";
-import { GlitchFilterOptions } from "pixi-filters";
 import getTitleAndBody from "@/utils/getTitleAndBody";
-import { computed, ComputedRef, onBeforeMount, onMounted, onUnmounted, Ref, ref } from "vue";
+import usePixiGlitchFilter from "@/composables/usePixiGlitchFilter";
+import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 const route = useRoute();
@@ -45,81 +42,7 @@ const postBody: ComputedRef<{ title: string; body: string }> = computed(() =>
   filteredPost.value.length > 0 ? getTitleAndBody(filteredPost?.value[0]?.body) : { title: "", body: "" }
 );
 
-if (!PIXI.utils.isMobile.any) {
-  const parser = new DOMParser();
-  const documentOfParsedPostBody: Document = parser.parseFromString(postBody?.value?.body, "text/html");
-  const cardCoverImage: HTMLElement | null = documentOfParsedPostBody.querySelector("figure.image img");
-  const imageToReplace: ComputedRef<HTMLElement> = computed(
-    () => document.body.querySelector("figure.image img") as HTMLElement
-  );
-  const cardContainer: Ref<HTMLElement | undefined> = ref<HTMLElement>();
-
-  const app: PIXI.Application = new PIXI.Application({
-    resizeTo: cardContainer.value,
-    backgroundAlpha: 0,
-  });
-
-  const container = new PIXI.Container();
-  app.stage.addChild(container);
-
-  const spriteImage = `${cardCoverImage?.getAttribute("src")}`;
-  const pixiSprite = PIXI.Sprite.from(spriteImage);
-  container.addChild(pixiSprite);
-
-  queueMicrotask(() => imageToReplace.value.replaceWith(app.view));
-
-  const updateSize = (): void => {
-    container.x = -100;
-    container.y = 0;
-    if (window.innerWidth < 1000) {
-      container.x = -150;
-    }
-    if (window.innerWidth < 800) {
-      container.x = -200;
-    }
-    if (window.innerWidth < 700) {
-      container.x = -300;
-    }
-  };
-
-  window.addEventListener("resize", updateSize);
-  updateSize();
-
-  const filterOptions: Pick<GlitchFilterOptions, "slices"> = { slices: 200 };
-  const filter = new filters.GlitchFilter(filterOptions as any);
-
-  container.filters = [filter] as any;
-
-  gsap.fromTo(
-    filter,
-    {
-      offset: 0,
-    },
-    {
-      offset: 1000,
-      duration: 2,
-      ease: "power2.inOut",
-      yoyo: true,
-      repeat: 1,
-      repeatDelay: 1,
-    }
-  );
-  gsap.fromTo(
-    filter,
-    {
-      direction: 0,
-    },
-    {
-      direction: 360,
-      duration: 30,
-      ease: "none",
-      repeat: 1,
-    }
-  );
-  onUnmounted(() => {
-    window.removeEventListener("resize", updateSize);
-  });
-}
+usePixiGlitchFilter("figure.image img", postBody?.value?.body, "src");
 </script>
 
 <style scoped>
