@@ -23,6 +23,7 @@ import { Post } from "@/types/interfaces";
 import { NCard } from "naive-ui";
 import { useRoute } from "vue-router";
 import Footer from "@/components/Footer.vue";
+import usePixiGlitchFilter from "@/composables/usePixiGlitchFilter";
 
 const route = useRoute();
 const { state, dispatch } = useStore();
@@ -32,9 +33,11 @@ onMounted(() => {
   document.body.style.backgroundColor = "white";
 });
 
-const postToShow: ComputedRef<Post[]> = computed(() =>
+const postToShow: ComputedRef<{ title: string; body: string }[]> = computed(() =>
   state.webContent?.posts?.filter((post: Post) => post?.id === route.params.id)
 );
+
+usePixiGlitchFilter("figure.image img", postToShow?.value[0]?.body, "srcset");
 </script>
 
 <style scoped>
