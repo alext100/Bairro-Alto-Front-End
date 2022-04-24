@@ -42,7 +42,7 @@ usePixiGlitchFilter("figure.image img", postToShow?.value[0]?.body, "srcset");
 
 <style scoped>
 .n-card {
-  width: 900px;
+  width: 1000px;
   min-width: 400px;
   height: fit-content;
   margin: 10px 3px 10px 3px;
