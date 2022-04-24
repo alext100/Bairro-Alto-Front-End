@@ -51,7 +51,7 @@ usePixiGlitchFilter("figure.image img", postBody?.value?.body, "src");
   font-weight: 900;
 }
 .n-card {
-  width: 900px;
+  width: 1000px;
   min-width: 400px;
   height: fit-content;
   margin: 10px 3px 10px 3px;
