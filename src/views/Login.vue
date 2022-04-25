@@ -7,14 +7,18 @@
       @change="onChange"
       class="shadow-lg login-form"
     >
-      <TextInput
-        :value="email"
-        name="email"
-        type="email"
-        label="E-mail"
-        placeholder="Введите email адрес"
-        success-message="Готово, мы не будем спамить!"
-      />
+      <div class="email">
+        <TextInput
+          :value="email"
+          name="email"
+          type="email"
+          label="E-mail"
+          placeholder="Введите email адрес"
+          success-message="Готово, мы не будем спамить!"
+          class="text-input-email"
+        />
+        <EmailValidationAnimation />
+      </div>
       <TextInput
         :value="password"
         name="password"
@@ -45,20 +49,21 @@
 </template>
 
 <script lang="ts">
-import { Form } from "vee-validate";
 import * as Yup from "yup";
-import TextInput from "@/components/TextInput.vue";
-import { computed, defineComponent, onMounted, ref } from "vue";
 import { useStore } from "vuex";
-import { IUserError, UserLoginData } from "@/types/interfaces";
+import { Form } from "vee-validate";
 import { useRouter } from "vue-router";
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import TextInput from "@/components/TextInput.vue";
+import { IUserError, UserLoginData } from "@/types/interfaces";
+import { computed, defineComponent, onMounted, ref } from "vue";
+import EmailValidationAnimation from "@/components/EmailValidationAnimation.vue";
 
 export default defineComponent({
   name: "Login",
   components: {
     TextInput,
     Form,
+    EmailValidationAnimation,
   },
   setup() {
     const { state, dispatch } = useStore();
@@ -87,7 +92,7 @@ export default defineComponent({
     onMounted(() => redirectToUserPage());
 
     const onInvalidSubmit = () => {
-      const submitBtn: any = document.querySelector(".submit-btn");
+      const submitBtn: HTMLElement = document.querySelector(".submit-btn") as HTMLElement;
       submitBtn.classList.add("invalid");
       setTimeout(() => {
         submitBtn.classList.remove("invalid");
@@ -105,6 +110,7 @@ export default defineComponent({
       password: Yup.string().min(6).max(20).required(),
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleLogin = async (values: Record<string, any>) => {
       if (values.email !== "" && values.password !== "") {
         const userData: UserLoginData = {

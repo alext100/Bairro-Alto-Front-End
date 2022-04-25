@@ -22,18 +22,21 @@
         placeholder="Фамилия"
         success-message="Добро пожаловать!"
       />
-      <TextInput
-        :value="email"
-        name="email"
-        type="email"
-        label="E-mail"
-        placeholder="Ваш email адрес"
-        success-message="Готово, мы не будем спамить!"
-      />
-      <span v-if="isWrongEmailOnRegister" class="email__wrong"
-        >Кажется этот email уже зарегистрирован! Попробуйте ещё раз!</span
-      >
-
+      <div class="email">
+        <TextInput
+          :value="email"
+          name="email"
+          type="email"
+          label="E-mail"
+          placeholder="Ваш email адрес"
+          success-message="Готово, мы не будем спамить!"
+          class="text-input-email"
+        />
+        <span v-if="isWrongEmailOnRegister" class="email__wrong"
+          >Кажется этот email уже зарегистрирован! Попробуйте ещё раз!</span
+        >
+        <EmailValidationAnimation />
+      </div>
       <TextInput
         :value="password"
         name="password"
@@ -64,20 +67,21 @@
 </template>
 
 <script lang="ts">
-import { Form } from "vee-validate";
 import * as Yup from "yup";
+import { useStore } from "vuex";
+import { Form } from "vee-validate";
+import { useRouter } from "vue-router";
 import TextInput from "@/components/TextInput.vue";
 import { computed, defineComponent, ref } from "vue";
-import { useStore } from "vuex";
 import { UserRegisterData } from "@/types/interfaces";
-import { useRouter } from "vue-router";
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import EmailValidationAnimation from "@/components/EmailValidationAnimation.vue";
 
 export default defineComponent({
   name: "Register",
   components: {
-    TextInput,
     Form,
+    TextInput,
+    EmailValidationAnimation,
   },
   setup() {
     const { state, dispatch } = useStore();
@@ -98,11 +102,13 @@ export default defineComponent({
     const confirmPassword = "";
 
     const onInvalidSubmit = () => {
-      const submitBtn: any = document.querySelector(".submit-btn");
-      submitBtn.classList.add("invalid");
-      setTimeout(() => {
-        submitBtn.classList.remove("invalid");
-      }, 1000);
+      const submitBtn: HTMLElement | null = document.querySelector(".submit-btn");
+      if (submitBtn) {
+        submitBtn.classList.add("invalid");
+        setTimeout(() => {
+          submitBtn.classList.remove("invalid");
+        }, 1000);
+      }
     };
 
     // Using yup to generate a validation schema
@@ -117,6 +123,7 @@ export default defineComponent({
         .oneOf([Yup.ref("password")], "Пароль не совпадает"),
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleCreate = async (values: Record<string, any>) => {
       if (values.email !== "" && values.password !== "") {
         const userData: UserRegisterData = {
