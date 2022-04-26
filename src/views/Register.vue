@@ -45,8 +45,7 @@
         placeholder="Ваш пароль"
         success-message="Сложный и безопасный!"
       />
-      <em class="toggle-password fas" :class="[passwordFieldIcon]" @click="hidePassword = !hidePassword"></em>
-
+      <ShowHidePassword @click="hidePassword = !hidePassword" />
       <TextInput
         :value="confirmPassword"
         name="confirmPassword"
@@ -55,8 +54,7 @@
         placeholder="Введите пароль ещё раз"
         success-message="Запомните его!"
       />
-      <em class="toggle-password fas" :class="[passwordFieldIcon]" @click="hidePassword = !hidePassword"></em>
-
+      <ShowHidePassword @click="hidePassword = !hidePassword" />
       <button v-if="!isLoading" class="submit-btn d-flex" type="submit">Подтвердить</button>
       <button v-if="isLoading" class="btn submit-btn" type="submit" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -74,6 +72,7 @@ import { useRouter } from "vue-router";
 import TextInput from "@/components/TextInput.vue";
 import { computed, defineComponent, ref } from "vue";
 import { UserRegisterData } from "@/types/interfaces";
+import ShowHidePassword from "@/components/ShowHidePassword.vue";
 import EmailValidationAnimation from "@/components/EmailValidationAnimation.vue";
 
 export default defineComponent({
@@ -81,6 +80,7 @@ export default defineComponent({
   components: {
     Form,
     TextInput,
+    ShowHidePassword,
     EmailValidationAnimation,
   },
   setup() {
@@ -88,7 +88,6 @@ export default defineComponent({
     const router = useRouter();
 
     const hidePassword = ref(true);
-    const passwordFieldIcon = computed(() => (hidePassword.value ? "fa-eye" : "fa-eye-slash"));
     const passwordFieldType = computed(() => (hidePassword.value ? "password" : "text"));
     const isLoading = computed(() => state.isLoading);
     const isRegistered = computed(() => state.isRegistered);
@@ -163,7 +162,6 @@ export default defineComponent({
       handleCreate,
       confirmPassword,
       onInvalidSubmit,
-      passwordFieldIcon,
       passwordFieldType,
       isWrongEmailOnRegister,
       userData: { password: null, firstName: null, lastName: null, email: null, image: null },
@@ -253,15 +251,5 @@ form {
   font-family: Noto Sans, Arial, sans-serif;
   font-weight: bold;
   margin-bottom: 10px;
-}
-.toggle-password {
-  top: -63px;
-  left: 265px;
-  position: relative;
-  background-color: transparent;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.2s ease-in-out;
-  width: fit-content;
 }
 </style>

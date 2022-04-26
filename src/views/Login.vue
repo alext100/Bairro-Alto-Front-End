@@ -27,8 +27,7 @@
         placeholder="Введите пароль"
         success-message="Сложный и безопасный!"
       />
-      <em class="toggle-password fas" :class="[passwordFieldIcon]" @click="hidePassword = !hidePassword"></em>
-
+      <ShowHidePassword @click="hidePassword = !hidePassword" />
       <span v-if="isNotActive" class="login__wrong login__wrong--is-not-active"
         >Перейдите по ссылке в письме, чтобы активировать аккаунт</span
       >
@@ -40,7 +39,6 @@
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Загружается...
       </button>
-
       <router-link :to="{ name: 'Register' }" class="text-decoration-none">
         <button v-if="!isLoading" class="register-btn d-flex" type="button">Зарегистрироваться</button>
       </router-link>
@@ -56,6 +54,7 @@ import { useRouter } from "vue-router";
 import TextInput from "@/components/TextInput.vue";
 import { IUserError, UserLoginData } from "@/types/interfaces";
 import { computed, defineComponent, onMounted, ref } from "vue";
+import ShowHidePassword from "@/components/ShowHidePassword.vue";
 import EmailValidationAnimation from "@/components/EmailValidationAnimation.vue";
 
 export default defineComponent({
@@ -63,6 +62,7 @@ export default defineComponent({
   components: {
     TextInput,
     Form,
+    ShowHidePassword,
     EmailValidationAnimation,
   },
   setup() {
@@ -72,7 +72,6 @@ export default defineComponent({
     const isRegistered = computed(() => state.isRegistered);
     const currentUser = computed(() => state.currentUser);
     const hidePassword = ref(true);
-    const passwordFieldIcon = computed(() => (hidePassword.value ? "fa-eye" : "fa-eye-slash"));
     const passwordFieldType = computed(() => (hidePassword.value ? "password" : "text"));
     const isWrong = ref(false);
     const isNotActive = ref(false);
@@ -147,7 +146,6 @@ export default defineComponent({
       hidePassword,
       isRegistered,
       onInvalidSubmit,
-      passwordFieldIcon,
       passwordFieldType,
       userData: { email: null, password: null },
       email: state.isRegistered ? state.user.email : "",
@@ -248,16 +246,5 @@ form {
 }
 .submit-btn:disabled {
   font-size: 17px;
-}
-.toggle-password {
-  top: -70px;
-  left: 260px;
-  position: relative;
-  background-color: transparent;
-  cursor: pointer;
-  border: none;
-  padding: 10px;
-  transition: background-color 0.2s ease-in-out;
-  width: fit-content;
 }
 </style>
