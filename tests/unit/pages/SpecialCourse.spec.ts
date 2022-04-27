@@ -1,12 +1,15 @@
-import SpecialCourse from "@/pages/SpecialCourse.vue";
+import "jest-canvas-mock";
+import { createStore } from "vuex";
+import { NCard, NH1 } from "naive-ui";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
-import { mount, enableAutoUnmount } from "@vue/test-utils";
-import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { cleanup } from "@testing-library/vue";
-import { NCard, NH1 } from "naive-ui";
+import SpecialCourse from "@/pages/SpecialCourse.vue";
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
+
+jest.mock("@/composables/usePixiGlitchFilter");
 
 const store = createStore({
   state() {
@@ -42,7 +45,7 @@ describe("Given a SpecialCourse page", () => {
       expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith("getWebContent");
     });
 
-    test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
+    test("Then the backgroundColor should be changed to 'white' on component mounted", () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const wrapper = mount(SpecialCourse, wrapperOptions);
 
@@ -73,18 +76,18 @@ describe("Given a SpecialCourse page", () => {
       expect(nCardComponent.classes()).toStrictEqual(["n-card", "n-card--hoverable"]);
     });
 
-    test("Then it should show Footer component", async () => {
+    test("Then it should show Footer component", () => {
       const wrapper = mount(SpecialCourse, wrapperOptions);
 
-      const footerComponent = await wrapper.findComponent(Footer);
+      const footerComponent = wrapper.findComponent(Footer);
 
       expect(footerComponent.exists()).toBe(true);
     });
 
-    test("Then it should show link to go back to Special Courses page", async () => {
+    test("Then it should show link to go back to Special Courses page", () => {
       const wrapper = mount(SpecialCourse, wrapperOptions);
 
-      const link = await wrapper.findComponent(".nav-link");
+      const link = wrapper.findComponent(".nav-link");
 
       expect(link.html()).toContain("/special-courses");
     });
