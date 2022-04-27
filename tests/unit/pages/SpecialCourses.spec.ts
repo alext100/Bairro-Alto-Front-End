@@ -1,14 +1,14 @@
-import SpecialCourses from "@/pages/SpecialCourses.vue";
+import { NCard } from "naive-ui";
+import { createStore } from "vuex";
+import { TippyPlugin } from "tippy.vue";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
-import { mount, enableAutoUnmount } from "@vue/test-utils";
-import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { MotionPlugin } from "@vueuse/motion";
 import { cleanup } from "@testing-library/vue";
-import { TippyPlugin } from "tippy.vue";
-import { NCard } from "naive-ui";
 import VueMobileDetection from "vue-mobile-detection";
+import SpecialCourses from "@/pages/SpecialCourses.vue";
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
 
 const store = createStore({
@@ -46,7 +46,7 @@ describe("Given a SpecialCourses page", () => {
       expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith("getWebContent");
     });
 
-    test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
+    test("Then the backgroundColor should be changed to 'white' on component mounted", () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const wrapper = mount(SpecialCourses, wrapperOptions);
 
@@ -85,10 +85,10 @@ describe("Given a SpecialCourses page", () => {
       expect(nCardComponent.classes()).toStrictEqual(["n-card", "n-card--bordered", "n-card--hoverable"]);
     });
 
-    test("Then it should show Footer component", async () => {
+    test("Then it should show Footer component", () => {
       const wrapper = mount(SpecialCourses, wrapperOptions);
 
-      const footerComponent = await wrapper.findComponent(Footer);
+      const footerComponent = wrapper.findComponent(Footer);
 
       expect(footerComponent.exists()).toBe(true);
     });

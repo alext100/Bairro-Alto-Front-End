@@ -1,12 +1,14 @@
-import MaterialsPost from "@/pages/MaterialsPost.vue";
+import { NCard } from "naive-ui";
+import { createStore } from "vuex";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
-import { mount, enableAutoUnmount } from "@vue/test-utils";
-import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { cleanup } from "@testing-library/vue";
-import { NCard } from "naive-ui";
+import MaterialsPost from "@/pages/MaterialsPost.vue";
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
+
+jest.mock("@/composables/usePixiGlitchFilter");
 
 const store = createStore({
   state() {
@@ -42,7 +44,7 @@ describe("Given a MaterialsPost page", () => {
       expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith("getWebContent");
     });
 
-    test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
+    test("Then the backgroundColor should be changed to 'white' on component mounted", () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const wrapper = mount(MaterialsPost, wrapperOptions);
 
@@ -73,18 +75,18 @@ describe("Given a MaterialsPost page", () => {
       expect(nCardComponent.classes()).toStrictEqual(["n-card", "n-card--hoverable"]);
     });
 
-    test("Then it should show Footer component", async () => {
+    test("Then it should show Footer component", () => {
       const wrapper = mount(MaterialsPost, wrapperOptions);
 
-      const footerComponent = await wrapper.findComponent(Footer);
+      const footerComponent = wrapper.findComponent(Footer);
 
       expect(footerComponent.exists()).toBe(true);
     });
 
-    test("Then it should show link to go back to Materials page", async () => {
+    test("Then it should show link to go back to Materials page", () => {
       const wrapper = mount(MaterialsPost, wrapperOptions);
 
-      const link = await wrapper.findComponent(".nav-link");
+      const link = wrapper.findComponent(".nav-link");
 
       expect(link.html()).toContain("/materials");
     });

@@ -1,10 +1,9 @@
-import Login from "@/views/Login.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import TextInput from "@/components/TextInput.vue";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
+import Login from "@/views/Login.vue";
 import { cleanup } from "@testing-library/vue";
-
+import TextInput from "@/components/TextInput.vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../mockedState";
 
 const store = createStore({
@@ -24,7 +23,7 @@ enableAutoUnmount(afterEach);
 
 describe("Given a Login view", () => {
   describe("When it is rendered", () => {
-    test("Then it should render 'TextInput' component with props name, type = 'password', label='Пароль'", async () => {
+    test("Then it should render 'TextInput' component with props name, type = 'password', label='Пароль'", () => {
       const wrapper = mount(Login, {
         global: {
           plugins: [store],
@@ -32,7 +31,7 @@ describe("Given a Login view", () => {
         },
       });
 
-      const input = await wrapper.findAllComponents(TextInput);
+      const input = wrapper.findAllComponents(TextInput);
 
       expect(input[1].exists()).toBe(true);
       expect(input[1].props("name")).toEqual("password");
@@ -41,7 +40,7 @@ describe("Given a Login view", () => {
       expect(input[1].props("placeholder")).toEqual("Введите пароль");
     });
 
-    test("Then it should render 'TextInput' component with props name, type = 'email', label='E-mail'", async () => {
+    test("Then it should render 'TextInput' component with props name, type = 'email', label='E-mail'", () => {
       const wrapper = mount(Login, {
         global: {
           plugins: [store],
@@ -49,7 +48,7 @@ describe("Given a Login view", () => {
         },
       });
 
-      const input = await wrapper.findAllComponents(TextInput);
+      const input = wrapper.findAllComponents(TextInput);
 
       expect(input[0].exists()).toBe(true);
       expect(input[0].props("name")).toEqual("email");
@@ -72,7 +71,7 @@ describe("Given a Login view", () => {
     });
   });
 
-  test("Then it should render icon with class 'toggle-password'", async () => {
+  test("Then it should render icon with class 'toggle-password'", () => {
     const wrapper = mount(Login, {
       global: {
         plugins: [store],
@@ -80,7 +79,7 @@ describe("Given a Login view", () => {
       },
     });
 
-    const icon = await wrapper.find(".toggle-password");
+    const icon = wrapper.find(".toggle-password");
 
     expect(icon.exists()).toBe(true);
   });
@@ -93,7 +92,7 @@ describe("Given a Login view", () => {
         },
       });
 
-      const button = await wrapper.find(".toggle-password");
+      const button = wrapper.find(".toggle-password");
 
       expect(button.classes()).not.toContain("fa-eye-slash");
 

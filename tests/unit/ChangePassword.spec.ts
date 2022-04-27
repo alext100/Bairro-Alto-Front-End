@@ -1,9 +1,9 @@
-import ChangePassword from "@/components/ChangePassword.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import TextInput from "@/components/TextInput.vue";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { cleanup } from "@testing-library/vue";
+import TextInput from "@/components/TextInput.vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import ChangePassword from "@/components/ChangePassword.vue";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../mockedState";
 
 const store = createStore({
@@ -21,7 +21,7 @@ enableAutoUnmount(afterEach);
 
 describe("Given a ChangePassword component", () => {
   describe("When it is rendered", () => {
-    test("Then it should render 'TextInput' component for confirmPassword input with correct props", async () => {
+    test("Then it should render 'TextInput' component for confirmPassword input with correct props", () => {
       const wrapper = mount(ChangePassword, {
         global: {
           plugins: [store],
@@ -29,7 +29,7 @@ describe("Given a ChangePassword component", () => {
         },
       });
 
-      const input = await wrapper.findAllComponents(TextInput);
+      const input = wrapper.findAllComponents(TextInput);
 
       expect(input[1].exists()).toBe(true);
       expect(input[1].props("name")).toEqual("confirmPassword");
@@ -38,7 +38,7 @@ describe("Given a ChangePassword component", () => {
       expect(input[1].props("placeholder")).toEqual("Введите пароль ещё раз");
     });
 
-    test("Then it should render 'TextInput' component for password input with correct props", async () => {
+    test("Then it should render 'TextInput' component for password input with correct props", () => {
       const wrapper = mount(ChangePassword, {
         global: {
           plugins: [store],
@@ -46,7 +46,7 @@ describe("Given a ChangePassword component", () => {
         },
       });
 
-      const input = await wrapper.findAllComponents(TextInput);
+      const input = wrapper.findAllComponents(TextInput);
 
       expect(input[0].exists()).toBe(true);
       expect(input[0].props("name")).toEqual("password");
@@ -69,7 +69,7 @@ describe("Given a ChangePassword component", () => {
     });
   });
 
-  test("Then it should render icon 'toggle-password'", async () => {
+  test("Then it should render icon 'toggle-password'", () => {
     const wrapper = mount(ChangePassword, {
       global: {
         plugins: [store],
@@ -77,7 +77,7 @@ describe("Given a ChangePassword component", () => {
       },
     });
 
-    const icon = await wrapper.find('[data-test="toggle-password"]');
+    const icon = wrapper.find('[data-test="toggle-password"]');
 
     expect(icon.exists()).toBe(true);
   });
@@ -90,7 +90,7 @@ describe("Given a ChangePassword component", () => {
         },
       });
 
-      const button = await wrapper.find('[data-test="toggle-password"]');
+      const button = wrapper.find('[data-test="toggle-password"]');
 
       expect(button.classes()).not.toContain("fa-eye-slash");
 

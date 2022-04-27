@@ -1,10 +1,9 @@
-import Teachers from "@/pages/MainPageComponents/Teachers.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { TippyPlugin } from "tippy.vue";
-
 import { cleanup } from "@testing-library/vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import Teachers from "@/pages/MainPageComponents/Teachers.vue";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
 
 const store = createStore({
@@ -73,7 +72,7 @@ describe("Given a Teachers component of the Main page", () => {
     expect(dotsList.element.childElementCount).toBe(allTeachers.length);
   });
 
-  test("Then it should render prev and next arrows", async () => {
+  test("Then it should render prev and next arrows", () => {
     const wrapper = mount(Teachers, {
       global: {
         plugins: [store, TippyPlugin],
@@ -81,8 +80,8 @@ describe("Given a Teachers component of the Main page", () => {
       props: { allTeachers },
     });
 
-    const prevArrow = await wrapper.find(".custom-arrow--left");
-    const nextArrow = await wrapper.find(".custom-arrow--right");
+    const prevArrow = wrapper.find(".custom-arrow--left");
+    const nextArrow = wrapper.find(".custom-arrow--right");
 
     expect(prevArrow.exists()).toBe(true);
     expect(nextArrow.exists()).toBe(true);

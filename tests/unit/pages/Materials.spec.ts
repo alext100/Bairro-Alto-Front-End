@@ -1,14 +1,14 @@
-import Materials from "@/pages/Materials.vue";
+import { createStore } from "vuex";
+import { NCard } from "naive-ui";
+import { TippyPlugin } from "tippy.vue";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
-import { mount, enableAutoUnmount } from "@vue/test-utils";
-import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
+import Materials from "@/pages/Materials.vue";
 import { MotionPlugin } from "@vueuse/motion";
 import { cleanup } from "@testing-library/vue";
-import { TippyPlugin } from "tippy.vue";
-import { NCard } from "naive-ui";
 import VueMobileDetection from "vue-mobile-detection";
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
 
 const store = createStore({
@@ -78,7 +78,7 @@ describe("Given a Materials page", () => {
       expect(nCardComponent.classes()).toStrictEqual(["n-card", "n-card--bordered", "n-card--hoverable"]);
     });
 
-    test("Then router-link should have link to '/materials/:id'", async () => {
+    test("Then router-link should have link to '/materials/:id'", () => {
       const wrapper = mount(Materials, wrapperOptions);
       const material = { id: "624a945fa4a7260aa1b630a1" };
 
@@ -87,10 +87,10 @@ describe("Given a Materials page", () => {
       expect(link.html()).toContain(`/materials/${material.id}`);
     });
 
-    test("Then it should show Footer component", async () => {
+    test("Then it should show Footer component", () => {
       const wrapper = mount(Materials, wrapperOptions);
 
-      const footerComponent = await wrapper.findComponent(Footer);
+      const footerComponent = wrapper.findComponent(Footer);
 
       expect(footerComponent.exists()).toBe(true);
     });

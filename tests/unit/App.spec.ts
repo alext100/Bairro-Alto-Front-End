@@ -1,11 +1,11 @@
 import App from "@/App.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
-import { cleanup } from "@testing-library/vue";
-import { NMessageProvider, NConfigProvider } from "naive-ui";
-import Header from "@/components/Header.vue";
 import { RouterView } from "vue-router";
+import Header from "@/components/Header.vue";
+import { cleanup } from "@testing-library/vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import { NMessageProvider, NConfigProvider } from "naive-ui";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../mockedState";
 
 const store = createStore({
@@ -34,26 +34,26 @@ enableAutoUnmount(afterEach);
 
 describe("Given App.vue component", () => {
   describe("When it is rendered", () => {
-    test("Then it should render NConfigProvider component", async () => {
+    test("Then it should render NConfigProvider component", () => {
       const wrapper = mount(App, wrapperOptions);
 
-      const nConfigProvider = await wrapper.findComponent(NConfigProvider);
+      const nConfigProvider = wrapper.findComponent(NConfigProvider);
 
       expect(nConfigProvider.exists()).toBe(true);
     });
 
-    test("Then it should render NMessageProvider component", async () => {
+    test("Then it should render NMessageProvider component", () => {
       const wrapper = mount(App, wrapperOptions);
 
-      const nMessageProvider = await wrapper.findComponent(NMessageProvider);
+      const nMessageProvider = wrapper.findComponent(NMessageProvider);
 
       expect(nMessageProvider.exists()).toBe(true);
     });
 
-    test("Then it should render RouterView component", async () => {
+    test("Then it should render RouterView component", () => {
       const wrapper = mount(App, wrapperOptions);
 
-      const routerView = await wrapper.findComponent(RouterView);
+      const routerView = wrapper.findComponent(RouterView);
 
       expect(routerView.exists()).toBe(true);
     });

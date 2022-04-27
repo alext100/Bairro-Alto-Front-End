@@ -8,6 +8,8 @@ module.exports = {
     "\\.pnp\\.[^\\/]+$",
   ],
   collectCoverage: true,
+  testEnvironment: "jsdom",
+  setupFiles: ["jest-canvas-mock"],
   collectCoverageFrom: ["src/**/*.{js,vue,ts}", "!src/main.js"],
   modulePathIgnorePatterns: [
     "src/main.ts",

@@ -30,7 +30,7 @@ enableAutoUnmount(afterEach);
 
 describe("Given a Atmosphere page", () => {
   describe("When it is rendered", () => {
-    test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
+    test("Then the backgroundColor should be changed to 'white' on component mounted", () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const wrapper = mount(Atmosphere, wrapperOptions);
 

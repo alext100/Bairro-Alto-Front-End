@@ -1,7 +1,7 @@
-import CkEditor from "@/components/CkEditorCustom.vue";
-import { enableAutoUnmount, shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import { cleanup } from "@testing-library/vue";
+import CkEditor from "@/components/CkEditorCustom.vue";
+import { enableAutoUnmount, shallowMount } from "@vue/test-utils";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
 import state from "../../mockedState";
 
@@ -11,10 +11,10 @@ const store = createStore({
   },
   actions: { getWebContent: jest.fn() },
 });
-store.dispatch = jest.fn();
 
 const wrapperOptions = {
   global: {
+    plugins: [store],
     stubs: ["CkEditor"],
   },
   components: { ckeditor: ClassicEditor },
@@ -25,15 +25,15 @@ enableAutoUnmount(afterEach);
 
 describe("Given a CkEditorCustom component", () => {
   describe("When it is rendered", () => {
-    test("Then it should render editor", async () => {
+    test("Then it should render editor", () => {
       const wrapper = shallowMount(CkEditor, wrapperOptions);
 
-      const editor = await wrapper.findComponent(ClassicEditor);
+      const editor = wrapper.findComponent(ClassicEditor);
 
       expect(editor.exists()).toBe(true);
     });
 
-    test("Then it should have modelValue: '' in editor props", async () => {
+    test("Then it should have modelValue: '' in editor props", () => {
       const wrapper = shallowMount(CkEditor, wrapperOptions);
 
       const ckEditorComponent = wrapper.getComponent({ name: "CkEditor" });
