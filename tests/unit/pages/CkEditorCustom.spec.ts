@@ -25,10 +25,10 @@ enableAutoUnmount(afterEach);
 
 describe("Given a CkEditorCustom component", () => {
   describe("When it is rendered", () => {
-    test("Then it should render editor", async () => {
+    test("Then it should render editor", () => {
       const wrapper = shallowMount(CkEditor, wrapperOptions);
 
-      const editor = await wrapper.findComponent(ClassicEditor);
+      const editor = wrapper.findComponent(ClassicEditor);
 
       expect(editor.exists()).toBe(true);
     });

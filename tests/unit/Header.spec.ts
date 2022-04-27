@@ -1,8 +1,8 @@
-import { enableAutoUnmount, mount } from "@vue/test-utils";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { createStore } from "vuex";
 import Header from "@/components/Header.vue";
 import { cleanup } from "@testing-library/vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../mockedState";
 
 const store = createStore({
@@ -22,7 +22,7 @@ enableAutoUnmount(afterEach);
 
 describe("Given a Header component", () => {
   describe("When it is rendered", () => {
-    test("Then it should show logo", async () => {
+    test("Then it should show logo", () => {
       const wrapper = mount(Header, {
         global: {
           plugins: [store],
@@ -34,20 +34,20 @@ describe("Given a Header component", () => {
       expect(wrapper.html()).toContain(logoSubstring);
     });
 
-    test("Then it should show navbar toggle button", async () => {
+    test("Then it should show navbar toggle button", () => {
       const wrapper = mount(Header, {
         global: {
           plugins: [store],
         },
       });
 
-      const button = await wrapper.find("button.navbar-toggler");
+      const button = wrapper.find("button.navbar-toggler");
 
       expect(button.exists()).toBe(true);
     });
 
     describe("When a user is not logged in", () => {
-      test("Then it should show 11 links to other site pages", async () => {
+      test("Then it should show 11 links to other site pages", () => {
         const wrapper = mount(Header, {
           global: {
             plugins: [store],
@@ -61,7 +61,7 @@ describe("Given a Header component", () => {
     });
 
     describe("When current user is not logged in as admin, teacher o student", () => {
-      test("Then it should not show links to '/cms', '/teacher', '/student/' pages", async () => {
+      test("Then it should not show links to '/cms', '/teacher', '/student/' pages", () => {
         state.isUserAuthenticated = false;
         state.currentUser.adminAccess = false;
         state.currentUser.teacherAccess = false;
@@ -79,7 +79,7 @@ describe("Given a Header component", () => {
     });
 
     describe("When current user is logged in as admin, teacher o student", () => {
-      test("Then it should show links to '/cms', '/teacher', '/student/' pages", async () => {
+      test("Then it should show links to '/cms', '/teacher', '/student/' pages", () => {
         state.isUserAuthenticated = true;
         state.currentUser.adminAccess = true;
         state.currentUser.teacherAccess = true;

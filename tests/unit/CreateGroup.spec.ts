@@ -1,14 +1,14 @@
-import CreateGroup from "@/views/TeacherBoard/CreateGroup.vue";
-import { enableAutoUnmount, mount, flushPromises } from "@vue/test-utils";
 import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
-import { cleanup } from "@testing-library/vue";
-import { TippyPlugin } from "tippy.vue";
+import "@testing-library/jest-dom";
 import { Form } from "vee-validate";
+import { TippyPlugin } from "tippy.vue";
+import { cleanup } from "@testing-library/vue";
 import TextInput from "@/components/TextInput.vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
+import CreateGroup from "@/views/TeacherBoard/CreateGroup.vue";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
+import { enableAutoUnmount, mount, flushPromises } from "@vue/test-utils";
 import state from "../mockedState";
-import "@testing-library/jest-dom";
 
 const store = createStore({
   state() {
@@ -34,7 +34,7 @@ enableAutoUnmount(afterEach);
 
 describe("Given a CreateGroup component", () => {
   describe("When it is rendered", () => {
-    test("Then it should show TextInput component", async () => {
+    test("Then it should show TextInput component", () => {
       const wrapper = mount(CreateGroup, wrapperOptions);
 
       const textInput = wrapper.findComponent(TextInput);
@@ -42,7 +42,7 @@ describe("Given a CreateGroup component", () => {
       expect(textInput.exists()).toBe(true);
     });
 
-    test("Then it should show button", async () => {
+    test("Then it should show button", () => {
       const wrapper = mount(CreateGroup, wrapperOptions);
 
       const button = wrapper.find("button");
@@ -50,7 +50,7 @@ describe("Given a CreateGroup component", () => {
       expect(button.exists()).toBe(true);
     });
 
-    test("Then it should show SidebarMenu component", async () => {
+    test("Then it should show SidebarMenu component", () => {
       const wrapper = mount(CreateGroup, wrapperOptions);
 
       const sidebarMenu = wrapper.findComponent(SidebarMenu);
@@ -58,7 +58,7 @@ describe("Given a CreateGroup component", () => {
       expect(sidebarMenu.exists()).toBe(true);
     });
 
-    test("Then it should show Form component", async () => {
+    test("Then it should show Form component", () => {
       const wrapper = mount(CreateGroup, wrapperOptions);
 
       const form = wrapper.findComponent(Form);

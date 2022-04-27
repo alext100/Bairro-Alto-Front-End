@@ -1,9 +1,9 @@
+import { createStore } from "vuex";
 import Methodic from "@/pages/Methodic.vue";
 import Footer from "@/components/Footer.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
-import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { cleanup } from "@testing-library/vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
 
 const store = createStore({
@@ -30,8 +30,7 @@ enableAutoUnmount(afterEach);
 
 describe("Given a Methodic page", () => {
   describe("When it is rendered", () => {
-    test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    test("Then the backgroundColor should be changed to 'white' on component mounted", () => {
       const wrapper = mount(Methodic, wrapperOptions);
 
       expect(document.body.style.backgroundColor).toBe("white");

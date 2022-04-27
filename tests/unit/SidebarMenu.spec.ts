@@ -63,7 +63,7 @@ describe("Given a SidebarMenu component", () => {
   });
 
   describe("When the component get props with profileName", () => {
-    test("Then it should show that name", async () => {
+    test("Then it should show that name", () => {
       const wrapper = mount(SidebarMenu, {
         global: {
           plugins: [store, TippyPlugin],
@@ -77,7 +77,7 @@ describe("Given a SidebarMenu component", () => {
   });
 
   describe("When the component get props with profileRole", () => {
-    test("Then it should show that role", async () => {
+    test("Then it should show that role", () => {
       const wrapper = mount(SidebarMenu, {
         global: {
           plugins: [store, TippyPlugin],
@@ -91,7 +91,7 @@ describe("Given a SidebarMenu component", () => {
   });
 
   describe("When the component get props with profileImg", () => {
-    test("Then it should show image with received link", async () => {
+    test("Then it should show image with received link", () => {
       const wrapper = mount(SidebarMenu, {
         global: {
           plugins: [store, TippyPlugin],
@@ -105,7 +105,7 @@ describe("Given a SidebarMenu component", () => {
   });
 
   describe("When the component not get props with profileImg", () => {
-    test("Then it should show icon with user", async () => {
+    test("Then it should show icon with user", () => {
       const wrapper = mount(SidebarMenu, {
         global: {
           plugins: [store, TippyPlugin],
@@ -137,7 +137,7 @@ describe("Given a SidebarMenu component", () => {
   });
 
   describe("When the component get props with menuTitle", () => {
-    test("Then it should show received title", async () => {
+    test("Then it should show received title", () => {
       const wrapper = mount(SidebarMenu, {
         global: {
           plugins: [store, TippyPlugin],

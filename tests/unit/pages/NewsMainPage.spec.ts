@@ -1,11 +1,10 @@
-import News from "@/pages/MainPageComponents/News.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { TippyPlugin } from "tippy.vue";
 import { MotionPlugin } from "@vueuse/motion";
-
 import { cleanup } from "@testing-library/vue";
+import News from "@/pages/MainPageComponents/News.vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
 
 const store = createStore({
@@ -72,7 +71,7 @@ describe("Given a News component of the Main page", () => {
     expect(dotsList.element.childElementCount).toBe(newsBody.length);
   });
 
-  test("Then it should render prev and next arrows", async () => {
+  test("Then it should render prev and next arrows", () => {
     const wrapper = mount(News, {
       global: {
         plugins: [store, TippyPlugin, MotionPlugin],
@@ -80,8 +79,8 @@ describe("Given a News component of the Main page", () => {
       props: { newsBody },
     });
 
-    const prevArrow = await wrapper.find(".custom-arrow--left");
-    const nextArrow = await wrapper.find(".custom-arrow--right");
+    const prevArrow = wrapper.find(".custom-arrow--left");
+    const nextArrow = wrapper.find(".custom-arrow--right");
 
     expect(prevArrow.exists()).toBe(true);
     expect(nextArrow.exists()).toBe(true);

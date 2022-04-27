@@ -23,7 +23,7 @@ enableAutoUnmount(afterEach);
 
 describe("Given a Register view", () => {
   describe("When it is rendered", () => {
-    test("Then it should render 'TextInput' component with correct props for firstName input", async () => {
+    test("Then it should render 'TextInput' component with correct props for firstName input", () => {
       const wrapper = mount(Register, {
         global: {
           plugins: [store],
@@ -31,7 +31,7 @@ describe("Given a Register view", () => {
         },
       });
 
-      const input = await wrapper.findAllComponents(TextInput);
+      const input = wrapper.findAllComponents(TextInput);
 
       expect(input[0].exists()).toBe(true);
       expect(input[0].props("name")).toEqual("firstName");
@@ -40,7 +40,7 @@ describe("Given a Register view", () => {
       expect(input[0].props("placeholder")).toEqual("Имя");
     });
 
-    test("Then it should render 'TextInput' component with correct props for lastName input", async () => {
+    test("Then it should render 'TextInput' component with correct props for lastName input", () => {
       const wrapper = mount(Register, {
         global: {
           plugins: [store],
@@ -48,7 +48,7 @@ describe("Given a Register view", () => {
         },
       });
 
-      const input = await wrapper.findAllComponents(TextInput);
+      const input = wrapper.findAllComponents(TextInput);
 
       expect(input[1].exists()).toBe(true);
       expect(input[1].props("name")).toEqual("lastName");
@@ -57,7 +57,7 @@ describe("Given a Register view", () => {
       expect(input[1].props("placeholder")).toEqual("Фамилия");
     });
 
-    test("Then it should render 'TextInput' component with correct props for email input", async () => {
+    test("Then it should render 'TextInput' component with correct props for email input", () => {
       const wrapper = mount(Register, {
         global: {
           plugins: [store],
@@ -65,7 +65,7 @@ describe("Given a Register view", () => {
         },
       });
 
-      const input = await wrapper.findAllComponents(TextInput);
+      const input = wrapper.findAllComponents(TextInput);
 
       expect(input[2].exists()).toBe(true);
       expect(input[2].props("name")).toEqual("email");
@@ -74,7 +74,7 @@ describe("Given a Register view", () => {
       expect(input[2].props("placeholder")).toEqual("Ваш email адрес");
     });
 
-    test("Then it should render 'TextInput' component with correct props for password input", async () => {
+    test("Then it should render 'TextInput' component with correct props for password input", () => {
       const wrapper = mount(Register, {
         global: {
           plugins: [store],
@@ -82,7 +82,7 @@ describe("Given a Register view", () => {
         },
       });
 
-      const input = await wrapper.findAllComponents(TextInput);
+      const input = wrapper.findAllComponents(TextInput);
 
       expect(input[3].exists()).toBe(true);
       expect(input[3].props("name")).toEqual("password");
@@ -91,7 +91,7 @@ describe("Given a Register view", () => {
       expect(input[3].props("placeholder")).toEqual("Ваш пароль");
     });
 
-    test("Then it should render 'TextInput' component with correct props for confirmPassword input", async () => {
+    test("Then it should render 'TextInput' component with correct props for confirmPassword input", () => {
       const wrapper = mount(Register, {
         global: {
           plugins: [store],
@@ -99,7 +99,7 @@ describe("Given a Register view", () => {
         },
       });
 
-      const input = await wrapper.findAllComponents(TextInput);
+      const input = wrapper.findAllComponents(TextInput);
 
       expect(input[4].exists()).toBe(true);
       expect(input[4].props("name")).toEqual("confirmPassword");
@@ -122,7 +122,7 @@ describe("Given a Register view", () => {
     });
   });
 
-  test("Then it should render icon with class 'toggle-password'", async () => {
+  test("Then it should render icon with class 'toggle-password'", () => {
     const wrapper = mount(Register, {
       global: {
         plugins: [store],
@@ -130,7 +130,7 @@ describe("Given a Register view", () => {
       },
     });
 
-    const icon = await wrapper.find(".toggle-password");
+    const icon = wrapper.find(".toggle-password");
 
     expect(icon.exists()).toBe(true);
   });
@@ -143,7 +143,7 @@ describe("Given a Register view", () => {
         },
       });
 
-      const button = await wrapper.find(".toggle-password");
+      const button = wrapper.find(".toggle-password");
 
       expect(button.classes()).not.toContain("fa-eye-slash");
 

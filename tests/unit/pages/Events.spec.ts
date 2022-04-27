@@ -1,9 +1,9 @@
+import { createStore } from "vuex";
 import Events from "@/pages/Events.vue";
 import Footer from "@/components/Footer.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
-import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { cleanup } from "@testing-library/vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
 
 const store = createStore({
@@ -36,7 +36,7 @@ describe("Given a Events page", () => {
       expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith("getWebContent");
     });
 
-    test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
+    test("Then the backgroundColor should be changed to 'white' on component mounted", () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const wrapper = mount(Events, wrapperOptions);
 

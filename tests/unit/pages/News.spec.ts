@@ -1,13 +1,13 @@
-import News from "@/pages/News.vue";
-import Footer from "@/components/Footer.vue";
-import { mount, enableAutoUnmount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
+import News from "@/pages/News.vue";
+import { TippyPlugin } from "tippy.vue";
+import Footer from "@/components/Footer.vue";
 import { MotionPlugin } from "@vueuse/motion";
 import { cleanup } from "@testing-library/vue";
-import { TippyPlugin } from "tippy.vue";
 import FullCard from "@/components/FullCard.vue";
 import VueMobileDetection from "vue-mobile-detection";
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
 
 const store = createStore({
@@ -38,8 +38,7 @@ enableAutoUnmount(afterEach);
 
 describe("Given a Materials page", () => {
   describe("When it is rendered", () => {
-    test("Then the backgroundColor should be changed to 'white' on component mounted", async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    test("Then the backgroundColor should be changed to 'white' on component mounted", () => {
       const wrapper = mount(News, wrapperOptions);
 
       expect(document.body.style.backgroundColor).toBe("white");
@@ -61,26 +60,26 @@ describe("Given a Materials page", () => {
       expect(nCardComponent.exists()).toBe(true);
     });
 
-    test("Then it should show Footer component", async () => {
+    test("Then it should show Footer component", () => {
       const wrapper = mount(News, wrapperOptions);
 
-      const footerComponent = await wrapper.findComponent(Footer);
+      const footerComponent = wrapper.findComponent(Footer);
 
       expect(footerComponent.exists()).toBe(true);
     });
 
-    test("Then it should show each received news title (from state)", async () => {
+    test("Then it should show each received news title (from state)", () => {
       const wrapper = mount(News, wrapperOptions);
 
-      const newsTitle = await wrapper.find(".card-title");
+      const newsTitle = wrapper.find(".card-title");
 
       expect(newsTitle.html()).toContain("Набор в онлайн группу А1");
     });
 
-    test("Then it should show each received news body (from state)", async () => {
+    test("Then it should show each received news body (from state)", () => {
       const wrapper = mount(News, wrapperOptions);
 
-      const newsBody = await wrapper.find(".card-text");
+      const newsBody = wrapper.find(".card-text");
 
       expect(newsBody.html()).toContain("Напоминаем, что идёт набор в онлайн группы для начинающих А1");
     });
