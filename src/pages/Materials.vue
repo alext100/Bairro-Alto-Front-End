@@ -28,12 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
 import { NCard } from "naive-ui";
+import { Post } from "@/types/interfaces";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
-import { Post } from "@/types/interfaces";
+import useSplitText from "@/composables/useSplitText";
+import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
 
 const { state, dispatch } = useStore();
 
@@ -45,6 +46,7 @@ onMounted(() => {
 const materials: ComputedRef<Post[]> = computed(() =>
   state.webContent?.posts?.filter((post: Post) => post?.category === "Материалы")
 );
+useSplitText(".materials-title", "charsWave");
 </script>
 
 <style scoped>
