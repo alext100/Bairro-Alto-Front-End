@@ -26,6 +26,7 @@ import { useStore } from "vuex";
 import { Post } from "@/types/interfaces";
 import Footer from "@/components/Footer.vue";
 import FullCard from "@/components/FullCard.vue";
+import useSplitText from "@/composables/useSplitText";
 import { computed, onBeforeMount, onMounted } from "vue";
 
 const { state, dispatch } = useStore();
@@ -36,6 +37,8 @@ onMounted(() => {
 });
 
 const events = computed(() => state.webContent?.posts?.filter((post: Post) => post?.category === "Мероприятия"));
+
+useSplitText(".events-title", "charsWave");
 </script>
 
 <style scoped>
