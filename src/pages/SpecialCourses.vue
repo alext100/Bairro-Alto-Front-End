@@ -33,6 +33,7 @@ import { NCard } from "naive-ui";
 import { Post } from "@/types/interfaces";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
+import useSplitText from "@/composables/useSplitText";
 import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
 
 const { state, dispatch } = useStore();
@@ -45,6 +46,7 @@ onMounted(() => {
 const specialCourses: ComputedRef<Post[]> = computed(() =>
   state.webContent?.posts?.filter((post: Post) => post?.category === "Спецкурсы")
 );
+useSplitText(".special-courses__title", "charsWave");
 </script>
 
 <style scoped>
