@@ -1,15 +1,14 @@
 <template>
   <div class="container">
-    <b-card class="mb-1 card-description" border-variant="white">
-      <b-card-text>
+    <n-card :bordered="false">
+      <p class="description-card">
         В течении урока на этой странице можно делать быстрые заметки. Например новое слово, ошибка ученика, ошибка в
         произношении или вне категории. После занятия заметки можно отредактировать и студенты группы смогут их увидеть
         в своих личных кабинетах.
-      </b-card-text>
-    </b-card>
-
-    <div class="container-sm login-form d-flex flex-column mt-5">
-      <b-card class="mb-1">
+      </p>
+    </n-card>
+    <div class="container-sm d-flex flex-column mt-5">
+      <n-card>
         <b-form-group
           label-cols-lg="3"
           label="Заметка для группы:"
@@ -55,7 +54,8 @@
                   v-model="errorComment"
                   trim
                   placeholder="Пожалуйста, напишите правильную фразу или слово!"
-                ></b-form-input>
+                >
+                </b-form-input>
               </b-form-group>
             </div>
           </b-form>
@@ -80,23 +80,25 @@
           ></b-form-radio-group>
           <p v-if="noType" class="no-error-type-alert m-1">Выберите тип заметки</p>
         </b-form-group>
-      </b-card>
-      <b-button
+      </n-card>
+      <SubmitButton
         :disabled="isDisabled"
         @click="handleMakeMessageWithError"
         type="submit"
-        class="mt-3 mb-3 input-form--submit-button"
+        class="mt-3 mb-3 input-form__submit-button"
         pill
         >{{ isDisabled ? "Сообщение должно быть больше 4 символов" : "Отправить" }}
-        {{ !isDisabled ? mixedGroupedSelected : "" }}</b-button
-      >
+        {{ !isDisabled ? mixedGroupedSelected : "" }}
+      </SubmitButton>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { NCard } from "naive-ui";
 import { defineComponent, ref } from "vue";
 import { mapActions, mapState } from "vuex";
+import SubmitButton from "@/components/SubmitButton.vue";
 
 export default defineComponent({
   setup() {
@@ -113,7 +115,7 @@ export default defineComponent({
     };
   },
   name: "OnlineLesson",
-  components: {},
+  components: { SubmitButton, NCard },
   data() {
     return {
       isDisabled: true,
@@ -159,13 +161,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.card-description {
-  font-size: 20px;
+.description-card {
+  font-size: 20px !important;
   font-family: "Tenor-sans", sans-serif;
   text-align: justify;
 }
-.input-form--submit-button {
-  width: 100%;
+.input-form__submit-button {
+  width: auto !important;
 }
 
 .no-error-type-alert {
