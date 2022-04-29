@@ -58,64 +58,66 @@ const usePixiGlitchFilter = (
     let container: PIXI.Container;
     let filter: PIXI.Filter;
 
-    queueMicrotask(async () => {
-      const srcUrlImageToReplace = imageToReplace.value.getAttribute(cardCoverImageSrc)?.split(" ")[0] as string;
-      const { width, height } = await getImageDimensions(srcUrlImageToReplace);
+    if (cardCoverImage) {
+      queueMicrotask(async () => {
+        const srcUrlImageToReplace = imageToReplace.value.getAttribute(cardCoverImageSrc)?.split(" ")[0] as string;
+        const { width, height } = await getImageDimensions(srcUrlImageToReplace);
 
-      app = new PIXI.Application({
-        width: width < 880 ? width : 880,
-        height,
-        backgroundAlpha: 0,
-        autoDensity: true,
+        app = new PIXI.Application({
+          width: width < 880 ? width : 880,
+          height,
+          backgroundAlpha: 0,
+          autoDensity: true,
+        });
+
+        container = new PIXI.Container();
+        app.stage.addChild(container);
+
+        const filterOptions: Pick<GlitchFilterOptions, "slices"> = { slices: 200 };
+        filter = new filters.GlitchFilter(filterOptions);
+        container.filters = [filter];
+
+        if (imageToReplace.value && cardCoverImage) {
+          const spriteImageUrl = `${cardCoverImage?.getAttribute(cardCoverImageSrc)}`;
+          if (cardCoverImageSrc === "src") {
+            const pixiSprite = PIXI.Sprite.from(spriteImageUrl);
+            container.addChild(pixiSprite);
+          }
+          if (cardCoverImageSrc === "srcset") {
+            const pixiSprite = PIXI.Sprite.from(spriteImageUrl.split(" ")[0]);
+            container.addChild(pixiSprite);
+          }
+          imageToReplace.value.replaceWith(app.view);
+        }
+
+        gsap.fromTo(
+          filter,
+          {
+            offset: 0,
+          },
+          {
+            offset: 1000,
+            duration: 2,
+            ease: "power2.inOut",
+            yoyo: true,
+            repeat: 1,
+            repeatDelay: 1,
+          }
+        );
+        gsap.fromTo(
+          filter,
+          {
+            direction: 0,
+          },
+          {
+            direction: 360,
+            duration: 30,
+            ease: "none",
+            repeat: 1,
+          }
+        );
       });
-
-      container = new PIXI.Container();
-      app.stage.addChild(container);
-
-      const filterOptions: Pick<GlitchFilterOptions, "slices"> = { slices: 200 };
-      filter = new filters.GlitchFilter(filterOptions);
-      container.filters = [filter];
-
-      if (imageToReplace.value && cardCoverImage) {
-        const spriteImageUrl = `${cardCoverImage?.getAttribute(cardCoverImageSrc)}`;
-        if (cardCoverImageSrc === "src") {
-          const pixiSprite = PIXI.Sprite.from(spriteImageUrl);
-          container.addChild(pixiSprite);
-        }
-        if (cardCoverImageSrc === "srcset") {
-          const pixiSprite = PIXI.Sprite.from(spriteImageUrl.split(" ")[0]);
-          container.addChild(pixiSprite);
-        }
-        imageToReplace.value.replaceWith(app.view);
-      }
-
-      gsap.fromTo(
-        filter,
-        {
-          offset: 0,
-        },
-        {
-          offset: 1000,
-          duration: 2,
-          ease: "power2.inOut",
-          yoyo: true,
-          repeat: 1,
-          repeatDelay: 1,
-        }
-      );
-      gsap.fromTo(
-        filter,
-        {
-          direction: 0,
-        },
-        {
-          direction: 360,
-          duration: 30,
-          ease: "none",
-          repeat: 1,
-        }
-      );
-    });
+    }
   }
   onUnmounted(() => {
     window.removeEventListener("resize", updateSize);
