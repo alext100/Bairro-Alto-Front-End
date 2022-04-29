@@ -9,7 +9,15 @@
     <n-p class="ms-2"> Для редактирования кликните два раза по названию группы</n-p>
     <div style="height: 100%">
       <div class="button-container">
-        <button v-if="!rowIsSelected" v-on:click="onBtDelete()" class="btn btn-danger m-1 disabled">Удалить</button>
+        <SubmitButton
+          v-if="!rowIsSelected"
+          v-on:click="onBtDelete()"
+          class="delete-group-button btn btn-danger m-1"
+          :buttonDisabled="true"
+          v-tippy="'Кнопка для удаления сейчас не активирована'"
+        >
+          Удалить
+        </SubmitButton>
       </div>
       <div style="height: 100%; box-sizing: border-box">
         <ag-grid-vue
@@ -27,27 +35,27 @@
           @row-selected="onRowSelected"
           @cell-value-changed="onCellValueChanged"
         >
-          ></ag-grid-vue
-        >
+        </ag-grid-vue>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { AgGridVue } from "ag-grid-vue3";
-import { computed, defineComponent, onMounted } from "vue";
-import SidebarMenu from "@/components/SidebarMenu.vue";
 import { useStore } from "vuex";
 import { NP, NH1 } from "naive-ui";
 import { useRouter } from "vue-router";
+import { AgGridVue } from "ag-grid-vue3";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import SidebarMenu from "@/components/SidebarMenu.vue";
+import SubmitButton from "@/components/SubmitButton.vue";
+import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import { computed, defineComponent, onMounted } from "vue";
 import sideBarAdminMenuItems from "./sideBarAdminMenuItems";
 
 export default defineComponent({
   name: "AdminBoard",
-  components: { SidebarMenu, AgGridVue, NP, NH1 },
+  components: { SidebarMenu, AgGridVue, NP, NH1, SubmitButton },
   setup() {
     const { state, dispatch } = useStore();
     const router = useRouter();
@@ -168,6 +176,10 @@ export default defineComponent({
   justify-content: center;
 }
 .button-container {
-  min-height: 60px;
+  min-height: 70px;
+}
+.delete-group-button {
+  width: 180px !important;
+  height: 50px;
 }
 </style>
