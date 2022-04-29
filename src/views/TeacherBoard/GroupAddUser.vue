@@ -2,9 +2,13 @@
   <div class="container">
     <h4>Добавить студента</h4>
     <div class="button-container">
-      <button v-if="rowIsSelected" v-on:click="handleAddUserToGroup(), $toast('Добавлено!')" class="btn btn-danger m-1">
+      <SubmitButton
+        v-if="rowIsSelected"
+        v-on:click="handleAddUserToGroup(), $toast('Добавлено!')"
+        class="add-student-button m-2"
+      >
         Добавить
-      </button>
+      </SubmitButton>
     </div>
     <div style="height: 100%; box-sizing: border-box">
       <ag-grid-vue
@@ -20,24 +24,20 @@
         :rowSelection="rowSelection"
         @row-selected="onRowSelected"
       >
-        >
       </ag-grid-vue>
     </div>
   </div>
 </template>
 
 <script>
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { AgGridVue } from "ag-grid-vue3";
 import { computed, defineComponent } from "vue";
 import { mapActions, mapState, useStore } from "vuex";
+import SubmitButton from "@/components/SubmitButton.vue";
 
 export default defineComponent({
   name: "AddUser",
-  components: {
-    AgGridVue,
-  },
+  components: { AgGridVue, SubmitButton },
 
   setup() {
     const store = useStore();
@@ -165,18 +165,15 @@ export default defineComponent({
 <style scoped>
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-alpine.css";
-.items-list {
-  list-style: none;
+.add-student-button {
+  width: auto;
 }
-.list-group-item-success {
-  background-color: var(--bairro-alto-logo-color);
+.button-container {
+  min-height: 70px;
 }
 .ag-theme-alpine {
   width: 100%;
   height: 800px;
   justify-content: center;
-}
-.button-container {
-  min-height: 60px;
 }
 </style>
