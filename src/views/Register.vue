@@ -4,6 +4,7 @@
       @submit="handleCreate"
       :validation-schema="schema"
       @invalid-submit="onInvalidSubmit"
+      @change="onChange"
       class="shadow-lg register-form"
     >
       <TextInput
@@ -55,11 +56,11 @@
         success-message="Запомните его!"
       />
       <ShowHidePassword @click="hidePassword = !hidePassword" />
-      <button v-if="!isLoading" class="submit-btn d-flex" type="submit">Подтвердить</button>
-      <button v-if="isLoading" class="btn submit-btn" type="submit" disabled>
+      <SubmitButton v-if="!isLoading" class="register-submit-button" buttonType="submit">Подтвердить</SubmitButton>
+      <SubmitButton v-if="isLoading" class="register-submit-button__disabled" :buttonDisabled="true">
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Загружается...
-      </button>
+      </SubmitButton>
     </Form>
   </div>
 </template>
@@ -72,6 +73,7 @@ import { useRouter } from "vue-router";
 import TextInput from "@/components/TextInput.vue";
 import { computed, defineComponent, ref } from "vue";
 import { UserRegisterData } from "@/types/interfaces";
+import SubmitButton from "@/components/SubmitButton.vue";
 import ShowHidePassword from "@/components/ShowHidePassword.vue";
 import EmailValidationAnimation from "@/components/EmailValidationAnimation.vue";
 
@@ -80,6 +82,7 @@ export default defineComponent({
   components: {
     Form,
     TextInput,
+    SubmitButton,
     ShowHidePassword,
     EmailValidationAnimation,
   },
@@ -101,13 +104,17 @@ export default defineComponent({
     const confirmPassword = "";
 
     const onInvalidSubmit = () => {
-      const submitBtn: HTMLElement | null = document.querySelector(".submit-btn");
+      const submitBtn = document.querySelector(".register-submit-button");
       if (submitBtn) {
         submitBtn.classList.add("invalid");
         setTimeout(() => {
           submitBtn.classList.remove("invalid");
         }, 1000);
       }
+    };
+
+    const onChange = () => {
+      state.isLoading = false;
     };
 
     // Using yup to generate a validation schema
@@ -155,6 +162,7 @@ export default defineComponent({
       isWrong,
       password,
       lastName,
+      onChange,
       firstName,
       isLoading,
       isRegistered,
@@ -177,72 +185,9 @@ form {
   padding: 15px 20px 30px;
   border-style: ridge;
 }
-
-.submit-btn {
-  display: inline-block;
-  outline: none;
-  font-size: 18px;
-  font-weight: 600;
-  width: 100%;
-  cursor: pointer;
-  text-decoration: none;
-  justify-content: center;
-  padding: 1rem 1.6rem 1rem 2.5rem;
-  color: var(--hover-color);
-  border: 1px solid var(--hover-color);
-  border-radius: 1.2rem;
-  -webkit-transition: border-color 0.2s;
-  transition: border-color 0.2s;
-  line-height: normal;
-  background: transparent;
-  margin-top: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5em;
-}
-
-.submit-btn.invalid {
-  animation: shake 0.5s;
-  animation-iteration-count: infinite;
-}
-
-@keyframes shake {
-  0% {
-    transform: translate(1px, 1px);
-  }
-  10% {
-    transform: translate(-1px, -2px);
-  }
-  20% {
-    transform: translate(-3px, 0px);
-  }
-  30% {
-    transform: translate(3px, 2px);
-  }
-  40% {
-    transform: translate(1px, -1px);
-  }
-  50% {
-    transform: translate(-1px, 2px);
-  }
-  60% {
-    transform: translate(-3px, 1px);
-  }
-  70% {
-    transform: translate(3px, 1px);
-  }
-  80% {
-    transform: translate(-1px, -1px);
-  }
-  90% {
-    transform: translate(1px, 2px);
-  }
-  100% {
-    transform: translate(1px, -2px);
-  }
-}
-
-.submit-btn:hover {
-  transform: scale(1.1);
+.register-submit-button {
+  letter-spacing: 0.3em;
+  width: -webkit-fill-available;
 }
 
 .email__wrong {

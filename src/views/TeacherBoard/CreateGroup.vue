@@ -1,12 +1,12 @@
 <template>
   <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
   <div class="container">
-    <div class="container-sm login-form d-flex flex-column mt-5">
+    <div class="container-sm d-flex flex-column mt-5">
       <Form
         @submit="handleCreateGroup"
-        :validation-schema="schema"
         @invalid-submit="onInvalidSubmit"
-        v-slot="{ isSubmitting }"
+        @change="onChange"
+        :validation-schema="schema"
         :initial-values="formValues"
       >
         <TextInput
@@ -17,10 +17,13 @@
           placeholder="Введите название группы (до 70 символов)"
           success-message="Ok!"
         />
-
-        <button :disabled="isSubmitting" :class="{ submitting: isSubmitting }" class="submit-btn" type="submit">
+        <SubmitButton v-if="!isLoading" class="create-group__submit-btn" buttonType="submit">
           Подтвердить
-        </button>
+        </SubmitButton>
+        <SubmitButton v-if="isLoading" :buttonDisabled="true">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Загружается...
+        </SubmitButton>
       </Form>
       <p v-if="isError">Произошла ошибка при создании группы, возможно группа с таким названием уже существует</p>
     </div>
@@ -34,22 +37,30 @@ import { Form } from "vee-validate";
 import TextInput from "@/components/TextInput.vue";
 import { computed, defineComponent, ref } from "vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
+import SubmitButton from "@/components/SubmitButton.vue";
 import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default defineComponent({
   name: "CreateGroup",
-  components: { SidebarMenu, TextInput, Form },
+  components: { SidebarMenu, TextInput, Form, SubmitButton },
   setup() {
     const { state, dispatch } = useStore();
     const isLoading = computed(() => state.isLoading);
     const isError = ref(false);
+
     const onInvalidSubmit = () => {
-      const submitBtn: any = document.querySelector(".submit-btn");
-      submitBtn.classList.add("invalid");
-      setTimeout(() => {
-        submitBtn.classList.remove("invalid");
-      }, 1000);
+      const submitBtn = document.querySelector(".create-group__submit-btn");
+      if (submitBtn) {
+        submitBtn.classList.add("invalid");
+        setTimeout(() => {
+          submitBtn.classList.remove("invalid");
+        }, 1000);
+      }
+    };
+
+    const onChange = () => {
+      state.isLoading = false;
     };
 
     const schema = Yup.object().shape({
@@ -70,6 +81,7 @@ export default defineComponent({
     return {
       schema,
       isError,
+      onChange,
       isLoading,
       groupName: "",
       onInvalidSubmit,
@@ -89,93 +101,5 @@ form {
   width: 500px;
   margin: 0px auto;
   padding-bottom: 60px;
-}
-.submit-btn,
-.register-btn {
-  background: var(--primary-color);
-  outline: none;
-  border: none;
-  color: #fff;
-  font-size: 18px;
-  padding: 10px 15px;
-  display: block;
-  width: 100%;
-  border-radius: 7px;
-  margin-top: 40px;
-  transition: transform 0.3s ease-in-out;
-  cursor: pointer;
-  text-decoration: none;
-}
-.register-btn {
-  background: var(--success-color);
-}
-.submit-btn.invalid {
-  animation: shake 0.5s;
-  animation-iteration-count: infinite;
-}
-.login__wrong {
-  color: var(--error-color);
-  font-size: 15px;
-  font-family: Noto Sans, Arial, sans-serif;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-@keyframes shake {
-  0% {
-    transform: translate(1px, 1px);
-  }
-  10% {
-    transform: translate(-1px, -2px);
-  }
-  20% {
-    transform: translate(-3px, 0px);
-  }
-  30% {
-    transform: translate(3px, 2px);
-  }
-  40% {
-    transform: translate(1px, -1px);
-  }
-  50% {
-    transform: translate(-1px, 2px);
-  }
-  60% {
-    transform: translate(-3px, 1px);
-  }
-  70% {
-    transform: translate(3px, 1px);
-  }
-  80% {
-    transform: translate(-1px, -1px);
-  }
-  90% {
-    transform: translate(1px, 2px);
-  }
-  100% {
-    transform: translate(1px, -2px);
-  }
-}
-.submit-btn:hover,
-.register-btn:hover {
-  transform: scale(1.1);
-}
-button.submitting::after {
-  content: "";
-  position: absolute;
-  width: 1rem;
-  height: 1rem;
-  top: calc(50% - 0.5rem);
-  left: 1.5rem;
-  border-radius: 2em;
-  border-color: transparent transparent black black;
-  border-style: solid;
-  border-width: 0.15em;
-  animation: spinner-rotation 0.75s infinite;
-  animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-@keyframes spinner-rotation {
-  to {
-    transform: rotate(360deg);
-  }
 }
 </style>

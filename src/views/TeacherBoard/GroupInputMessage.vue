@@ -8,17 +8,19 @@
             v-tippy="'Прикрепить аудио файл формата mp3, ogg, wav до 33 мб'"
             for="inputGroupFile"
             class="form-label"
-            ><em class="bi bi-file-earmark-music inputfile-icon">
+          >
+            <em class="bi bi-file-earmark-music inputfile-icon">
               <span class="inputfile-description">{{ this.fileNameAndSize }}</span>
             </em>
-            <p class="inputfile-alert" v-if="errorAlert !== ''">{{ this.errorAlert }}</p></label
-          >
+            <p class="inputfile-alert" v-if="errorAlert !== ''">{{ this.errorAlert }}</p>
+          </label>
           <input
+            @input="chooseFile"
+            @change="onChange"
             data-input="false"
             iconName="bi bi-file-earmark-music"
             type="file"
             ref="fileInput"
-            @input="chooseFile"
             class="form-control inputfile"
             id="inputGroupFile"
             aria-describedby="inputGroupFileAddon"
@@ -27,39 +29,46 @@
         </div>
       </div>
     </form>
-    <b-button v-if="!isLoading" class="input-form--submit-button mb-3 mt-1" @click="handleCKeditor" type="submit" pill
-      >Сохранить</b-button
+    <SubmitButton
+      v-if="!isLoading"
+      class="input-form__submit-button mb-3 mt-1"
+      buttonType="submit"
+      @click="handleCKeditor"
     >
-    <button v-if="isLoading" class="btn input-form__submit-button__spinner submit-btn" type="submit" disabled>
+      Сохранить
+    </SubmitButton>
+    <SubmitButton v-if="isLoading" class="btn input-form__submit-button__spinner" :buttonDisabled="true">
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Загружается...
-    </button>
+    </SubmitButton>
   </div>
   <GroupMessages @updateMessage="handleUpdateMessage" />
 </template>
 
 <script>
 import state from "@/store/state";
+import { mapActions, mapState } from "vuex";
 import UploadAdapter from "@/utils/uploadAdapter";
 import { defineComponent, onMounted, ref } from "vue";
-import { mapActions, mapState } from "vuex";
-import CkEditor from "@/components/CkEditorCustom.vue";
-import GroupMessages from "@/views/TeacherBoard/GroupMessages.vue";
 import getTitleAndBody from "@/utils/getTitleAndBody";
+import CkEditor from "@/components/CkEditorCustom.vue";
+import SubmitButton from "@/components/SubmitButton.vue";
+import GroupMessages from "@/views/TeacherBoard/GroupMessages.vue";
 
 export default defineComponent({
   name: "GroupInputMessage",
-  components: {
-    CkEditor,
-    GroupMessages,
-  },
+  components: { CkEditor, GroupMessages, SubmitButton },
 
   setup() {
     const editorData = ref("");
     onMounted(() => {
       document.body.style.backgroundColor = "white";
     });
+    const onChange = () => {
+      state.isLoading = false;
+    };
     return {
+      onChange,
       editorData,
     };
   },
@@ -166,21 +175,14 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-button.input-form__submit-button__spinner {
-  width: 200px;
-  background-color: var(--hover-color);
-  color: white;
-  border-radius: 24px;
-  border-color: black;
-  font-weight: bold;
+<style lang="scss" scoped>
+.input-form__submit-button {
+  width: 300px;
+  &__spinner {
+    width: 300px !important;
+  }
 }
 
-button.input-form--submit-button {
-  width: 150px;
-  background-color: var(--hover-color);
-  color: white;
-}
 .inputfile {
   width: 0.1px;
   height: 0.1px;
@@ -194,10 +196,11 @@ button.input-form--submit-button {
   font-weight: 700;
   display: inline-block;
   cursor: pointer;
+  &:hover {
+    color: blue;
+  }
 }
-.inputfile-icon:hover {
-  color: blue;
-}
+
 .inputfile-description {
   font-size: 18px;
   color: chocolate;

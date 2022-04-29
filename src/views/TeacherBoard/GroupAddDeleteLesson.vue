@@ -2,13 +2,13 @@
   <div class="container">
     <h4>Добавить или удалить урок из этой группы</h4>
     <div class="button-container">
-      <button
+      <SubmitButton
         v-if="rowIsSelected"
-        v-on:click="handleAddLessonToGroup(), $toast('Добавлено!')"
-        class="btn btn-danger m-1"
+        v-on:click="handleAddLessonToGroup(), $toast('Сделано!')"
+        class="add-delete-lesson-button m-2"
       >
         Сохранить
-      </button>
+      </SubmitButton>
     </div>
     <div style="height: 100%; box-sizing: border-box">
       <ag-grid-vue
@@ -25,24 +25,20 @@
         @row-selected="onRowSelected"
         :enableCellChangeFlash="true"
       >
-        >
       </ag-grid-vue>
     </div>
   </div>
 </template>
 
 <script>
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { AgGridVue } from "ag-grid-vue3";
 import { computed, defineComponent } from "vue";
 import { mapActions, mapState, useStore } from "vuex";
+import SubmitButton from "@/components/SubmitButton.vue";
 
 export default defineComponent({
   name: "GroupLesson",
-  components: {
-    AgGridVue,
-  },
+  components: { AgGridVue, SubmitButton },
 
   setup() {
     const store = useStore();
@@ -66,9 +62,7 @@ export default defineComponent({
       return currentGroupLessons && currentGroupLessons.includes(lessonId);
     };
 
-    function dateFormatter(params) {
-      return new Date(params.value).toLocaleString();
-    }
+    const dateFormatter = (params) => new Date(params.value).toLocaleString();
 
     return {
       editType: "",
@@ -225,18 +219,16 @@ export default defineComponent({
 <style scoped>
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-alpine.css";
-.items-list {
-  list-style: none;
+
+.button-container {
+  min-height: 70px;
 }
-.list-group-item-success {
-  background-color: var(--bairro-alto-logo-color);
+.add-delete-lesson-button {
+  width: auto;
 }
 .ag-theme-alpine {
   width: 100%;
   height: 800px;
   justify-content: center;
-}
-.button-container {
-  min-height: 60px;
 }
 </style>
