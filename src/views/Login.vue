@@ -34,13 +34,15 @@
       <span v-else-if="isWrong" class="login__wrong"
         >Не правильное имя пользователя или пароль! Попробуйте ещё раз!</span
       >
-      <button v-if="!isLoading" class="submit-btn" type="submit">Подтвердить</button>
-      <button v-if="isLoading" class="btn submit-btn submit-btn--disabled" type="submit" disabled>
+      <SubmitButton v-if="!isLoading" class="login-submit-button" buttonType="submit">Подтвердить</SubmitButton>
+      <SubmitButton v-if="isLoading" class="login-submit-button__disabled" :buttonDisabled="true">
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Загружается...
-      </button>
+      </SubmitButton>
       <router-link :to="{ name: 'Register' }" class="text-decoration-none">
-        <button v-if="!isLoading" class="register-btn d-flex" type="button">Зарегистрироваться</button>
+        <SubmitButton v-if="!isLoading" class="register-button d-flex" buttonType="button"
+          >Зарегистрироваться</SubmitButton
+        >
       </router-link>
     </Form>
   </div>
@@ -52,6 +54,7 @@ import { useStore } from "vuex";
 import { Form } from "vee-validate";
 import { useRouter } from "vue-router";
 import TextInput from "@/components/TextInput.vue";
+import SubmitButton from "@/components/SubmitButton.vue";
 import { IUserError, UserLoginData } from "@/types/interfaces";
 import { computed, defineComponent, onMounted, ref } from "vue";
 import ShowHidePassword from "@/components/ShowHidePassword.vue";
@@ -62,6 +65,7 @@ export default defineComponent({
   components: {
     TextInput,
     Form,
+    SubmitButton,
     ShowHidePassword,
     EmailValidationAnimation,
   },
@@ -91,11 +95,13 @@ export default defineComponent({
     onMounted(() => redirectToUserPage());
 
     const onInvalidSubmit = () => {
-      const submitBtn: HTMLElement = document.querySelector(".submit-btn") as HTMLElement;
-      submitBtn.classList.add("invalid");
-      setTimeout(() => {
-        submitBtn.classList.remove("invalid");
-      }, 1000);
+      const submitBtn = document.querySelector(".login-submit-button");
+      if (submitBtn) {
+        submitBtn.classList.add("invalid");
+        setTimeout(() => {
+          submitBtn.classList.remove("invalid");
+        }, 1000);
+      }
     };
 
     const onChange = () => {
@@ -162,89 +168,21 @@ form {
   border-style: ridge;
 }
 
-.submit-btn,
-.register-btn {
-  display: inline-block;
-  outline: none;
-  font-size: 18px;
-  font-weight: 600;
-  width: 100%;
-  cursor: pointer;
-  text-decoration: none;
-  justify-content: center;
-  padding: 1rem 1.6rem 1rem 2.5rem;
-  color: var(--hover-color);
-  border: 1px solid var(--hover-color);
-  border-radius: 1.2rem;
-  -webkit-transition: border-color 0.2s;
-  transition: border-color 0.2s;
-  line-height: normal;
-  background: transparent;
-  margin-top: 10px;
-  text-transform: uppercase;
-}
-.submit-btn {
+.login-submit-button {
   letter-spacing: 0.5em;
   width: -webkit-fill-available;
 }
-.register-btn {
+
+.register-button {
   letter-spacing: 0.2em;
   width: -webkit-fill-available;
 }
 
-.submit-btn.invalid {
-  animation: shake 0.5s;
-  animation-iteration-count: infinite;
-}
 .login__wrong {
   color: var(--error-color);
   font-size: 15px;
   font-family: Noto Sans, Arial, sans-serif;
   font-weight: bold;
   margin-bottom: 10px;
-}
-
-@keyframes shake {
-  0% {
-    transform: translate(1px, 1px);
-  }
-  10% {
-    transform: translate(-1px, -2px);
-  }
-  20% {
-    transform: translate(-3px, 0px);
-  }
-  30% {
-    transform: translate(3px, 2px);
-  }
-  40% {
-    transform: translate(1px, -1px);
-  }
-  50% {
-    transform: translate(-1px, 2px);
-  }
-  60% {
-    transform: translate(-3px, 1px);
-  }
-  70% {
-    transform: translate(3px, 1px);
-  }
-  80% {
-    transform: translate(-1px, -1px);
-  }
-  90% {
-    transform: translate(1px, 2px);
-  }
-  100% {
-    transform: translate(1px, -2px);
-  }
-}
-
-.submit-btn:hover,
-.register-btn:hover {
-  transform: scale(1.1);
-}
-.submit-btn:disabled {
-  font-size: 17px;
 }
 </style>
