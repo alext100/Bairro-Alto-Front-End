@@ -26,11 +26,14 @@ export default defineComponent({
     },
 
     setShortDescription(text: string, max: number) {
-      if (text && text.length > max) {
-        text.slice(0, max);
-      }
       const regex = /(<([^>]+)>)/gi;
-      return text.replace(regex, "");
+      if (text && text.length > max) {
+        return text.replace(regex, "").slice(0, max);
+      }
+      if (text) {
+        return text.replace(regex, "");
+      }
+      return "";
     },
   },
 });
