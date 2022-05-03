@@ -5,6 +5,7 @@ import { TippyPlugin } from "tippy.vue";
 import { cleanup } from "@testing-library/vue";
 import TextInput from "@/components/TextInput.vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
+import SubmitButton from "@/components/SubmitButton.vue";
 import CreateGroup from "@/views/TeacherBoard/CreateGroup.vue";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { enableAutoUnmount, mount, flushPromises } from "@vue/test-utils";
@@ -21,7 +22,7 @@ const wrapperOptions = {
   global: {
     plugins: [store, TippyPlugin],
   },
-  components: { SidebarMenu, TextInput, Form },
+  components: { SidebarMenu, SubmitButton, TextInput, Form },
 };
 
 const router = createRouterMock({});
