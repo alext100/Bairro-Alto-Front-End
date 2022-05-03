@@ -36,20 +36,13 @@ afterEach(() => {
 });
 enableAutoUnmount(afterEach);
 
-describe("Given a Materials page", () => {
+describe("Given a News page", () => {
   describe("When it is rendered", () => {
     test("Then the backgroundColor should be changed to 'white' on component mounted", () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const wrapper = mount(News, wrapperOptions);
 
       expect(document.body.style.backgroundColor).toBe("white");
-    });
-
-    test("Then it should render title", () => {
-      const wrapper = mount(News, wrapperOptions);
-
-      const title = wrapper.find(".news-title");
-
-      expect(title.exists()).toBe(true);
     });
 
     test("Then it should render FullCard component", () => {
