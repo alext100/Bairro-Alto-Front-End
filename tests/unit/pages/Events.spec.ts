@@ -6,6 +6,14 @@ import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
 
+jest.mock("@/composables/useSplitText", () => ({
+  __esModule: true,
+  default: () => ({
+    ScrollTrigger: jest.fn(),
+    SplitText: jest.fn(),
+  }),
+}));
+
 const store = createStore({
   state() {
     return state;
