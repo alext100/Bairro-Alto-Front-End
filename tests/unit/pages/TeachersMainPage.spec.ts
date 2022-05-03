@@ -50,7 +50,7 @@ describe("Given a Teachers component of the Main page", () => {
       });
 
       const carousel = wrapper.find('[data-test="teachers-carousel"]');
-      const teachersCards = wrapper.findAll(".teacher__body");
+      const teachersCards = wrapper.findAll(".main-page__teachers__body");
 
       expect(carousel.exists()).toBe(true);
       expect(teachersCards[1].html()).toContain("Виктория");
