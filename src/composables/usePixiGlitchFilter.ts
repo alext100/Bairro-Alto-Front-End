@@ -77,7 +77,7 @@ const usePixiGlitchFilter = (
         filter = new filters.GlitchFilter(filterOptions);
         container.filters = [filter];
 
-        if (imageToReplace.value && cardCoverImage) {
+        if (imageToReplace.value) {
           const spriteImageUrl = `${cardCoverImage?.getAttribute(cardCoverImageSrc)}`;
           if (cardCoverImageSrc === "src") {
             const pixiSprite = PIXI.Sprite.from(spriteImageUrl);
