@@ -119,7 +119,7 @@ export default defineComponent({
 }
 
 @media (max-width: 768px) {
-  .teacher__body {
+  .main-page__teachers__body {
     flex-direction: column;
   }
 }
