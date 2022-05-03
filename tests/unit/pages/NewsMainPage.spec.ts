@@ -49,7 +49,7 @@ describe("Given a News component of the Main page", () => {
       });
 
       const carousel = wrapper.find('[data-test="news-carousel"]');
-      const newsCards = wrapper.findAll(".news__body");
+      const newsCards = wrapper.findAll(".main-page-news__news-text");
 
       expect(carousel.exists()).toBe(true);
       expect(newsCards[0].html()).toContain("News number four");
