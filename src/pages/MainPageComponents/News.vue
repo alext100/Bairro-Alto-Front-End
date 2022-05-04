@@ -15,7 +15,6 @@
             <div class="p-0 mb-5 main-page-news__news-text" v-html="news?.body"></div>
           </n-card>
         </div>
-
         <template #arrow="{ prev, next }">
           <div class="custom-arrow">
             <button v-tippy="'Предыдущая'" type="button" class="custom-arrow--left" @click="prev">
@@ -38,7 +37,7 @@
         </template>
       </n-carousel>
       <router-link to="/news" class="main-page-news__features-item">
-        <span>Все новости...</span>
+        <span class="main-page-news__more-details">Все новости...</span>
       </router-link>
     </div>
   </div>
@@ -80,6 +79,12 @@ export default defineComponent({
   }
   &__features-title {
     color: var(--bairro-alto-logo-color);
+  }
+  &__more-details {
+    color: var(--bairro-alto-logo-color);
+    &:hover {
+      color: var(--hover-color);
+    }
   }
 }
 .custom-arrow {
