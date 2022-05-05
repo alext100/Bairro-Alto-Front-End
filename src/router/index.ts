@@ -22,6 +22,8 @@ import WelcomePage from "@/pages/Welcome.vue";
 import CheckConfirmationEmail from "@/pages/CheckConfirmationEmail.vue";
 import { adminProtectedRoute, studentProtectedRoute, teacherProtectedRoute } from "./protectedRoute";
 
+const NotFound = () => import("@/pages/NotFound.vue");
+
 const AdminBoard = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AdminBoard.vue");
 const CMS = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/CMS.vue");
 const AdminAllGroups = () => import(/* webpackChunkName: "admin-board-chunk" */ "@/views/AdminBoard/AllGroups.vue");
@@ -260,6 +262,7 @@ const routes: Array<RouteRecordRaw> = [
     component: AdminSettings,
     beforeEnter: adminProtectedRoute,
   },
+  { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
 ];
 
 const router = createRouter({
