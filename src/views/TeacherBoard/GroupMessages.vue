@@ -14,9 +14,9 @@
         >
           <h2 class="text-center card-title text-uppercase mb-1">{{ homeworkToDo.title }}</h2>
           <div class="m-2 card-text">
-            <v-zoomer :mouseWheelToZoom="false" :maxScale="2" pivot="cursor" :limitTranslation="false">
+            <div v-viewer="{ toolbar: true }">
               <div v-html="homeworkToDo.message"></div>
-            </v-zoomer>
+            </div>
           </div>
           <div v-if="homeworkToDo.audios !== []">
             <div v-for="audio in homeworkToDo.audios || []" :key="audio">
