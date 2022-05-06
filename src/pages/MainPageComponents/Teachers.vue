@@ -63,7 +63,7 @@ export default defineComponent({
     color: var(--bairro-alto-logo-color);
   }
   &__body {
-    font-size: 17px;
+    font-size: 21px;
     display: flex;
   }
 }
