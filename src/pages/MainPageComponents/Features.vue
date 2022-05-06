@@ -76,7 +76,6 @@ export default defineComponent({
     color: var(--bairro-alto-logo-color);
   }
   &__text {
-    line-height: 1.3;
     color: #000;
     text-align: justify;
     text-justify: inter-word;
