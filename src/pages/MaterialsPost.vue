@@ -17,13 +17,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
-import { Post } from "@/types/interfaces";
 import { NCard } from "naive-ui";
+import { useHead } from "@vueuse/head";
+import { Post } from "@/types/interfaces";
 import { useRoute } from "vue-router";
 import Footer from "@/components/Footer.vue";
 import usePixiGlitchFilter from "@/composables/usePixiGlitchFilter";
+import { computed, ComputedRef, onBeforeMount, onMounted, reactive } from "vue";
 
 const route = useRoute();
 const { state, dispatch } = useStore();
@@ -36,6 +37,20 @@ onMounted(() => {
 const postToShow: ComputedRef<{ title: string; body: string }[]> = computed(() =>
   state.webContent?.posts?.filter((post: Post) => post?.id === route.params.id)
 );
+
+const siteData = reactive({
+  title: `${postToShow.value[0].title}` || `Материалы`,
+  description: `Школа португальского языка в Санкт-Петербурге Байрру Алту, Bairro Alto`,
+});
+useHead({
+  title: computed(() => siteData.title),
+  meta: [
+    {
+      name: `description`,
+      content: computed(() => siteData.description),
+    },
+  ],
+});
 
 usePixiGlitchFilter("figure.image img", postToShow?.value[0]?.body, "srcset");
 </script>
