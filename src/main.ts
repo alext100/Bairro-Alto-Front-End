@@ -1,26 +1,30 @@
-import { createApp } from "vue";
-import BootstrapVue3 from "bootstrap-vue-3";
-import DKToast from "vue-dk-toast";
 import CKEditor from "@ckeditor/ckeditor5-vue";
-import Particles from "particles.vue3";
-import VueMobileDetection from "vue-mobile-detection";
-import VueKinesis from "vue-kinesis";
+import "@fortawesome/fontawesome-free/css/all.css";
+import { createHead } from "@vueuse/head";
 import { MotionPlugin } from "@vueuse/motion";
-import VueNextSelect from "vue-next-select";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import BootstrapVue3 from "bootstrap-vue-3";
+import "bootstrap/dist/css/bootstrap.css";
+import "boxicons/css/boxicons.min.css";
+import Particles from "particles.vue3";
 import { TippyPlugin } from "tippy.vue";
 import VueViewer from "v-viewer";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import "viewerjs/dist/viewer.css";
+import { createApp } from "vue";
+import DKToast from "vue-dk-toast";
+import VueKinesis from "vue-kinesis";
+import VueMobileDetection from "vue-mobile-detection";
+import VueNextSelect from "vue-next-select";
+import "vue-next-select/dist/index.min.css";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import "viewerjs/dist/viewer.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "@fortawesome/fontawesome-free/css/all.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "boxicons/css/boxicons.min.css";
-import "vue-next-select/dist/index.min.css";
+
+const head = createHead();
 
 createApp(App)
+  .use(head)
   .use(DKToast, {
     duration: 2000,
     positionY: "bottom",

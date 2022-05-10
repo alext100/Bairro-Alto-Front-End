@@ -78,11 +78,26 @@
 import * as Yup from "yup";
 import { NH2 } from "naive-ui";
 import { useStore } from "vuex";
-import { computed, ComputedRef, ref } from "vue";
 import { Form } from "vee-validate";
+import { useHead } from "@vueuse/head";
 import Footer from "@/components/Footer.vue";
 import TextInput from "@/components/TextInput.vue";
 import { UserPaymentData } from "@/types/interfaces";
+import { computed, ComputedRef, reactive, ref } from "vue";
+
+const siteData = reactive({
+  title: `Оплата обучения`,
+  description: `Школа португальского языка в Санкт-Петербурге Байрру Алту, Bairro Alto`,
+});
+useHead({
+  title: computed(() => siteData.title),
+  meta: [
+    {
+      name: `description`,
+      content: computed(() => siteData.description),
+    },
+  ],
+});
 
 const { dispatch } = useStore();
 

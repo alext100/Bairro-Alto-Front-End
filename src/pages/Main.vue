@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import { useStore } from "vuex";
+import { useHead } from "@vueuse/head";
 import { Post } from "@/types/interfaces";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
@@ -26,9 +27,22 @@ import getTitleAndBody from "@/utils/getTitleAndBody";
 import News from "@/pages/MainPageComponents/News.vue";
 import Teachers from "@/pages/MainPageComponents/Teachers.vue";
 import Features from "@/pages/MainPageComponents/Features.vue";
-import { computed, ComputedRef, onMounted } from "vue";
+import { computed, ComputedRef, onMounted, reactive } from "vue";
 
 const { state, dispatch } = useStore();
+const siteData = reactive({
+  title: `Bairro Alto`,
+  description: `Школа португальского языка в Санкт-Петербурге Байрру Алту, Bairro Alto`,
+});
+useHead({
+  title: computed(() => siteData.title),
+  meta: [
+    {
+      name: `description`,
+      content: computed(() => siteData.description),
+    },
+  ],
+});
 
 onMounted(async () => {
   await dispatch("getWebContent");

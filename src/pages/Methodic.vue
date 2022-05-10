@@ -10,7 +10,22 @@ import { useStore } from "vuex";
 import { Post } from "@/types/interfaces";
 import Footer from "@/components/Footer.vue";
 import getTitleAndBody from "@/utils/getTitleAndBody";
-import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
+import { computed, ComputedRef, onBeforeMount, onMounted, reactive } from "vue";
+import { useHead } from "@vueuse/head";
+
+const siteData = reactive({
+  title: `Методика`,
+  description: `Школа португальского языка в Санкт-Петербурге Байрру Алту, Bairro Alto`,
+});
+useHead({
+  title: computed(() => siteData.title),
+  meta: [
+    {
+      name: `description`,
+      content: computed(() => siteData.description),
+    },
+  ],
+});
 
 const { state, dispatch } = useStore();
 

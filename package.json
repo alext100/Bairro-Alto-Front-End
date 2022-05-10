@@ -51,6 +51,7 @@
     "@fortawesome/fontawesome-free": "^6.1.1",
     "@vicons/ionicons5": "^0.12.0",
     "@vueuse/core": "^7.6.0",
+    "@vueuse/head": "^0.7.6",
     "@vueuse/motion": "^2.0.0-beta.12",
     "@vueuse/shared": "^8.0.0",
     "ag-grid-community": "^27.1.0",

@@ -20,11 +20,12 @@
 import { useStore } from "vuex";
 import { NCard, NH1 } from "naive-ui";
 import { useRoute } from "vue-router";
+import { useHead } from "@vueuse/head";
 import { Post } from "@/types/interfaces";
 import Footer from "@/components/Footer.vue";
 import getTitleAndBody from "@/utils/getTitleAndBody";
 import usePixiGlitchFilter from "@/composables/usePixiGlitchFilter";
-import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
+import { computed, ComputedRef, onBeforeMount, onMounted, reactive } from "vue";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 const route = useRoute();
@@ -41,6 +42,20 @@ const filteredPost: ComputedRef<Post[]> = computed(() =>
 const postBody: ComputedRef<{ title: string; body: string }> = computed(() =>
   filteredPost.value.length > 0 ? getTitleAndBody(filteredPost?.value[0]?.body) : { title: "", body: "" }
 );
+
+const siteData = reactive({
+  title: `${filteredPost.value[0].title}` || `Спецкурсы`,
+  description: `Школа португальского языка в Санкт-Петербурге Байрру Алту, Bairro Alto`,
+});
+useHead({
+  title: computed(() => siteData.title),
+  meta: [
+    {
+      name: `description`,
+      content: computed(() => siteData.description),
+    },
+  ],
+});
 
 usePixiGlitchFilter("figure.image img", postBody?.value?.body, "src");
 </script>
