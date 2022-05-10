@@ -22,6 +22,22 @@
 import { useStore } from "vuex";
 import { NCard } from "naive-ui";
 import { useRoute } from "vue-router";
+import { useHead } from "@vueuse/head";
+import { computed, reactive } from "vue";
+
+const siteData = reactive({
+  title: `Проверить email`,
+  description: `Школа португальского языка в Санкт-Петербурге Байрру Алту, Bairro Alto`,
+});
+useHead({
+  title: computed(() => siteData.title),
+  meta: [
+    {
+      name: `description`,
+      content: computed(() => siteData.description),
+    },
+  ],
+});
 
 const route = useRoute();
 const { dispatch } = useStore();
