@@ -22,11 +22,26 @@
 </template>
 
 <script setup lang="ts">
-import { Post } from "@/types/interfaces";
-import { computed, ComputedRef, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
-import FullCard from "@/components/FullCard.vue";
+import { useHead } from "@vueuse/head";
+import { Post } from "@/types/interfaces";
 import Footer from "@/components/Footer.vue";
+import FullCard from "@/components/FullCard.vue";
+import { computed, ComputedRef, onBeforeMount, onMounted, reactive } from "vue";
+
+const siteData = reactive({
+  title: `Новости`,
+  description: `Школа португальского языка в Санкт-Петербурге Байрру Алту, Bairro Alto`,
+});
+useHead({
+  title: computed(() => siteData.title),
+  meta: [
+    {
+      name: `description`,
+      content: computed(() => siteData.description),
+    },
+  ],
+});
 
 const { state, dispatch } = useStore();
 
