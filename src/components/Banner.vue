@@ -44,7 +44,7 @@ export default defineComponent({
 #tsparticles-materials {
   position: absolute;
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 .particles-container {
   justify-content: center;
