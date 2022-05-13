@@ -1,6 +1,6 @@
 <template>
   <div class="container ck-content">
-    <h2 class="mb-4 text-center">TPC:</h2>
+    <n-h2 class="mb-4 text-center">TPC:</n-h2>
     <div class="row">
       <div class="col-xl-12 col-lg-12 cards-container ck-content reverseorder">
         <full-card
@@ -12,7 +12,7 @@
           shadowSize="md"
           :hover="true"
         >
-          <h2 class="text-center card-title text-uppercase mb-1">{{ homeworkToDo.title }}</h2>
+          <n-h3 class="text-center card-title text-uppercase mb-1">{{ homeworkToDo.title }}</n-h3>
           <div class="m-2 card-text">
             <div v-viewer="{ toolbar: true }">
               <div v-html="homeworkToDo.message"></div>
@@ -30,16 +30,19 @@
             </div>
           </div>
           <template v-slot:footer>
-            <span class="text-nowrap text-muted footer"
-              >Создано {{ new Date(homeworkToDo.time).toLocaleString() }}.<span class="font-weight-bold"></span
-              ><b-button pill class="button-edit btn-light" @click="handleEditMessage(homeworkToDo)"
-                ><em class="far fa-edit"></em> </b-button
-              ><b-button
-                pill
+            <span class="text-nowrap text-muted footer">
+              Создано {{ new Date(homeworkToDo.time).toLocaleString() }}.
+              <span class="font-weight-bold"> </span>
+              <button v-tippy="'Редактировать'" class="button-edit btn-light" @click="handleEditMessage(homeworkToDo)">
+                <em class="far fa-edit"></em>
+              </button>
+              <button
+                v-tippy="'Удалить'"
                 class="button-delete align-self-center btn-light"
-                @click="handleDeleteMessage(homeworkToDo.time), $toast('Сообщение удалено')"
-                ><em class="fa fa-trash-alt"></em>
-              </b-button>
+                @click="handleDeleteMessage(homeworkToDo.time), $toast('Удалено')"
+              >
+                <em class="fa fa-trash-alt"></em>
+              </button>
             </span>
           </template>
         </full-card>
@@ -49,6 +52,7 @@
 </template>
 
 <script lang="ts">
+import { NH2, NH3 } from "naive-ui";
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
 import FullCard from "@/components/FullCard.vue";
@@ -61,6 +65,8 @@ interface HomeWorks {
 export default defineComponent({
   name: "Messages",
   components: {
+    NH2,
+    NH3,
     FullCard,
   },
   emits: ["updateMessage"],
@@ -99,7 +105,8 @@ export default defineComponent({
 .list-group-item-success {
   background-color: var(--bairro-alto-logo-color);
 }
-.button-delete {
+.button-delete,
+.button-edit {
   font-size: 16px;
   background-color: transparent;
   border: transparent;
