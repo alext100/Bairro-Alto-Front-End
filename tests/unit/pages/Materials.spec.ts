@@ -1,5 +1,6 @@
-import { createStore } from "vuex";
 import { NCard } from "naive-ui";
+import { createStore } from "vuex";
+import { createHead } from "@vueuse/head";
 import { TippyPlugin } from "tippy.vue";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
@@ -10,6 +11,8 @@ import VueMobileDetection from "vue-mobile-detection";
 import { mount, enableAutoUnmount } from "@vue/test-utils";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
+
+const head = createHead();
 
 jest.mock("@/composables/useSplitText", () => ({
   __esModule: true,
@@ -29,7 +32,7 @@ store.dispatch = jest.fn();
 
 const wrapperOptions = {
   global: {
-    plugins: [store, MotionPlugin, VueMobileDetection, TippyPlugin],
+    plugins: [store, MotionPlugin, VueMobileDetection, TippyPlugin, head],
     stubs: {
       Particles: { template: "<i />" },
     },
