@@ -1,10 +1,13 @@
-import CheckConfirmationEmail from "@/pages/CheckConfirmationEmail.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
-import { createStore } from "vuex";
-import { createRouterMock, getRouter, injectRouterMock } from "vue-router-mock";
 import { NCard } from "naive-ui";
+import { createStore } from "vuex";
+import { createHead } from "@vueuse/head";
 import { cleanup } from "@testing-library/vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import CheckConfirmationEmail from "@/pages/CheckConfirmationEmail.vue";
+import { createRouterMock, getRouter, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
+
+const head = createHead();
 
 const store = createStore({
   state() {
@@ -16,7 +19,7 @@ store.dispatch = jest.fn();
 
 const wrapperOptions = {
   global: {
-    plugins: [store],
+    plugins: [store, head],
   },
   components: { NCard },
 };
