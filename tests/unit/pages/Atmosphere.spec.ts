@@ -1,10 +1,13 @@
-import Atmosphere from "@/pages/Atmosphere.vue";
-import Footer from "@/components/Footer.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
+import { createHead } from "@vueuse/head";
+import Footer from "@/components/Footer.vue";
 import { cleanup } from "@testing-library/vue";
+import Atmosphere from "@/pages/Atmosphere.vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
+
+const head = createHead();
 
 const store = createStore({
   state() {
@@ -16,7 +19,7 @@ store.dispatch = jest.fn();
 
 const wrapperOptions = {
   global: {
-    plugins: [store],
+    plugins: [store, head],
   },
 };
 
