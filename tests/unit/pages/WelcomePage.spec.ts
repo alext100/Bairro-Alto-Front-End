@@ -1,10 +1,13 @@
-import WelcomePage from "@/pages/Welcome.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
-import { createStore } from "vuex";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { NCard } from "naive-ui";
+import { createStore } from "vuex";
+import { createHead } from "@vueuse/head";
+import WelcomePage from "@/pages/Welcome.vue";
 import { cleanup } from "@testing-library/vue";
+import { enableAutoUnmount, mount } from "@vue/test-utils";
+import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
+
+const head = createHead();
 
 const store = createStore({
   state() {
@@ -17,7 +20,7 @@ store.dispatch = jest.fn();
 const wrapperOptions = {
   global: {
     stubs: { RouterLink: false },
-    plugins: [store],
+    plugins: [store, head],
   },
   components: { NCard },
 };

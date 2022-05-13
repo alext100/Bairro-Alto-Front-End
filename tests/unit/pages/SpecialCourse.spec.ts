@@ -1,6 +1,7 @@
 import "jest-canvas-mock";
 import { createStore } from "vuex";
 import { NCard, NH1 } from "naive-ui";
+import { createHead } from "@vueuse/head";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
 import { cleanup } from "@testing-library/vue";
@@ -8,6 +9,8 @@ import SpecialCourse from "@/pages/SpecialCourse.vue";
 import { mount, enableAutoUnmount } from "@vue/test-utils";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
+
+const head = createHead();
 
 jest.mock("@/composables/usePixiGlitchFilter");
 
@@ -21,7 +24,7 @@ store.dispatch = jest.fn();
 
 const wrapperOptions = {
   global: {
-    plugins: [store],
+    plugins: [store, head],
   },
   components: { Banner, Footer, NCard, NH1 },
 };

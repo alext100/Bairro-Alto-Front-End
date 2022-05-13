@@ -1,10 +1,13 @@
 import { createStore } from "vuex";
 import Events from "@/pages/Events.vue";
+import { createHead } from "@vueuse/head";
 import Footer from "@/components/Footer.vue";
 import { cleanup } from "@testing-library/vue";
 import { enableAutoUnmount, mount } from "@vue/test-utils";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
+
+const head = createHead();
 
 jest.mock("@/composables/useSplitText", () => ({
   __esModule: true,
@@ -24,7 +27,7 @@ store.dispatch = jest.fn();
 
 const wrapperOptions = {
   global: {
-    plugins: [store],
+    plugins: [store, head],
   },
 };
 
