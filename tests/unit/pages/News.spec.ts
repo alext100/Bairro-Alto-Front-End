@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import News from "@/pages/News.vue";
 import { TippyPlugin } from "tippy.vue";
+import { createHead } from "@vueuse/head";
 import Footer from "@/components/Footer.vue";
 import { MotionPlugin } from "@vueuse/motion";
 import { cleanup } from "@testing-library/vue";
@@ -9,6 +10,8 @@ import VueMobileDetection from "vue-mobile-detection";
 import { mount, enableAutoUnmount } from "@vue/test-utils";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
+
+const head = createHead();
 
 const store = createStore({
   state() {
@@ -19,7 +22,7 @@ const store = createStore({
 
 const wrapperOptions = {
   global: {
-    plugins: [store, MotionPlugin, VueMobileDetection, TippyPlugin],
+    plugins: [store, MotionPlugin, VueMobileDetection, TippyPlugin, head],
     stubs: {
       Particles: { template: "<i />" },
     },
