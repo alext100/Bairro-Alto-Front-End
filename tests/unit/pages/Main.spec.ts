@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import Main from "@/pages/Main.vue";
 import { TippyPlugin } from "tippy.vue";
+import { createHead } from "@vueuse/head";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
 import { MotionPlugin } from "@vueuse/motion";
@@ -13,6 +14,8 @@ import Features from "@/pages/MainPageComponents/Features.vue";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import state from "../../mockedState";
 
+const head = createHead();
+
 const store = createStore({
   state() {
     return state;
@@ -23,7 +26,7 @@ store.dispatch = jest.fn();
 
 const wrapperOptions = {
   global: {
-    plugins: [store, MotionPlugin, VueMobileDetection, TippyPlugin],
+    plugins: [store, MotionPlugin, VueMobileDetection, TippyPlugin, head],
     stubs: {
       Particles: {
         template: "<i />",
