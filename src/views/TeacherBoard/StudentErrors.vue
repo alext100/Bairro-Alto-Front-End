@@ -1,11 +1,13 @@
 <template>
-  <div style="height: 100%">
-    <div class="button-container">
-      <button v-if="rowIsSelected" v-on:click="onBtDelete()" class="btn btn-danger m-1">Удалить</button>
+  <div class="student-errors-container">
+    <div class="student-errors-container__button-container">
+      <button v-if="rowIsSelected" v-on:click="onBtDelete()" class="btn btn-danger m-1" data-test="deleteRowButton">
+        Удалить
+      </button>
     </div>
     <div style="height: 100%; box-sizing: border-box">
       <ag-grid-vue
-        class="ag-theme-alpine"
+        class="student-errors-container__ag-theme-alpine ag-theme-alpine"
         :columnDefs="columnDefs"
         :defaultColDef="defaultColDef"
         :rowData="rowData"
@@ -19,15 +21,12 @@
         :rowSelection="rowSelection"
         @row-selected="onRowSelected"
       >
-        ></ag-grid-vue
-      >
+      </ag-grid-vue>
     </div>
   </div>
 </template>
 
 <script>
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { AgGridVue } from "ag-grid-vue3";
 import { computed, defineComponent } from "vue";
 import { mapActions, mapState, useStore } from "vuex";
@@ -163,12 +162,16 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-alpine.css";
-.ag-theme-alpine {
-  width: 100%;
-  height: 800px;
-  justify-content: center;
-}
-.button-container {
-  min-height: 60px;
+
+.student-errors-container {
+  height: 100%;
+  &__button-container {
+    min-height: 60px;
+  }
+  &__ag-theme-alpine {
+    width: 100%;
+    height: 800px;
+    justify-content: center;
+  }
 }
 </style>
