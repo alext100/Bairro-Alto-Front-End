@@ -6,7 +6,12 @@ module.exports = {
   transformIgnorePatterns: [
     "/node_modules/(?!lodash-es)(?!@ckeditor/*)(?!ckeditor5/*)", // transform all ckeditor dependencies
     "\\.pnp\\.[^\\/]+$",
+    "/node_modules/(?!@ag-grid-community/vue3)", // https://www.ag-grid.com/vue-data-grid/testing/
+    "/node_modules/(?!ag-grid-vue3)",
   ],
+  moduleNameMapper: {
+    "\\.(css|less|scss|sass)$": "<rootDir>src/utils/__mocks__/styleMock.js",
+  },
   collectCoverage: true,
   testEnvironment: "jsdom",
   setupFiles: ["jest-canvas-mock"],

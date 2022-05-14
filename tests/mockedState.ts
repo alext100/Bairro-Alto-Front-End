@@ -6,7 +6,10 @@ const mockedState = {
   isUserAuthenticated: false,
   groups: [],
   userGroups: [],
-  currentGroup: {},
+  currentGroup: {
+    id: "61e4a8945a0d6cd627f65232",
+    groupName: "A1. Вторник / Четверг",
+  },
   loadedUsersFromGroup: [],
   groupErrors: [],
   allUsers: [],
