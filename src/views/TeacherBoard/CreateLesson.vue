@@ -30,10 +30,11 @@
             v-model="mixedGroupedSelected"
             :options="mixedGroupedOptions"
             :aria-describedby="ariaDescribedby"
-          ></b-form-radio-group>
+          >
+          </b-form-radio-group>
         </b-form-group>
         <label for="courses">Выберите название курса</label>
-        <div class="container inputs-container">
+        <div class="container">
           <vue-select
             name="courses"
             placeholder="Курсы:"
@@ -49,7 +50,6 @@
             :empty-model-value="''"
           >
           </vue-select>
-
           <TextInput
             :value="courseName"
             name="name"
@@ -60,24 +60,27 @@
             class="mt-3 mb-5 course-name-field"
           />
         </div>
-
         <form class="row g-3" @submit.prevent="handleAudio">
           <div class="col-auto">
             <div class="input-group">
               <label v-tippy="'Аудио файл формата mp3, ogg, wav до 33 мб'" for="inputGroupFile" class="form-label">
-                <em class="bi bi-file-earmark-music inputfile-icon">
+                <em class="bi bi-file-earmark-music input-group__input-file-icon">
                   Прикрепить аудио
-                  <span class="inputfile-description">{{ fileNameAndSize }}</span>
+                  <span class="input-group__input-file--description">
+                    {{ fileNameAndSize }}
+                  </span>
                 </em>
-                <p class="inputfile-alert" v-if="errorAlert !== ''">{{ errorAlert }}</p></label
-              >
+                <p class="input-group__input-file--alert" v-if="errorAlert !== ''">
+                  {{ errorAlert }}
+                </p>
+              </label>
               <input
                 data-input="false"
                 iconName="bi bi-file-earmark-music"
                 type="file"
                 ref="fileInput"
                 @input="chooseFile"
-                class="form-control inputfile"
+                class="form-control input-group__input-file"
                 id="inputGroupFile"
                 aria-describedby="inputGroupFileAddon"
                 aria-label="Upload"
@@ -87,20 +90,24 @@
         </form>
       </b-card>
       <CkEditor v-model="editorData" />
-      <b-button
+      <SubmitButton
         v-if="!isLoading"
         :disabled="isSubmitting"
         :class="{ submitting: isSubmitting }"
-        class="input-form--submit-button mb-3 mt-3"
-        pill
-        type="submit"
+        class="input-form__submit-button mb-3 mt-3"
+        buttonType="submit"
       >
         {{ !isEdited || editorData === "" ? "Сохранить" : "Отредактировать" }}
-      </b-button>
-      <button v-if="isLoading" class="btn input-form__submit-button__spinner submit-btn" type="submit" disabled>
+      </SubmitButton>
+      <SubmitButton
+        v-if="isLoading"
+        class="input-form__submit-button--disabled mb-3 mt-3"
+        buttonType="submit"
+        :buttonDisabled="true"
+      >
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Загружается...
-      </button>
+      </SubmitButton>
     </Form>
     <Lessons @update-lesson="handleUpdate" />
   </div>
@@ -116,18 +123,20 @@ import getTitleAndBody from "@/utils/getTitleAndBody";
 import CkEditor from "@/components/CkEditorCustom.vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import Lessons from "@/views/TeacherBoard/Lessons.vue";
+import SubmitButton from "@/components/SubmitButton.vue";
 import { computed, defineComponent, onMounted, ref } from "vue";
 import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
 
 export default defineComponent({
   name: "GroupInputMessage",
   components: {
-    CkEditor,
-    SidebarMenu,
+    Form,
     Lessons,
+    CkEditor,
     VueSelect,
     TextInput,
-    Form,
+    SidebarMenu,
+    SubmitButton,
   },
 
   setup() {
@@ -187,7 +196,7 @@ export default defineComponent({
     });
 
     const onInvalidSubmit = () => {
-      const submitBtn = document.querySelector(".input-form--submit-button");
+      const submitBtn = document.querySelector(".input-form__submit-button");
       submitBtn.classList.add("invalid");
       setTimeout(() => {
         submitBtn.classList.remove("invalid");
@@ -333,67 +342,49 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-button.input-form--submit-button {
-  width: 150px;
-  background-color: #fd8904;
-  color: white;
+.input-group {
+  &__input-file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  &__input-file-icon {
+    font-size: 1.5em;
+    font-weight: 700;
+    display: inline-block;
+    cursor: pointer;
+  }
+  &__input-file-icon:hover {
+    color: blue;
+  }
+  &__input-file--description {
+    font-size: 18px;
+    color: chocolate;
+    margin: 20px;
+  }
+  &__input-file--alert {
+    font-size: 20px;
+    color: var(--error-color);
+  }
 }
-button.input-form__submit-button__spinner {
-  width: 200px;
-  background-color: #fd8904;
-  color: white;
-  border-radius: 24px;
-  border-color: black;
-  font-weight: bold;
+.input-form {
+  &__submit-button {
+    width: fit-content;
+    background-color: #fd8904;
+    color: white;
+  }
+  &__submit-button--disabled {
+    width: fit-content !important;
+    background-color: #fd8904;
+    color: white;
+    border-radius: 24px;
+    border-color: black;
+    font-weight: bold;
+  }
 }
-.inputfile {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-.inputfile-icon {
-  font-size: 1.5em;
-  font-weight: 700;
-  display: inline-block;
-  cursor: pointer;
-}
-.inputfile-icon:hover {
-  color: blue;
-}
-.inputfile-description {
-  font-size: 18px;
-  color: chocolate;
-  margin: 20px;
-}
-.inputfile-alert {
-  font-size: 20px;
-  color: var(--error-color);
-}
-audio {
-  filter: sepia(10%) saturate(70%) grayscale(1) contrast(99%) invert(5%);
-  width: 500px;
-  height: 40px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-audio::-webkit-media-controls-mute-button {
-  display: none !important;
-}
-
-audio::-webkit-media-controls-volume-slider {
-  display: none !important;
-}
-
-audio::-webkit-media-controls-volume-control-container.closed {
-  display: none !important;
-}
-audio::-webkit-media-controls-volume-control-container {
-  display: none !important;
-}
-
 .course-name-field {
   max-width: 600px !important;
 }
@@ -404,7 +395,6 @@ audio::-webkit-media-controls-volume-control-container {
   position: absolute;
   top: 0px;
 }
-
 .vue-select {
   max-width: 600px !important;
   width: inherit !important;
@@ -422,21 +412,6 @@ audio::-webkit-media-controls-volume-control-container {
   margin-top: -8px !important;
 }
 
-@media (max-width: 770px) {
-  audio {
-    width: 400px;
-  }
-}
-@media (max-width: 500px) {
-  audio {
-    width: 300px;
-  }
-}
-@media (max-width: 400px) {
-  audio {
-    width: 250px;
-  }
-}
 :deep(.ck .ck-sticky-panel .ck-sticky-panel__content_sticky) {
   position: static !important;
 }
