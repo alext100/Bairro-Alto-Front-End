@@ -11,11 +11,11 @@
         shadowSize="md"
         :hover="true"
       >
-        <template v-slot:header
-          ><span v-tippy="'Название курса'" class="font-weight-bold">{{ lesson.courseName }}.</span
-          ><span v-tippy="'Уровень курса'" class="font-weight-bold"> {{ lesson.level }}</span></template
-        >
-        <h2 class="text-center card-title text-uppercase text-muted mb-0">{{ lesson.title }}</h2>
+        <template v-slot:header>
+          <span v-tippy="'Название курса'" class="font-weight-bold">{{ lesson.courseName }}.</span>
+          <span v-tippy="'Уровень курса'" class="font-weight-bold"> {{ lesson.level }}</span>
+        </template>
+        <h3 class="text-center card-title text-uppercase text-muted mb-0">{{ lesson.title }}</h3>
         <div class="m-2 card-text">
           <div v-viewer="{ toolbar: true }">
             <div v-html="lesson?.body"></div>
@@ -33,20 +33,19 @@
           </div>
         </div>
         <template v-slot:footer>
-          <span class="text-nowrap text-muted footer"
-            >Создано {{ new Date(lesson.date).toLocaleString() }}.<b-button
-              v-tippy="'Редактировать урок'"
-              pill
-              class="button-edit btn-light"
-              @click="handleEditLesson(lesson)"
-              ><em class="far fa-edit"></em> </b-button
-            ><b-button
+          <span class="text-nowrap text-muted footer">
+            Создано {{ new Date(lesson.date).toLocaleString() }}.
+            <button v-tippy="'Редактировать урок'" class="button-edit btn-light" @click="handleEditLesson(lesson)">
+              <em class="far fa-edit"></em>
+            </button>
+            <button
               v-tippy="'Удалить урок'"
-              pill
               class="button-delete align-self-center btn-light"
               @click="handleDeleteLesson(lesson.id), $toast('Урок удалён')"
-              ><em class="fa fa-trash-alt"></em> </b-button
-          ></span>
+            >
+              <em class="fa fa-trash-alt"></em>
+            </button>
+          </span>
         </template>
       </full-card>
     </div>
@@ -54,10 +53,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
-import { useStore } from "vuex";
 import FullCard from "@/components/FullCard.vue";
 import { Lesson } from "@/types/interfaces";
+import { computed, defineComponent, onMounted } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "Lessons",
@@ -106,5 +105,27 @@ export default defineComponent({
   font-size: 16px;
   background-color: transparent;
   border: transparent;
+}
+audio {
+  filter: sepia(10%) saturate(70%) grayscale(1) contrast(99%) invert(5%);
+  width: 500px;
+  height: 40px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+@media (max-width: 770px) {
+  audio {
+    width: 400px;
+  }
+}
+@media (max-width: 500px) {
+  audio {
+    width: 300px;
+  }
+}
+@media (max-width: 400px) {
+  audio {
+    width: 250px;
+  }
 }
 </style>
