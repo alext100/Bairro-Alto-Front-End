@@ -1,9 +1,10 @@
-import { createStore } from "vuex";
+import TextInput from "@/components/TextInput.vue";
 import Login from "@/views/Login.vue";
 import { cleanup } from "@testing-library/vue";
-import TextInput from "@/components/TextInput.vue";
-import { enableAutoUnmount, mount } from "@vue/test-utils";
+import { enableAutoUnmount, flushPromises, mount } from "@vue/test-utils";
+import { Form } from "vee-validate";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
+import { createStore } from "vuex";
 import state from "../mockedState";
 
 const store = createStore({
@@ -103,6 +104,25 @@ describe("Given a Login view", () => {
       await button.trigger("click");
 
       expect(button.classes()).not.toContain("fa-eye-slash");
+    });
+  });
+
+  describe("When a user submit form with data", () => {
+    test("Then it should be submitted ", async () => {
+      const wrapper = mount(Login, {
+        global: {
+          plugins: [store],
+        },
+      });
+      const form = wrapper.findComponent(Form);
+      const inputs = wrapper.findAllComponents(TextInput);
+      await inputs[0].setValue("alex@mail.com");
+      await inputs[1].setValue("1234567");
+
+      await form.trigger("submit");
+      await flushPromises();
+
+      expect(form.emitted().submit).toBeTruthy();
     });
   });
 });
