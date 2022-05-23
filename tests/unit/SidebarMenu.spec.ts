@@ -46,8 +46,6 @@ describe("Given a SidebarMenu component", () => {
 
   describe("When the user click on logout icon", () => {
     test("Then it should call 'handleLogout'", async () => {
-      const handleLogout = jest.fn();
-      handleLogout();
       const wrapper = mount(SidebarMenu, {
         global: {
           plugins: [store, TippyPlugin],
@@ -55,10 +53,11 @@ describe("Given a SidebarMenu component", () => {
         props: { isExitButton: true },
       });
       const logOutButton = wrapper.find(".profile__logout");
+      const spy = jest.spyOn(wrapper.vm, "handleLogout");
 
       await logOutButton.trigger("click");
 
-      expect(handleLogout).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalled();
     });
   });
 
