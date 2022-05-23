@@ -115,4 +115,26 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
 }
+audio {
+  filter: sepia(10%) saturate(70%) grayscale(1) contrast(99%) invert(5%);
+  width: 500px;
+  height: 40px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+@media (max-width: 770px) {
+  audio {
+    width: 400px;
+  }
+}
+@media (max-width: 500px) {
+  audio {
+    width: 300px;
+  }
+}
+@media (max-width: 400px) {
+  audio {
+    width: 250px;
+  }
+}
 </style>
