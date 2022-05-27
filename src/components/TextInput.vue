@@ -8,7 +8,6 @@
       :step="step"
       :min="min"
       :max="max"
-      :v-model="inputValueVmodel"
       :value="inputValue"
       :placeholder="placeholder"
       @input="handleChange"
@@ -46,10 +45,6 @@ export default {
       required: false,
     },
     value: {
-      type: String,
-      default: "",
-    },
-    inputValueVmodel: {
       type: String,
       default: "",
     },
