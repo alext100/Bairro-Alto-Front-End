@@ -1,28 +1,7 @@
 import TextInput from "@/components/TextInput.vue";
 import { cleanup } from "@testing-library/vue";
 import { enableAutoUnmount, mount } from "@vue/test-utils";
-import { createRouterMock, injectRouterMock } from "vue-router-mock";
-import { createStore } from "vuex";
-import state from "../mockedState";
 
-const store = createStore({
-  state() {
-    return state;
-  },
-  actions: { createGroup: jest.fn() },
-});
-
-const wrapperOptions = {
-  global: {
-    plugins: [store],
-  },
-};
-
-const router = createRouterMock({});
-
-beforeEach(() => {
-  injectRouterMock(router);
-});
 afterEach(() => cleanup());
 enableAutoUnmount(afterEach);
 
@@ -30,7 +9,6 @@ describe("Given a TextInput component", () => {
   describe("When it is rendered with received required props: label and name", () => {
     test("Then it should show input with received name and received label", () => {
       const wrapper = mount(TextInput, {
-        ...wrapperOptions,
         props: { label: "E-mail", name: "email" },
       });
 
@@ -45,7 +23,6 @@ describe("Given a TextInput component", () => {
   describe("When it is rendered with props: type, step, min, max, value, name, placeholder", () => {
     test("Then it should show input with received props", () => {
       const wrapper = mount(TextInput, {
-        ...wrapperOptions,
         props: {
           type: "email",
           step: "100",
@@ -70,6 +47,18 @@ describe("Given a TextInput component", () => {
       const textInput = wrapper.find("input");
 
       expect(textInput.attributes()).toEqual(props);
+    });
+  });
+
+  describe("When it received successMessage", () => {
+    test("Then it should show help message with received text", () => {
+      const wrapper = mount(TextInput, {
+        props: { label: "E-mail", name: "email", successMessage: "It is OK!" },
+      });
+
+      const helpMessage = wrapper.find(".help-message");
+
+      expect(helpMessage.text()).toContain("It is OK!");
     });
   });
 });
