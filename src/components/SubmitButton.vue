@@ -4,16 +4,18 @@
   </button>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   name: "SubmitButton",
   props: {
     buttonType: {
-      validator(value) {
+      type: String as PropType<"submit" | "button" | "reset"> | undefined,
+      validator(value: string | undefined) {
         return ["submit", "button", "reset", undefined].includes(value);
       },
+      default: undefined,
     },
     buttonDisabled: {
       type: Boolean,
