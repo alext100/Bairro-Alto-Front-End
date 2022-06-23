@@ -15,28 +15,48 @@
     <div class="card-body" :class="bodyClasses" v-if="!noBody">
       <slot></slot>
     </div>
-
     <slot v-if="noBody"></slot>
-
     <div class="card-footer" :class="footerClasses" v-if="$slots.footer">
       <slot name="footer"></slot>
     </div>
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+
+/**
+ * Base Card component
+ * @example
+    <base-card :hover="true" shadow shadowSize="sm" gradient="warning">
+      <template v-slot:header>  </template>
+      <template v-slot:body>    </template>
+      <template v-slot:tags>    </template>
+    </base-card>
+ */
 
 export default defineComponent({
   name: "card",
   props: {
     type: {
-      type: String,
+      type: String as PropType<
+        | "primary"
+        | "secondary"
+        | "success"
+        | "danger"
+        | "warning"
+        | "info"
+        | "light"
+        | "dark"
+        | "body"
+        | "white"
+        | "transparent"
+      >,
       description: "Card type",
     },
     gradient: {
-      type: String,
-      description: "Card background gradient type (warning,danger etc)",
+      type: String as PropType<"primary" | "secondary" | "success" | "danger" | "warning" | "info" | "light" | "dark">,
+      description: "Card background gradient type (works for bootstrap 4.6, not 5.0+)",
     },
     hover: {
       type: Boolean,
@@ -47,7 +67,7 @@ export default defineComponent({
       description: "Whether card has shadow",
     },
     shadowSize: {
-      type: String,
+      type: String as PropType<"sm" | "lg" | "none">,
       description: "Card shadow size",
     },
     noBody: {
