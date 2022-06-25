@@ -15,6 +15,14 @@ jest.mock("@/views/TeacherBoard/GroupAddUser.vue", () => ({ __esModule: true }))
 jest.mock("@/views/TeacherBoard/StudentErrors.vue", () => ({ __esModule: true }));
 jest.mock("@/views/TeacherBoard/GroupAddDeleteLesson.vue", () => ({ __esModule: true }));
 
+/* mock of CkEditor in components: */
+jest.mock("@/views/TeacherBoard/GroupInputMessage.vue", () => ({
+  __esModule: true,
+  default: () => ({
+    CkEditor: jest.fn(),
+  }),
+}));
+
 const store = createStore({
   state() {
     return state;
