@@ -17,6 +17,16 @@ jobs:
         run: npm ci
       - name: Test and coverage
         run: npm run test:coverage
+        env:
+          VUE_APP_FIREBASE_DATABASE: ${{ secrets.VUE_APP_FIREBASE_DATABASE }}
+          VUE_APP_FIREBASE_API: ${{ secrets.VUE_APP_FIREBASE_API }}
+          VUE_APP_FIREBASE_APPID: ${{ secrets.VUE_APP_FIREBASE_APPID }}
+          VUE_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.VUE_APP_FIREBASE_AUTH_DOMAIN }}
+          VUE_APP_FIREBASE_BUCKET: ${{ secrets.VUE_APP_FIREBASE_BUCKET }}
+          VUE_APP_FIREBASE_MEASUREMENT: ${{ secrets.VUE_APP_FIREBASE_MEASUREMENT }}
+          VUE_APP_FIREBASE_PROJECT_ID: ${{ secrets.VUE_APP_FIREBASE_PROJECT_ID }}
+          VUE_APP_FIREBASE_SENDER: ${{ secrets.VUE_APP_FIREBASE_SENDER }}
+          VUE_APP_WEB_COLLECTION_ID: ${{ secrets.VUE_APP_WEB_COLLECTION_ID }}
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
