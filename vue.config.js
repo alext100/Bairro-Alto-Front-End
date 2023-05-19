@@ -84,15 +84,11 @@ module.exports = {
         })
       );
 
-    config.module
-      .rule("vue")
-      .use("postcss-loader")
-      .loader("postcss-loader")
-      .tap((options) => ({
-        ...options,
-        compilerOptions: {
-          isCustomElement: (tagName) => tagName === "vue-advanced-chat" || tagName === "emoji-picker",
-        },
-      }));
+    config.module.tap((options) => ({
+      ...options,
+      compilerOptions: {
+        isCustomElement: (tagName) => tagName === "vue-advanced-chat" || tagName === "emoji-picker",
+      },
+    }));
   },
 };
