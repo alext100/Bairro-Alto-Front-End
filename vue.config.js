@@ -7,6 +7,10 @@ module.exports = {
   lintOnSave: false,
 
   transpileDependencies: [/ckeditor5-[^/\\]+[/\\]src[/\\].+\.js$/],
+  
+  compilerOptions: {
+    isCustomElement: (tagName) => tagName === "vue-advanced-chat" || tagName === "emoji-picker",
+  },
 
   configureWebpack: {
     optimization: {
