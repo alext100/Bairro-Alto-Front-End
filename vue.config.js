@@ -86,7 +86,7 @@ module.exports = {
 
     config.module
       .rule("vue")
-      .use("vue-loader")
+      .use("postcss-loader")
       .tap((options) => ({
         ...options,
         compilerOptions: {
