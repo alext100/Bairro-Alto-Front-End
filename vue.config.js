@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+
 const { styles } = require("@ckeditor/ckeditor5-dev-utils");
 const CKEditorWebpackPlugin = require("@ckeditor/ckeditor5-dev-webpack-plugin");
 const path = require("path");
@@ -83,5 +84,15 @@ module.exports = {
           minify: true,
         })
       );
+
+    config.module
+      .rule("vue")
+      .use("vue-loader")
+      .tap((options) => ({
+        ...options,
+        compilerOptions: {
+          isCustomElement: (tagName) => tagName === "vue-advanced-chat" || tagName === "emoji-picker",
+        },
+      }));
   },
 };
