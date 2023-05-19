@@ -8,9 +8,8 @@
 
 <script>
 import { useStore } from "vuex";
-import "vue-advanced-chat/dist/vue-advanced-chat.css";
-import ChatContainer from "@/views/ChatContainer.vue";
 import { computed, onMounted, onUnmounted, ref } from "vue";
+import ChatContainer from "@/views/ChatContainer.vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
