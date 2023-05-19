@@ -83,12 +83,5 @@ module.exports = {
           minify: true,
         })
       );
-
-    config.module.tap((options) => ({
-      ...options,
-      compilerOptions: {
-        isCustomElement: (tagName) => tagName === "vue-advanced-chat" || tagName === "emoji-picker",
-      },
-    }));
   },
 };
