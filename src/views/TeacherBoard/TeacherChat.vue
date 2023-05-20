@@ -6,11 +6,11 @@
 </template>
 
 <script>
-import state from "@/store/state";
 import { mapActions, mapState } from "vuex";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import ChatContainer from "@/views/ChatContainer.vue";
 import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
+import state from "@/store/state";
 
 export default {
   name: "TeacherChat",
