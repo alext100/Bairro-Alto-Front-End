@@ -5,11 +5,16 @@
     <div class="row">
       <div class="col-xl-12 col-lg-12 cards-container ck-content">
         <n-space vertical>
-          <n-skeleton v-if="isLoading" height="40px" width="33%" />
-          <n-skeleton v-if="isLoading" height="40px" width="66%" :sharp="false" />
-          <n-skeleton v-if="isLoading" height="40px" round />
-          <n-skeleton v-if="isLoading" height="40px" circle />
+          <n-skeleton v-if="isLoading && groupLessons.length !== 0" height="40px" width="33%" />
+          <n-skeleton v-if="isLoading && groupLessons.length !== 0" height="40px" width="66%" :sharp="false" />
+          <n-skeleton v-if="isLoading && groupLessons.length !== 0" height="40px" round />
+          <n-skeleton v-if="isLoading && groupLessons.length !== 0" height="40px" circle />
         </n-space>
+        <n-card :bordered="false">
+          <n-p v-if="groupLessons.length === 0">
+            Когда вас добавят в группу, здесь появятся уроки, которые вы сможете просмотреть.
+          </n-p>
+        </n-card>
         <full-card
           v-for="lesson in groupLessons || []"
           :key="lesson"
@@ -40,7 +45,7 @@
               </div>
             </div>
           </div>
-          <!--  <template v-slot:footer
+          <!-- <template v-slot:footer
             ><b-button
               v-tippy="`Функционал в разработке. Воспользуйтесь чатом с преподавателем`"
               pill
@@ -56,17 +61,17 @@
 </template>
 
 <script lang="ts">
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
-import { NSkeleton, NSpace } from "naive-ui";
 import FullCard from "@/components/FullCard.vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
+import { NCard, NP, NSkeleton, NSpace } from "naive-ui";
 import { computed, defineComponent, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
 export default defineComponent({
   name: "StudentLessons",
-  components: { SidebarMenu, FullCard, NSkeleton, NSpace },
+  components: { SidebarMenu, FullCard, NSkeleton, NSpace, NCard, NP },
   setup() {
     const { state, dispatch } = useStore();
     const router = useRouter();
@@ -75,8 +80,10 @@ export default defineComponent({
     const groupLessons = computed(() => state.groupLessons);
 
     onMounted(async () => {
-      await dispatch("getGroupLessonsById", currentUser.value.studentGroups[0]);
+      await dispatch("updateCurrentUser", currentUser.value.id);
+      if (currentUser.value.studentGroups.length === 0) return;
       await dispatch("getGroupById", currentUser.value.studentGroups[0]);
+      await dispatch("getGroupLessonsById", currentUser.value.studentGroups[0]);
     });
 
     const handleRedirect = (lessonId: string) => {
@@ -105,7 +112,14 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
 }
-
+.n-card {
+  width: 90%;
+}
+.n-p {
+  font-size: 16px;
+  background-color: transparent;
+  text-align: justify;
+}
 .button-redirect {
   font-size: 16px;
   background-color: transparent;
