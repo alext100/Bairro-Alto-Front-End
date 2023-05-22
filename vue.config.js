@@ -83,5 +83,15 @@ module.exports = {
           minify: true,
         })
       );
+
+    config.module
+      .rule("vue")
+      .use("vue-loader")
+      .tap((options) => ({
+        ...options,
+        compilerOptions: {
+          isCustomElement: (tagName) => tagName === "vue-advanced-chat" || tagName === "emoji-picker",
+        },
+      }));
   },
 };
