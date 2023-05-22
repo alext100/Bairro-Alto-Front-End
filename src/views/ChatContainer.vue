@@ -41,39 +41,38 @@
       <button class="button-cancel" @click="removeRoomId = null">Отменить</button>
     </form>
 
-    <chat-window
+    <vue-advanced-chat
       :height="screenHeight"
       :theme="theme"
-      :styles="styles"
+      :styles="JSON.stringify(styles)"
       :current-user-id="currentUserId"
       :room-id="roomId"
-      :rooms="loadedRooms"
+      :rooms="JSON.stringify(loadedRooms)"
       :loading-rooms="loadingRooms"
-      :messages="messages"
+      :messages="JSON.stringify(messages)"
       :messages-loaded="messagesLoaded"
       :rooms-loaded="roomsLoaded"
-      :room-actions="roomActions"
-      :menu-actions="menuActions"
-      :message-selection-actions="messageSelectionActions"
       :room-message="roomMessage"
-      :templates-text="templatesText"
-      @fetch-more-rooms="fetchMoreRooms"
-      @fetch-messages="fetchMessages"
-      @send-message="sendMessage"
-      @edit-message="editMessage"
-      @delete-message="deleteMessage"
-      @open-file="openFile"
-      @open-user-tag="openUserTag"
-      @add-room="addRoom"
-      @room-action-handler="menuActionHandler"
-      @menu-action-handler="menuActionHandler"
-      @message-selection-action-handler="messageSelectionActionHandler"
-      @send-message-reaction="sendMessageReaction"
-      @typing-message="typingMessage"
-      @toggle-rooms-list="$emit('show-demo-options', $event.opened)"
-      :text-messages="textMessages"
+      :room-actions="JSON.stringify(roomActions)"
+      :menu-actions="JSON.stringify(menuActions)"
+      :message-selection-actions="JSON.stringify(messageSelectionActions)"
+      :templates-text="JSON.stringify(templatesText)"
+      @fetch-messages="fetchMessages($event.detail[0])"
+      @send-message="sendMessage($event.detail[0])"
+      @edit-message="editMessage($event.detail[0])"
+      @delete-message="deleteMessage($event.detail[0])"
+      @open-file="openFile($event.detail[0])"
+      @open-user-tag="openUserTag($event.detail[0])"
+      @add-room="addRoom($event.detail[0])"
+      @room-action-handler="menuActionHandler($event.detail[0])"
+      @menu-action-handler="menuActionHandler($event.detail[0])"
+      @message-selection-action-handler="messageSelectionActionHandler($event.detail[0])"
+      @send-message-reaction="sendMessageReaction($event.detail[0])"
+      @typing-message="typingMessage($event.detail[0])"
+      @toggle-rooms-list="$emit('show-demo-options', $event.detail[0].opened)"
+      :text-messages="JSON.stringify(textMessages)"
     >
-    </chat-window>
+    </vue-advanced-chat>
   </div>
 </template>
 
@@ -82,18 +81,17 @@
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
-import * as firestoreService from "@/database/firestore";
 import * as firebaseService from "@/database/firebase";
+import * as firestoreService from "@/database/firestore";
 import * as storageService from "@/database/storage";
-import ChatWindow from "vue-advanced-chat";
-import { mapState, useStore } from "vuex";
+import { formatTimestamp, parseTimestamp } from "@/utils/dates";
 import { NAvatar, NSelect, NTag, NText } from "naive-ui";
 import { computed, h, onMounted, ref } from "vue";
-import { parseTimestamp, formatTimestamp } from "@/utils/dates";
+import { register } from "vue-advanced-chat";
+import { mapState, useStore } from "vuex";
 
 export default {
   components: {
-    ChatWindow,
     NSelect,
   },
 
@@ -189,6 +187,7 @@ export default {
       }));
 
     onMounted(() => {
+      register();
       dispatch("getAllUsersFromApi");
     });
 
