@@ -4,8 +4,8 @@
       <h1 class="main-page__title">Уютная школа португальского языка</h1>
     </div>
     <Teachers :allTeachers="allTeachers" />
-    <Banner url="/particlesText.json" id="tsparticles" v-if="!$isMobile()" />
-    <div v-if="!$isMobile()" class="banner-container"></div>
+    <!--  <Banner url="/particlesText.json" id="tsparticles" v-if="!$isMobile()" /> -->
+    <!-- <div v-if="!$isMobile()" class="banner-container"></div> -->
     <Features
       :methodic="methodic"
       :methodicBody="methodicBody"
@@ -18,16 +18,15 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from "vuex";
-import { useHead } from "@vueuse/head";
-import { Post } from "@/types/interfaces";
-import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
-import getTitleAndBody from "@/utils/getTitleAndBody";
+import Features from "@/pages/MainPageComponents/Features.vue";
 import News from "@/pages/MainPageComponents/News.vue";
 import Teachers from "@/pages/MainPageComponents/Teachers.vue";
-import Features from "@/pages/MainPageComponents/Features.vue";
+import { Post } from "@/types/interfaces";
+import getTitleAndBody from "@/utils/getTitleAndBody";
+import { useHead } from "@vueuse/head";
 import { computed, ComputedRef, onMounted, reactive } from "vue";
+import { useStore } from "vuex";
 
 const { state, dispatch } = useStore();
 const siteData = reactive({
