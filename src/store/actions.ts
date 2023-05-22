@@ -23,8 +23,7 @@ const auth = getAuth();
 const actions = {
   async login({ dispatch, commit }: ActionContext<State, State>, userData: UserLoginData): Promise<void> {
     commit("startLoading");
-    const loginURL = process.env.VUE_APP_LOGIN_URL;
-    if (!loginURL) throw new Error("Login URL is not defined");
+    const loginURL = process.env.VUE_APP_LOGIN_URL || "";
     const response = await axios.post(loginURL, userData);
     const { token } = response.data;
     const user = jwtDecode(token);
