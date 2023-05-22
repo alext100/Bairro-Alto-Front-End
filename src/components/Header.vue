@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-xl navbar-light bg-light header-navbar ps-5">
+  <nav :class="['navbar', expandClass, 'navbar-light', 'bg-light', 'header-navbar', 'ps-5']">
     <div class="container-fluid">
       <router-link to="/" data-target=".navbar-collapse.show" data-toggle="collapse">
         <img
@@ -94,7 +94,7 @@
             data-toggle="collapse"
           >
             <router-link class="nav-link" :to="{ name: 'StudentBoard', params: { id: currentUser.id } }">{{
-              "Мойкабинет"
+              "Мой кабинет"
             }}</router-link>
           </li>
 
@@ -115,7 +115,21 @@ import { mapActions, mapState } from "vuex";
 
 export default defineComponent({
   name: "Header",
-  computed: { ...mapState(["isUserAuthenticated", "currentUser"]) },
+  computed: {
+    ...mapState(["isUserAuthenticated", "currentUser"]),
+    expandClass() {
+      const accessCount = [
+        this.currentUser.adminAccess,
+        this.currentUser.studentAccess,
+        this.currentUser.teacherAccess,
+      ].filter(Boolean).length;
+
+      if (accessCount >= 2) {
+        return "navbar-expand-l";
+      }
+      return "navbar-expand-xl";
+    },
+  },
   methods: {
     ...mapActions(["deleteDataFromLocalStorage"]),
     handleLogout() {
@@ -154,9 +168,11 @@ a,
   color: var(--hover-color) !important;
   font-family: Noto Sans, Arial, sans-serif;
 }
-
 .logo-image {
   padding-left: 36px;
   margin-top: -7px;
+}
+.nav-link {
+  white-space: nowrap;
 }
 </style>

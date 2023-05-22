@@ -40,10 +40,10 @@
 </template>
 
 <script lang="ts">
-import { useStore } from "vuex";
 import FullCard from "@/components/FullCard.vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import { computed, defineComponent, onMounted } from "vue";
+import { useStore } from "vuex";
 import sideBarStudentMenuItems from "./sideBarStudentMenuItems";
 
 export default defineComponent({
@@ -56,6 +56,7 @@ export default defineComponent({
     onMounted(() => {
       document.body.style.backgroundColor = "white";
       const studentGroupId = state.currentUser?.studentGroups[0];
+      if (!studentGroupId) return;
       dispatch("getGroupById", studentGroupId);
     });
 

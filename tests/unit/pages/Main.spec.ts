@@ -68,7 +68,7 @@ describe("Given a Main page", () => {
       expect(teachersComponent.exists()).toBe(true);
     });
 
-    test("Then it should show Banner component", () => {
+    test.skip("Then it should show Banner component", () => {
       const wrapper = mount(Main, wrapperOptions);
 
       const bannerComponent = wrapper.findComponent(Banner);

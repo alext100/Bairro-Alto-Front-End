@@ -17,14 +17,13 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from "vuex";
-import { NCard } from "naive-ui";
-import { useHead } from "@vueuse/head";
-import { Post } from "@/types/interfaces";
-import { useRoute } from "vue-router";
 import Footer from "@/components/Footer.vue";
-import usePixiGlitchFilter from "@/composables/usePixiGlitchFilter";
+import { Post } from "@/types/interfaces";
+import { useHead } from "@vueuse/head";
+import { NCard } from "naive-ui";
 import { computed, ComputedRef, onBeforeMount, onMounted, reactive } from "vue";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 
 const route = useRoute();
 const { state, dispatch } = useStore();
@@ -52,7 +51,7 @@ useHead({
   ],
 });
 
-usePixiGlitchFilter("figure.image img", postToShow?.value[0]?.body, "srcset");
+// usePixiGlitchFilter("figure.image img", postToShow?.value[0]?.body, "srcset");
 </script>
 
 <style scoped>

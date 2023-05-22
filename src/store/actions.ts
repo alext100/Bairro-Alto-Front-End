@@ -23,7 +23,8 @@ const auth = getAuth();
 const actions = {
   async login({ dispatch, commit }: ActionContext<State, State>, userData: UserLoginData): Promise<void> {
     commit("startLoading");
-    const response = await axios.post(<string>process.env.VUE_APP_LOGIN_URL, userData);
+    const loginURL = process.env.VUE_APP_LOGIN_URL || "";
+    const response = await axios.post(loginURL, userData);
     const { token } = response.data;
     const user = jwtDecode(token);
     dispatch("userLoggedFromApi", { user, token });
@@ -65,7 +66,6 @@ const actions = {
       "userData",
       JSON.stringify({
         id: data.id,
-        password: data.password,
         token: data.token,
         firstName: data.firstName,
         email: data.email,
@@ -81,12 +81,38 @@ const actions = {
     commit("loadUser", data);
     commit("stopLoading");
     await firestoreService.addIdentifiedUser(data.id, {
-      _id: data.id,
-      username: `${data?.firstName} ${data?.lastName.charAt(0)}`,
+      id: data.id,
+      token: data.token,
       firstName: data.firstName,
-      lastName: data.lastName,
       email: data.email,
+      adminAccess: data.adminAccess,
+      teacherAccess: data.teacherAccess,
+      studentAccess: data.studentAccess,
+      teacherGroups: data.teacherGroups,
+      studentGroups: data.studentGroups,
+      homeworkToCheck: data.homeworkToCheck,
     });
+  },
+
+  async updateCurrentUser({ commit }: ActionContext<State, State>, userId: string): Promise<void> {
+    commit("startLoading");
+    const { data } = await axios.get(`${process.env.VUE_APP_URL}/user/get-one-by-id/${userId}`);
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({
+        firstName: data.firstName,
+        email: data.email,
+        adminAccess: data.adminAccess,
+        teacherAccess: data.teacherAccess,
+        studentAccess: data.studentAccess,
+        teacherGroups: data.teacherGroups,
+        studentGroups: data.studentGroups,
+        homeworkToCheck: data.homeworkToCheck,
+      })
+    );
+    commit("loginUser", data);
+    commit("loadUser", data);
+    commit("stopLoading");
   },
 
   async registerUser({ commit }: ActionContext<State, State>, userData: UserLoginData): Promise<void> {
