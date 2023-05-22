@@ -6,8 +6,9 @@
         <a
           href="https://yandex.ru/maps/?um=constructor%3A2e415a0bb2bba62dfb822d8971d352e500377fb6eea3642ba0bbb162b579278f&amp;source=constructorLink"
           target="_blank"
-          >Bairro Alto, 2-я линия ВО, д. 37, последний этаж</a
         >
+          Bairro Alto, 2-я линия ВО, д. 37, последний этаж
+        </a>
       </address>
       <ul class="pageFooter-contacts">
         <li class="contacts-item contacts-item-link">
@@ -17,7 +18,7 @@
         </li>
         <li class="contacts-item contacts-item-link">
           <a href="https://www.instagram.com/bairroaltospb/">
-            <em class="fas fa-ban" alt="instagram" />
+            <em class="fab fa-instagram" alt="instagram" />
           </a>
         </li>
         <li class="contacts-item-mail">
