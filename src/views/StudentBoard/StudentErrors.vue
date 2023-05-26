@@ -1,9 +1,9 @@
 <template>
   <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
   <div v-if="!isLoading" style="height: 100%" class="m-5">
-    <h1 v-if="lastLoadedUser.studentGroups[0] !== undefined" class="h1">{{ currentGroup.groupName }}</h1>
-    <h1 v-if="lastLoadedUser.studentGroups[0] === undefined" class="h1">Вас ещё не добавили ни в одну группу!</h1>
-    <div style="height: 100%; box-sizing: border-box">
+    <h1 v-if="lastLoadedUser.studentGroups[0]" class="h1">{{ currentGroup.groupName }}</h1>
+    <h1 v-if="!lastLoadedUser.studentGroups[0]" class="h1">Вас ещё не добавили ни в одну группу!</h1>
+    <div v-if="lastLoadedUser.studentGroups[0]" style="height: 100%; box-sizing: border-box">
       <ag-grid-vue
         class="ag-theme-alpine"
         :columnDefs="columnDefs"
@@ -12,8 +12,8 @@
         :pagination="true"
         :paginationAutoPageSize="true"
       >
-        ></ag-grid-vue
-      >
+        >
+      </ag-grid-vue>
     </div>
   </div>
   <div v-if="isLoading" class="spinner-border" role="status">
@@ -110,7 +110,7 @@ export default defineComponent({
     if (this.lastLoadedUser?.studentGroups[0]) {
       await this.getGroupById(this.lastLoadedUser?.studentGroups[0]);
       await this.getGroupErrorsById(this.lastLoadedUser?.studentGroups[0]);
-    } else console.log("error");
+    }
   },
   async created() {
     await this.getUserById(this.currentUser.id);

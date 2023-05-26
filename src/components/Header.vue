@@ -88,7 +88,7 @@
             <router-link class="nav-link" to="/teacher">{{ "Учительская" }}</router-link>
           </li>
           <li
-            v-if="currentUser.studentAccess"
+            v-if="currentUser.studentAccess && currentUser.id"
             class="nav-item student-board"
             data-target=".navbar-collapse.show"
             data-toggle="collapse"

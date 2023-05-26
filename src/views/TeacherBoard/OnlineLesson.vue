@@ -162,7 +162,7 @@ export default defineComponent({
 
 <style scoped>
 .description-card {
-  font-size: 20px !important;
+  font-size: 16px !important;
   font-family: "Tenor-sans", sans-serif;
   text-align: justify;
 }
