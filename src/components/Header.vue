@@ -131,11 +131,14 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapActions(["deleteDataFromLocalStorage"]),
+    ...mapActions(["deleteDataFromLocalStorage", "checkTokenValidity"]),
     handleLogout() {
       this.deleteDataFromLocalStorage();
       this.$router.push("/");
     },
+  },
+  async mounted() {
+    await this.checkTokenValidity();
   },
 });
 </script>
