@@ -175,4 +175,10 @@ a,
 .nav-link {
   white-space: nowrap;
 }
+.dropdown-toggle::after {
+  margin-left: -10px;
+}
+.navbar-toggler {
+  margin-top: -10px;
+}
 </style>

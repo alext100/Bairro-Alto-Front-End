@@ -1,6 +1,6 @@
 <template>
   <SidebarMenu :menuItems="menuItems" :profileName="profileName" :isExitButton="true" />
-  <div class="container-sm d-flex flex-column mt-5">
+  <div class="container-sm d-flex flex-column mt-5 page-container">
     <h1>Создать урок</h1>
     <Form
       @submit="handleCKeditor"
@@ -422,6 +422,11 @@ export default defineComponent({
   height: 38.67px !important;
   .ck-sticky-panel__placeholder {
     display: none !important;
+  }
+}
+@media (min-width: 599px) {
+  .page-container {
+    margin-left: 40px;
   }
 }
 </style>
