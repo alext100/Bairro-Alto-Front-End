@@ -36,9 +36,7 @@ const mutations = {
     state.isLoading = false;
   },
 
-  logoutUser(state: State, payload: UserLoggedIn) {
-    state.currentUser.token = payload.token;
-    state.currentUser.refreshToken = payload.refreshToken;
+  logoutUser(state: State) {
     state.isUserAuthenticated = false;
     state.currentUser = {
       user: {

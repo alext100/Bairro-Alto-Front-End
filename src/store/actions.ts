@@ -115,6 +115,19 @@ const actions = {
     commit("stopLoading");
   },
 
+  async checkTokenValidity({ commit }: ActionContext<State, State>, token: string): Promise<void> {
+    try {
+      await axios.get(`${process.env.VUE_APP_URL}/user/check-token`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (error) {
+      commit("logoutUser", { token: "" });
+      localStorage.removeItem("token");
+      localStorage.removeItem("userData");
+      sessionStorage.clear();
+    }
+  },
+
   async registerUser({ commit }: ActionContext<State, State>, userData: UserLoginData): Promise<void> {
     await axios
       .post(`${process.env.VUE_APP_URL}/user/register`, userData)
