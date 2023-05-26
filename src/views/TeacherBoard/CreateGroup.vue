@@ -17,7 +17,7 @@
           placeholder="Введите название группы (до 70 символов)"
           success-message="Ok!"
         />
-        <SubmitButton v-if="!isLoading" class="create-group__submit-btn" buttonType="submit">
+        <SubmitButton ref="submitButtonRef" v-if="!isLoading" class="create-group__submit-btn" buttonType="submit">
           Подтвердить
         </SubmitButton>
         <SubmitButton v-if="isLoading" :buttonDisabled="true">
@@ -25,21 +25,20 @@
           Загружается...
         </SubmitButton>
       </Form>
-      <p v-if="isError">Произошла ошибка при создании группы, возможно группа с таким названием уже существует</p>
+      <p v-if="!!alertMessage">{{ alertMessage }}</p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import * as Yup from "yup";
-import { useStore } from "vuex";
-import { Form } from "vee-validate";
-import TextInput from "@/components/TextInput.vue";
-import { computed, defineComponent, ref } from "vue";
 import SidebarMenu from "@/components/SidebarMenu.vue";
 import SubmitButton from "@/components/SubmitButton.vue";
+import TextInput from "@/components/TextInput.vue";
 import sidebarTeacherMenuItems from "@/views/TeacherBoard/sideBarTeacherMenuItems";
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Form, FormActions } from "vee-validate";
+import { computed, defineComponent, ref } from "vue";
+import { useStore } from "vuex";
+import * as Yup from "yup";
 
 export default defineComponent({
   name: "CreateGroup",
@@ -47,16 +46,16 @@ export default defineComponent({
   setup() {
     const { state, dispatch } = useStore();
     const isLoading = computed(() => state.isLoading);
-    const isError = ref(false);
+    const alertMessage = ref("");
+    const submitButtonRef = ref<HTMLElement | null>(null);
 
     const onInvalidSubmit = () => {
-      const submitBtn = document.querySelector(".create-group__submit-btn");
-      if (submitBtn) {
-        submitBtn.classList.add("invalid");
-        setTimeout(() => {
-          submitBtn.classList.remove("invalid");
-        }, 1000);
-      }
+      if (!submitButtonRef.value) return;
+      submitButtonRef.value.classList.add("invalid");
+      setTimeout(() => {
+        if (!submitButtonRef.value) return;
+        submitButtonRef.value.classList.remove("invalid");
+      }, 1000);
     };
 
     const onChange = () => {
@@ -67,22 +66,26 @@ export default defineComponent({
       name: Yup.string().min(6).max(70).required(),
     });
 
-    const handleCreateGroup = async (values: Record<string, any>, actions: any) => {
+    const handleCreateGroup = async (
+      values: Record<string, unknown>,
+      actions: FormActions<Record<string, unknown>>
+    ) => {
       const groupData = { groupName: values.name };
       try {
         await dispatch("createGroup", groupData);
-        actions.setFieldValue("name", `Группа ${values.name} создана`);
-        isError.value = false;
+        alertMessage.value = `Группа ${values.name} создана`;
+        actions.resetForm();
       } catch (error) {
-        isError.value = true;
+        alertMessage.value = "Произошла ошибка при создании группы, возможно группа с таким названием уже существует";
+        actions.setFieldError("name", "Произошла ошибка при создании группы");
       }
     };
 
     return {
       schema,
-      isError,
       onChange,
       isLoading,
+      alertMessage,
       groupName: "",
       onInvalidSubmit,
       handleCreateGroup,

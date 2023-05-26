@@ -10,7 +10,8 @@
       :max="max"
       :value="inputValue"
       :placeholder="placeholder"
-      @input="handleChange"
+      @input="onChange"
+      @change="handleChange"
       @blur="handleBlur"
     />
 
@@ -71,6 +72,7 @@ export default {
       errorMessage,
       handleBlur,
       handleChange,
+      onChange,
       meta,
     } = useField(props.name, undefined, {
       initialValue: props.value,
@@ -81,6 +83,7 @@ export default {
       handleBlur,
       errorMessage,
       inputValue,
+      onChange,
       meta,
     };
   },
@@ -127,7 +130,7 @@ input:focus {
   color: var(--error-color);
 }
 
-.textInput.has-error input:focus {
+.textInput.has-error input:not(:focus) {
   border-color: var(--error-color);
 }
 

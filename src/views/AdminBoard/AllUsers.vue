@@ -19,8 +19,8 @@
           @grid-ready="onGridReady"
           @cell-value-changed="onCellValueChanged"
         >
-          ></ag-grid-vue
-        >
+          >
+        </ag-grid-vue>
       </div>
     </div>
   </div>
